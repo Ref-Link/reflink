@@ -17,12 +17,12 @@
 
 **Purpose**: プロジェクト初期化・基本構造
 
-- [ ] T001 Initialize Next.js 14 App Router project with TypeScript 5.x and pnpm in repository root
-- [ ] T002 [P] Install and configure Tailwind CSS in tailwind.config.ts and src/app/globals.css
-- [ ] T003 [P] Configure ESLint and Prettier with TypeScript rules in .eslintrc.json and .prettierrc
-- [ ] T004 Initialize Supabase project with local development config in supabase/config.toml
-- [ ] T005 [P] Create .env.local.example with all required environment variables (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, LINE_LOGIN_CHANNEL_ID, LINE_LOGIN_CHANNEL_SECRET)
-- [ ] T006 Create project directory structure per plan.md (src/app/(auth), src/app/(referee), src/app/(admin), src/app/api, src/components, src/lib/supabase, src/lib/line, src/types, supabase/migrations, tests/unit, tests/integration)
+- [X] T001 Initialize Next.js 14 App Router project with TypeScript 5.x and pnpm in repository root
+- [X] T002 [P] Install and configure Tailwind CSS in tailwind.config.ts and src/app/globals.css
+- [X] T003 [P] Configure ESLint and Prettier with TypeScript rules in .eslintrc.json and .prettierrc
+- [X] T004 Initialize Supabase project with local development config in supabase/config.toml
+- [X] T005 [P] Create .env.local.example with all required environment variables (SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN, LINE_LOGIN_CHANNEL_ID, LINE_LOGIN_CHANNEL_SECRET)
+- [X] T006 Create project directory structure per plan.md (src/app/(auth), src/app/(referee), src/app/(admin), src/app/api, src/components, src/lib/supabase, src/lib/line, src/types, supabase/migrations, tests/unit, tests/integration)
 
 ---
 
@@ -32,19 +32,19 @@
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装は開始できない
 
-- [ ] T007 Create Supabase migration for `users` table with all columns (id, display_name, real_name, line_user_id, license_level, role_type, age_groups, region, travel_range_km, experience_years, referred_by, created_at, updated_at) in supabase/migrations/20260101000001_users.sql
-- [ ] T008 Create Supabase migration for `regional_communities` and `community_members` tables with status transitions and unique constraint (community_id, user_id) in supabase/migrations/20260101000002_communities.sql
-- [ ] T009 Create Supabase migration for `availabilities`, `matches`, and `assignments` tables with all columns, status enums, and indexes (idx_availabilities_user_date, idx_assignments_match_id, idx_assignments_status, idx_matches_match_date, idx_matches_community_status) in supabase/migrations/20260101000003_core_tables.sql
-- [ ] T010 Create Supabase migration for all RLS policies (availabilities, matches, assignments, community_members, users real_name disclosure) in supabase/migrations/20260101000004_rls_policies.sql
-- [ ] T011 [P] Setup Supabase server-side client using @supabase/ssr in src/lib/supabase/server.ts
-- [ ] T012 [P] Setup Supabase browser-side client using @supabase/ssr in src/lib/supabase/client.ts
-- [ ] T013 [P] Define TypeScript types for all DB entities matching data-model.md schemas in src/types/database.ts
-- [ ] T014 [P] Define domain types (AssignmentStatus, CommunityMemberRole, CommunityMemberStatus) in src/types/domain.ts
-- [ ] T015 Implement OAuth callback route handler for Google and LINE Login in src/app/api/auth/callback/route.ts
-- [ ] T016 Create Next.js middleware for route protection (referee routes require approved community member, admin routes require organizer/manager role) in src/middleware.ts
-- [ ] T017 Create login page with Google OAuth and LINE Login buttons in src/app/(auth)/login/page.tsx
-- [ ] T018 [P] Setup LINE SDK wrapper with push message sender and HMAC-SHA256 signature verification in src/lib/line/client.ts
-- [ ] T019 Create development seed data with 1 community, 3 referees, 1 organizer, 1 manager in supabase/seed.sql
+- [X] T007 Create Supabase migration for `users` table with all columns (id, display_name, real_name, line_user_id, license_level, role_type, age_groups, region, travel_range_km, experience_years, referred_by, created_at, updated_at) in supabase/migrations/20260101000001_users.sql
+- [X] T008 Create Supabase migration for `regional_communities` and `community_members` tables with status transitions and unique constraint (community_id, user_id) in supabase/migrations/20260101000002_communities.sql
+- [X] T009 Create Supabase migration for `availabilities`, `matches`, and `assignments` tables with all columns, status enums, and indexes (idx_availabilities_user_date, idx_assignments_match_id, idx_assignments_status, idx_matches_match_date, idx_matches_community_status) in supabase/migrations/20260101000003_core_tables.sql
+- [X] T010 Create Supabase migration for all RLS policies (availabilities, matches, assignments, community_members, users real_name disclosure) in supabase/migrations/20260101000004_rls_policies.sql
+- [X] T011 [P] Setup Supabase server-side client using @supabase/ssr in src/lib/supabase/server.ts
+- [X] T012 [P] Setup Supabase browser-side client using @supabase/ssr in src/lib/supabase/client.ts
+- [X] T013 [P] Define TypeScript types for all DB entities matching data-model.md schemas in src/types/database.ts
+- [X] T014 [P] Define domain types (AssignmentStatus, CommunityMemberRole, CommunityMemberStatus) in src/types/domain.ts
+- [X] T015 Implement OAuth callback route handler for Google and LINE Login in src/app/api/auth/callback/route.ts
+- [X] T016 Create Next.js middleware for route protection (referee routes require approved community member, admin routes require organizer/manager role) in src/middleware.ts
+- [X] T017 Create login page with Google OAuth and LINE Login buttons in src/app/(auth)/login/page.tsx
+- [X] T018 [P] Setup LINE SDK wrapper with push message sender and HMAC-SHA256 signature verification in src/lib/line/client.ts
+- [X] T019 Create development seed data with 1 community, 3 referees, 1 organizer, 1 manager in supabase/seed.sql
 
 **Checkpoint**: Foundation ready — user story implementation can now begin in parallel
 

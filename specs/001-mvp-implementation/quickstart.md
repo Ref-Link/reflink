@@ -63,20 +63,32 @@ pnpm dev
 
 ---
 
-## LINE Webhook ローカルテスト
+## LINE ローカルテスト設定
 
-LINE Platform からローカル開発環境への Webhook 受信には ngrok を使用:
+LINE Platform からローカル開発環境への通信には ngrok を使用:
 
 ```bash
 ngrok http 3000
-# → https://xxxx.ngrok.io が表示される
+# → https://xxxx.ngrok-free.app が表示される
 ```
 
-LINE Developers コンソールの Webhook URL を:
+### LINE ログインチャネル（OAuth）
+
+LINE Developers コンソール → LINE ログインチャネル → **「LINE ログイン設定」タブ** → コールバック URL に追加:
+
 ```
-https://xxxx.ngrok.io/api/webhook/line
+https://xxxx.ngrok-free.app/api/auth/callback
 ```
-に設定する。
+
+### Messaging API チャネル（Webhook）
+
+LINE Developers コンソール → Messaging API チャネル → **「Messaging API 設定」タブ** → Webhook URL に設定:
+
+```
+https://xxxx.ngrok-free.app/api/webhook/line
+```
+
+> Webhook URL の「検証」ボタンは T038（`/api/webhook/line` 実装）完了後に押すこと。
 
 ---
 
