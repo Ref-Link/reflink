@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useSearchParams } from 'next/navigation'
 
@@ -9,6 +9,15 @@ export default function LoginPage() {
   const searchParams = useSearchParams()
   const next = searchParams.get('next') ?? '/profile'
   const errorParam = searchParams.get('error')
+
+  // Supabase がサイトルートにフォールバックしてトークンをハッシュで返すケースを処理する
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash.includes('access_token=')) {
+      const redirectNext = new URLSearchParams(window.location.search).get('next') ?? '/'
+      window.location.replace(`/auth/callback?next=${encodeURIComponent(redirectNext)}${hash}`)
+    }
+  }, [])
 
   const supabase = createClient()
 

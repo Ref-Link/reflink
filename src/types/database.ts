@@ -49,6 +49,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       regional_communities: {
         Row: {
@@ -75,6 +76,7 @@ export interface Database {
           created_by?: string
           created_at?: string
         }
+        Relationships: []
       }
       community_members: {
         Row: {
@@ -107,6 +109,7 @@ export interface Database {
           approved_at?: string | null
           created_at?: string
         }
+        Relationships: []
       }
       availabilities: {
         Row: {
@@ -139,6 +142,7 @@ export interface Database {
           notes?: string | null
           created_at?: string
         }
+        Relationships: []
       }
       matches: {
         Row: {
@@ -192,6 +196,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       assignments: {
         Row: {
@@ -230,11 +235,12 @@ export interface Database {
           reminder_sent_at?: string | null
           created_at?: string
         }
+        Relationships: []
       }
     }
-    Views: Record<string, never>
-    Functions: Record<string, never>
-    Enums: Record<string, never>
+    Views: { [_ in never]: never }
+    Functions: { [_ in never]: never }
+    Enums: { [_ in never]: never }
   }
 }
 

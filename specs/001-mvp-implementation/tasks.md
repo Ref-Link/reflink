@@ -56,14 +56,14 @@
 
 **Independent Test**: 審判ユーザーとしてログイン → プロフィール登録（資格・役割・年代・地域）→ 空き日程登録 → DB に保存されていることを確認できれば、この機能単体で価値検証可能
 
-- [ ] T020 [P] [US1] Implement GET (list own) and POST (create) availability API in src/app/api/availability/route.ts using Supabase server client with referee auth check
-- [ ] T021 [P] [US1] Implement DELETE availability API in src/app/api/availability/[id]/route.ts with ownership validation
-- [ ] T022 [P] [US1] Implement GET and PATCH user profile API in src/app/api/profile/route.ts (update display_name, real_name, license_level, role_type, age_groups, region, travel_range_km, line_user_id)
-- [ ] T023 [P] [US1] Create ProfileForm component with fields for license_level (S級/1級/2級/3級/4級), role_type (主審/副審/両方), age_groups (U12/U15/U18/Senior), region, travel_range_km in src/components/profile/ProfileForm.tsx
-- [ ] T024 [P] [US1] Create AvailabilityCalendar component for selecting dates, time ranges, and age_groups in src/components/availability/AvailabilityCalendar.tsx
-- [ ] T025 [US1] Create referee profile registration and edit page using ProfileForm component in src/app/(referee)/profile/page.tsx
-- [ ] T026 [US1] Create availability management page using AvailabilityCalendar component with list and delete functionality in src/app/(referee)/availability/page.tsx
-- [ ] T027 [US1] Add redirect-to-profile guard: when LINE webhook processes a postback from a user without a profile, return appropriate error and LINE reply message "プロフィールを登録してください" in src/lib/line/client.ts
+- [X] T020 [P] [US1] Implement GET (list own) and POST (create) availability API in src/app/api/availability/route.ts using Supabase server client with referee auth check
+- [X] T021 [P] [US1] Implement DELETE availability API in src/app/api/availability/[id]/route.ts with ownership validation
+- [X] T022 [P] [US1] Implement GET and PATCH user profile API in src/app/api/profile/route.ts (update display_name, real_name, license_level, role_type, age_groups, region, travel_range_km, line_user_id)
+- [X] T023 [P] [US1] Create ProfileForm component with fields for license_level (S級/1級/2級/3級/4級), role_type (主審/副審/両方), age_groups (U12/U15/U18/Senior), region, travel_range_km in src/components/profile/ProfileForm.tsx
+- [X] T024 [P] [US1] Create AvailabilityCalendar component for selecting dates, time ranges, and age_groups in src/components/availability/AvailabilityCalendar.tsx
+- [X] T025 [US1] Create referee profile registration and edit page using ProfileForm component in src/app/(referee)/profile/page.tsx
+- [X] T026 [US1] Create availability management page using AvailabilityCalendar component with list and delete functionality in src/app/(referee)/availability/page.tsx
+- [X] T027 [US1] Add redirect-to-profile guard: when LINE webhook processes a postback from a user without a profile, return appropriate error and LINE reply message "プロフィールを登録してください" in src/lib/line/client.ts
 
 **Checkpoint**: User Story 1 complete — referee can register profile and availability independently
 

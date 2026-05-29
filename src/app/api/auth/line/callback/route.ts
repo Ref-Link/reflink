@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 
 interface LineTokenResponse {
   access_token: string
@@ -19,7 +20,6 @@ interface LineIdTokenPayload {
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
-  // NEXT_PUBLIC_APP_URL must be used for redirect_uri to match what was sent to LINE.
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? origin
   const code = searchParams.get('code')
   const state = searchParams.get('state')
@@ -60,8 +60,9 @@ export async function GET(request: Request) {
 
   if (!tokenRes.ok) {
     const err = await tokenRes.text()
-    const msg = encodeURIComponent('LINE token exchange failed: ' + err)
-    return NextResponse.redirect(`${origin}/login?error=${msg}`)
+    return NextResponse.redirect(
+      `${origin}/login?error=${encodeURIComponent('LINE token exchange failed: ' + err)}`
+    )
   }
 
   const tokens: LineTokenResponse = await tokenRes.json()
@@ -79,7 +80,7 @@ export async function GET(request: Request) {
 
   const lineProfile: LineProfile = await profileRes.json()
 
-  // Try to extract email from OIDC ID token (LINE may not always provide one)
+  // Extract email from OIDC ID token if available
   let email: string | null = null
   if (tokens.id_token) {
     try {
@@ -92,11 +93,10 @@ export async function GET(request: Request) {
     }
   }
 
-  // Use LINE user ID as synthetic email when no real email is available
   const supabaseEmail = email ?? `line_${lineProfile.userId}@line.reflink.local`
   const supabaseAdmin = createAdminClient()
 
-  // Create user if they don't exist yet (safe to ignore "already registered" error)
+  // Create user if not exists
   await supabaseAdmin.auth.admin.createUser({
     email: supabaseEmail,
     user_metadata: {
@@ -108,22 +108,64 @@ export async function GET(request: Request) {
     email_confirm: true,
   })
 
-  // Generate a one-time magic link to sign the user in
+  // Generate magic link and get the hashed token
   const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
     type: 'magiclink',
     email: supabaseEmail,
-    options: {
-      redirectTo: `${appUrl}/auth/callback?next=${encodeURIComponent(next)}`,
-    },
   })
 
-  if (linkError || !linkData?.properties?.action_link) {
+  if (linkError || !linkData?.properties?.hashed_token) {
     return NextResponse.redirect(
-      `${origin}/login?error=${encodeURIComponent(linkError?.message ?? 'Failed to create session')}`
+      `${origin}/login?error=${encodeURIComponent(linkError?.message ?? 'Failed to generate link')}`
     )
   }
 
-  const response = NextResponse.redirect(linkData.properties.action_link)
+  // Verify the token server-side to establish a session directly in cookies
+  // This avoids the magic link redirect and cross-domain cookie issues
+  const supabase = createClient()
+  const { error: verifyError } = await supabase.auth.verifyOtp({
+    token_hash: linkData.properties.hashed_token,
+    type: 'magiclink',
+  })
+
+  if (verifyError) {
+    return NextResponse.redirect(
+      `${origin}/login?error=${encodeURIComponent(verifyError.message)}`
+    )
+  }
+
+  // Session is now stored in cookies. Check if profile exists.
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent('Session setup failed')}`)
+  }
+
+  // lineProfile.userId is the authoritative LINE user ID — use it directly
+  // rather than going through user_metadata which may be missing on repeat logins.
+  const lineUserId = lineProfile.userId
+
+  // Create stub profile if first login
+  const { data: profile } = await supabase.from('users').select('id').eq('id', user.id).single()
+
+  if (profile) {
+    // Always sync line_user_id on every login
+    await supabase.from('users').update({ line_user_id: lineUserId }).eq('id', user.id)
+  } else {
+    await supabase.from('users').insert({
+      id: user.id,
+      display_name: lineProfile.displayName,
+      license_level: '4級',
+      role_type: ['referee'],
+      age_groups: ['U12'],
+      region: '',
+      line_user_id: lineUserId,
+    })
+  }
+
+  // Clear state cookies and redirect
+  // Use appUrl (= NEXT_PUBLIC_APP_URL ?? origin) so the redirect goes to the correct host/protocol
+  const redirectPath = (profile && next.startsWith('/')) ? next : '/profile'
+  const response = NextResponse.redirect(`${appUrl}${redirectPath}`)
   response.cookies.delete('line_oauth_state')
   response.cookies.delete('line_oauth_next')
   return response

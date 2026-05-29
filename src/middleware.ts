@@ -60,8 +60,8 @@ export async function middleware(request: NextRequest) {
 
   // Referee routes require approved community membership
   if (user && (pathname.startsWith('/profile') || pathname.startsWith('/availability') || pathname.startsWith('/history') || pathname.startsWith('/join'))) {
-    // Profile setup is always accessible to authenticated users
-    if (pathname === '/profile' || pathname.startsWith('/profile?')) {
+    // Profile and join pages are always accessible to authenticated users (no membership required)
+    if (pathname === '/profile' || pathname === '/join') {
       return supabaseResponse
     }
 

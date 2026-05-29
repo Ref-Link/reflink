@@ -48,4 +48,8 @@ export async function pushFlexMessage(
   ])
 }
 
+export async function sendProfileRequiredMessage(to: string): Promise<void> {
+  await pushTextMessage(to, 'プロフィールを登録してください')
+}
+
 export { client as lineClient }
