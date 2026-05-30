@@ -75,13 +75,13 @@
 
 **Independent Test**: 運営者としてログイン → 試合作成（日時・場所・年代・主副審数・報酬）→ 候補一覧表示（登録済み審判が条件でフィルタされて表示される）の流れが通れば価値検証可能
 
-- [ ] T028 [P] [US2] Implement GET (list by community) and POST (create) matches API in src/app/api/matches/route.ts with organizer/manager auth check
-- [ ] T029 [P] [US2] Implement GET match detail API in src/app/api/matches/[id]/route.ts
-- [ ] T030 [P] [US2] Implement GET candidates API in src/app/api/matches/[id]/candidates/route.ts — filter by: availability date match, region overlap, license_level, age_groups compatibility; include assignment history summary (total_assignments, last_active_date) per candidate using trust visibility query from data-model.md
-- [ ] T031 [P] [US2] Create MatchForm component with fields for title, match_date, start_time, venue, age_group, referees_needed, assistants_needed, compensation, notes in src/components/matches/MatchForm.tsx
-- [ ] T032 [P] [US2] Create CandidateList component showing referee display_name, license_level, role_type, age_groups, total_assignments, last_active_date in src/components/matches/CandidateList.tsx
-- [ ] T033 [US2] Create admin matches list page showing all community matches with status badges in src/app/(admin)/matches/page.tsx
-- [ ] T034 [US2] Create match detail page with candidate list display, including empty state message when no candidates match in src/app/(admin)/matches/[id]/page.tsx
+- [X] T028 [P] [US2] Implement GET (list by community) and POST (create) matches API in src/app/api/matches/route.ts with organizer/manager auth check
+- [X] T029 [P] [US2] Implement GET match detail API in src/app/api/matches/[id]/route.ts
+- [X] T030 [P] [US2] Implement GET candidates API in src/app/api/matches/[id]/candidates/route.ts — filter by: availability date match, region overlap, license_level, age_groups compatibility; include assignment history summary (total_assignments, last_active_date) per candidate using trust visibility query from data-model.md
+- [X] T031 [P] [US2] Create MatchForm component with fields for title, match_date, start_time, venue, age_group, referees_needed, assistants_needed, compensation, notes in src/components/matches/MatchForm.tsx
+- [X] T032 [P] [US2] Create CandidateList component showing referee display_name, license_level, role_type, age_groups, total_assignments, last_active_date in src/components/matches/CandidateList.tsx
+- [X] T033 [US2] Create admin matches list page showing all community matches with status badges in src/app/(admin)/matches/page.tsx
+- [X] T034 [US2] Create match detail page with candidate list display, including empty state message when no candidates match in src/app/(admin)/matches/[id]/page.tsx
 
 **Checkpoint**: User Story 2 complete — organizer can create matches and view filtered candidates independently
 
