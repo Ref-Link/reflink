@@ -66,7 +66,7 @@ export async function GET(
   // Get match details (must belong to organizer's community)
   const { data: match, error: matchError } = await supabase
     .from('matches')
-    .select('id, community_id, match_date, age_group')
+    .select('id, community_id, match_date, start_time, age_group')
     .eq('id', params.id)
     .eq('community_id', membership.community_id)
     .single()
@@ -75,12 +75,11 @@ export async function GET(
     return NextResponse.json({ error: 'Match not found' }, { status: 404 })
   }
 
-  // Get approved referee member user IDs for the community
+  // Get all approved member user IDs for the community (role filter is on users.role_type below)
   const { data: members, error: membersError } = await supabase
     .from('community_members')
     .select('user_id')
     .eq('community_id', match.community_id)
-    .eq('role', 'referee')
     .eq('status', 'approved')
 
   if (membersError) {
@@ -93,13 +92,17 @@ export async function GET(
 
   const allRefereeIds = members.map((m) => m.user_id)
 
-  // Find referees with availability on the match date covering the match's age_group
+  // Find referees with availability on the match date, covering age_group and start_time.
+  // Time rule: passes if start_time is null (all day), or
+  //   availability.start_time <= match.start_time AND (end_time is null OR end_time > match.start_time)
+  const timeFilter = `start_time.is.null,and(start_time.lte.${match.start_time},or(end_time.is.null,end_time.gt.${match.start_time}))`
   const { data: availabilities, error: availError } = await supabase
     .from('availabilities')
     .select('user_id')
     .in('user_id', allRefereeIds)
     .eq('date', match.match_date)
     .contains('age_groups', [match.age_group])
+    .or(timeFilter)
 
   if (availError) {
     return NextResponse.json({ error: availError.message }, { status: 500 })
@@ -111,11 +114,12 @@ export async function GET(
 
   const availableUserIds = Array.from(new Set(availabilities.map((a) => a.user_id)))
 
-  // Fetch user profiles for available referees
+  // Fetch user profiles — filter to users who have a referee license in their profile
   const { data: users, error: usersError } = await supabase
     .from('users')
     .select('id, display_name, license_level, role_type, age_groups, region, travel_range_km, referred_by')
     .in('id', availableUserIds)
+    .overlaps('role_type', ['referee', 'assistant_referee'])
 
   if (usersError) {
     return NextResponse.json({ error: usersError.message }, { status: 500 })
