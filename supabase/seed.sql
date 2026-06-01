@@ -15,6 +15,7 @@ DECLARE
   v_referee2_id uuid := '00000000-0000-0000-0000-000000000004';
   v_referee3_id uuid := '00000000-0000-0000-0000-000000000005';
   v_community_id uuid := '10000000-0000-0000-0000-000000000001';
+  v_community2_id uuid := '10000000-0000-0000-0000-000000000002';
 BEGIN
 
 -- Insert auth.users stubs for local testing
@@ -37,15 +38,24 @@ VALUES
   (v_referee3_id, '中村さん', '中村 三郎', '4級', ARRAY['referee', 'assistant_referee'], ARRAY['U12'], '愛知西部', 2)
 ON CONFLICT (id) DO NOTHING;
 
--- Regional community
+-- Regional communities
 INSERT INTO public.regional_communities (id, name, region, description, created_by)
-VALUES (
-  v_community_id,
-  '愛知西部U15リーグ',
-  '愛知西部',
-  '愛知県西部地区のU15年代を中心とした審判コミュニティ',
-  v_manager_id
-) ON CONFLICT (id) DO NOTHING;
+VALUES
+  (
+    v_community_id,
+    '愛知西部U15リーグ',
+    '愛知西部',
+    '愛知県西部地区のU15年代を中心とした審判コミュニティ',
+    v_manager_id
+  ),
+  (
+    v_community2_id,
+    '愛知東部U12リーグ（テスト）',
+    '愛知東部',
+    '結合テスト用コミュニティ。参加申請フローの確認に使用',
+    v_manager_id
+  )
+ON CONFLICT (id) DO NOTHING;
 
 -- Community memberships
 INSERT INTO public.community_members (community_id, user_id, role, status, approved_by, approved_at)

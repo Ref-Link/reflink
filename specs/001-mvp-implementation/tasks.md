@@ -112,14 +112,14 @@
 
 **Independent Test**: 新規ユーザー登録申請 → 管理者が承認待ちリスト確認 → 承認アクション → 当該ユーザーが試合候補として表示されるようになる流れが確認できれば価値検証可能
 
-- [ ] T043 [P] [US4] Implement POST community apply API in src/app/api/communities/[id]/apply/route.ts: create community_members record with status=pending
-- [ ] T044 [P] [US4] Implement GET community members list API in src/app/api/communities/[id]/members/route.ts: return pending/approved/rejected members (manager role only)
-- [ ] T045 [P] [US4] Implement PATCH approve member API in src/app/api/communities/[id]/members/[userId]/approve/route.ts: update status to approved, set approved_by and approved_at (manager role only)
-- [ ] T046 [P] [US4] Implement PATCH reject member API in src/app/api/communities/[id]/members/[userId]/reject/route.ts: update status to rejected (manager role only)
-- [ ] T047 [P] [US4] Create ApprovalList component showing pending members with approve/reject buttons and member display_name, region, license_level in src/components/members/ApprovalList.tsx
-- [ ] T048 [US4] Create members management page for managers with ApprovalList and approved members overview in src/app/(admin)/members/page.tsx
-- [ ] T049 [US4] Create community join application page for referees showing community name, description and apply button in src/app/(referee)/join/page.tsx
-- [ ] T050 [US4] Verify RLS policies: unapproved (pending/rejected) users are excluded from candidates API response by testing with pending-status test user
+- [X] T043 [P] [US4] Implement POST community apply API in src/app/api/communities/[id]/apply/route.ts: create community_members record with status=pending
+- [X] T044 [P] [US4] Implement GET community members list API in src/app/api/communities/[id]/members/route.ts: return pending/approved/rejected members (manager role only)
+- [X] T045 [P] [US4] Implement PATCH approve member API in src/app/api/communities/[id]/members/[userId]/approve/route.ts: update status to approved, set approved_by and approved_at (manager role only)
+- [X] T046 [P] [US4] Implement PATCH reject member API in src/app/api/communities/[id]/members/[userId]/reject/route.ts: update status to rejected (manager role only)
+- [X] T047 [P] [US4] Create ApprovalList component showing pending members with approve/reject buttons and member display_name, region, license_level in src/components/members/ApprovalList.tsx
+- [X] T048 [US4] Create members management page for managers with ApprovalList and approved members overview in src/app/(admin)/members/page.tsx
+- [X] T049 [US4] Create community join application page for referees showing community name, description and apply button in src/app/(referee)/join/page.tsx
+- [X] T050 [US4] Verify RLS policies: unapproved (pending/rejected) users are excluded from candidates API response by testing with pending-status test user
 
 **Checkpoint**: User Story 4 complete — trusted community management flow works independently
 
