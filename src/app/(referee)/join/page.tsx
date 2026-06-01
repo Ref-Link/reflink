@@ -136,7 +136,7 @@ export default function JoinPage() {
                     <button
                       onClick={() => handleApply(community.id)}
                       disabled={applyingId === community.id}
-                      className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      className="min-h-[44px] rounded-md bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       {applyingId === community.id ? '申請中...' : '参加申請'}
                     </button>

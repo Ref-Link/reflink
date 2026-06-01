@@ -233,7 +233,7 @@ export function AvailabilityList({ items, onDelete }: AvailabilityListProps) {
             type="button"
             onClick={() => handleDelete(item.id)}
             disabled={deletingId === item.id}
-            className="ml-4 rounded-md px-3 py-1 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+            className="ml-4 min-h-[44px] min-w-[44px] rounded-md px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
           >
             {deletingId === item.id ? '削除中' : '削除'}
           </button>

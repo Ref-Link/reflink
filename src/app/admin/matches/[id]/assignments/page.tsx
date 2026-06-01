@@ -186,7 +186,7 @@ export default function AssignmentsPage() {
                   <button
                     onClick={() => handleConfirm(assignment.id)}
                     disabled={confirmingId === assignment.id}
-                    className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    className="min-h-[44px] rounded-md bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
                     {confirmingId === assignment.id ? '処理中...' : '確定'}
                   </button>

@@ -48,7 +48,7 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex items-center justify-center py-24">
         <p className="text-sm text-gray-500">読み込み中...</p>
       </div>
     )

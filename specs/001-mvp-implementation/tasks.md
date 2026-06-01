@@ -143,13 +143,13 @@
 
 **Purpose**: 複数ユーザーストーリーに影響する横断的な改善
 
-- [ ] T054 [P] Create shared UI component library (Button, Card, Badge, LoadingSpinner, EmptyState) with Tailwind CSS in src/components/ui/
-- [ ] T055 [P] Implement error boundary component and global error page in src/app/error.tsx and src/components/ErrorBoundary.tsx
-- [ ] T056 [P] Mobile-first responsive layout review and adjustment across all referee pages (profile, availability, history, join) in src/app/(referee)/
-- [ ] T057 [P] Mobile-first responsive layout review across all admin pages (matches, members) in src/app/(admin)/
-- [ ] T058 Validate all RLS policies in Supabase local environment using Supabase dashboard table editor with test users of each role
-- [ ] T059 End-to-end flow validation following quickstart.md: setup → seed → full referee registration flow → full organizer match + notification flow
-- [ ] T060 [P] Configure Vercel deployment settings and document required environment variables in README deployment section
+- [X] T054 [P] Create shared UI component library (Button, Card, Badge, LoadingSpinner, EmptyState) with Tailwind CSS in src/components/ui/
+- [X] T055 [P] Implement error boundary component and global error page in src/app/error.tsx and src/components/ErrorBoundary.tsx
+- [X] T056 [P] Mobile-first responsive layout review and adjustment across all referee pages (profile, availability, history, join) in src/app/(referee)/
+- [X] T057 [P] Mobile-first responsive layout review across all admin pages (matches, members) in src/app/(admin)/
+- [X] T058 Validate all RLS policies in Supabase local environment using Supabase dashboard table editor with test users of each role
+- [X] T059 End-to-end flow validation following quickstart.md: setup → seed → full referee registration flow → full organizer match + notification flow
+- [X] T060 [P] Configure Vercel deployment settings and document required environment variables in README deployment section
 
 ---
 

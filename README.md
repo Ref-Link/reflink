@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RefLink
 
-## Getting Started
+地域サッカーの審判と運営者をつなぐ、信頼ベースのマッチングプラットフォーム。
 
-First, run the development server:
+## 技術スタック
+
+- **Framework**: Next.js 14 (App Router)
+- **Database / Auth / Realtime**: Supabase (PostgreSQL + RLS)
+- **Notification**: LINE Messaging API
+- **Styling**: Tailwind CSS
+- **Runtime**: Node.js 20, TypeScript 5.x
+
+## ローカル開発
+
+### 前提条件
+
+- Node.js 20+
+- pnpm 9+
+- Supabase CLI (`npm i -g supabase`)
+
+### セットアップ
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 依存関係インストール
+pnpm install
+
+# Supabase ローカル起動
+supabase start
+
+# 環境変数を設定
+cp .env.local.example .env.local
+# .env.local を編集して各値を設定する
+
+# マイグレーション適用（初回）
+supabase db push
+
+# 開発サーバー起動
 pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 主要コマンド
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev          # 開発サーバー
+pnpm build        # プロダクションビルド
+pnpm lint         # Lint チェック
+supabase db diff  # マイグレーション差分確認
+supabase db push  # マイグレーション適用
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Vercel デプロイ
 
-## Learn More
+### 手順
 
-To learn more about Next.js, take a look at the following resources:
+1. **Supabase** でプロジェクトを作成し、マイグレーションを適用
+2. **LINE Developers** で Messaging API + LINE Login チャネルを設定
+3. **Vercel** で GitHub リポジトリを連携してデプロイ
+4. Vercel の環境変数に以下を設定
+5. LINE Webhook URL を `https://<your-domain>/api/webhook/line` に更新
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 必須環境変数
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| 変数名 | 説明 | 取得元 |
+|--------|------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase プロジェクト URL | Supabase Dashboard → Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase 公開 anon キー | Supabase Dashboard → Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase サービスロールキー（サーバーサイドのみ） | Supabase Dashboard → Settings → API |
+| `LINE_CHANNEL_SECRET` | LINE Messaging API チャネルシークレット | LINE Developers → Messaging API チャネル |
+| `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API アクセストークン | LINE Developers → Messaging API チャネル |
+| `LINE_LOGIN_CHANNEL_ID` | LINE Login チャネル ID | LINE Developers → LINE Login チャネル |
+| `LINE_LOGIN_CHANNEL_SECRET` | LINE Login チャネルシークレット | LINE Developers → LINE Login チャネル |
 
-## Deploy on Vercel
+> **注意**: `SUPABASE_SERVICE_ROLE_KEY` は Vercel の "Environment Variables" で `Preview` と `Production` のみに設定し、クライアントには絶対に公開しないこと。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Vercel リージョン設定
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`vercel.json` で `hnd1`（東京）リージョンを指定済み。LINE API のレイテンシ最小化のため変更不要。
+
+### LINE Webhook の設定
+
+LINE Developers コンソール → Messaging API チャネル → Webhook URL:
+
+```
+https://<your-vercel-domain>/api/webhook/line
+```
+
+Webhook の「検証」ボタンで疎通確認後、「Webhookの利用」を ON にする。
+
+### LINE Login コールバック URL
+
+LINE Developers コンソール → LINE Login チャネル → コールバック URL:
+
+```
+https://<your-vercel-domain>/api/auth/callback
+```
