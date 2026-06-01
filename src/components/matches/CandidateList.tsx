@@ -41,9 +41,16 @@ function LicenseBadge({ level }: { level: string }) {
 interface CandidateListProps {
   readonly candidates: Candidate[]
   readonly isLoading?: boolean
+  readonly selectedIds?: Set<string>
+  readonly onToggleSelect?: (id: string) => void
 }
 
-export function CandidateList({ candidates, isLoading = false }: CandidateListProps) {
+export function CandidateList({
+  candidates,
+  isLoading = false,
+  selectedIds,
+  onToggleSelect,
+}: CandidateListProps) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12 text-sm text-gray-500">
@@ -70,6 +77,14 @@ export function CandidateList({ candidates, isLoading = false }: CandidateListPr
         {candidates.map((candidate) => (
           <li key={candidate.id} className="px-4 py-4">
             <div className="flex items-start justify-between gap-3">
+              {onToggleSelect && (
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  checked={selectedIds?.has(candidate.id) ?? false}
+                  onChange={() => onToggleSelect(candidate.id)}
+                />
+              )}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-sm font-semibold text-gray-900">{candidate.display_name}</span>

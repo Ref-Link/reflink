@@ -32,6 +32,9 @@ export default function MatchDetailPage() {
   const [candidates, setCandidates] = useState<Candidate[]>([])
   const [matchLoading, setMatchLoading] = useState(true)
   const [candidatesLoading, setCandidatesLoading] = useState(true)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [notifying, setNotifying] = useState(false)
+  const [notifyMessage, setNotifyMessage] = useState<string | null>(null)
 
   const fetchMatch = useCallback(async () => {
     const res = await fetch(`/api/matches/${params.id}`)
@@ -59,6 +62,48 @@ export default function MatchDetailPage() {
     fetchCandidates()
   }, [fetchMatch, fetchCandidates])
 
+  function handleToggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) {
+        next.delete(id)
+      } else {
+        next.add(id)
+      }
+      return next
+    })
+  }
+
+  async function handleNotify() {
+    if (selectedIds.size === 0) return
+    setNotifying(true)
+    setNotifyMessage(null)
+
+    const candidatePayload = Array.from(selectedIds).map((userId) => {
+      const candidate = candidates.find((c) => c.id === userId)
+      const role =
+        candidate?.role_type.includes('referee') ? 'referee' : 'assistant_referee'
+      return { userId, role }
+    })
+
+    const res = await fetch(`/api/matches/${params.id}/assignments`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ candidates: candidatePayload }),
+    })
+
+    setNotifying(false)
+    if (res.ok) {
+      const json = await res.json()
+      const sent = (json.assignments as unknown[]).length
+      setNotifyMessage(`${sent}名に通知を送りました`)
+      setSelectedIds(new Set())
+    } else {
+      const json = await res.json()
+      setNotifyMessage(json.error ?? '通知の送信に失敗しました')
+    }
+  }
+
   if (matchLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -74,12 +119,20 @@ export default function MatchDetailPage() {
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
       <div className="mb-6">
-        <Link
-          href="/admin/matches"
-          className="mb-4 inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
-        >
-          ← 試合一覧に戻る
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            href="/admin/matches"
+            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
+          >
+            ← 試合一覧に戻る
+          </Link>
+          <Link
+            href={`/admin/matches/${params.id}/assignments`}
+            className="text-sm text-blue-600 hover:text-blue-500"
+          >
+            アサイン状況 →
+          </Link>
+        </div>
 
         <div className="mt-3 rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
           <div className="flex items-start justify-between gap-3">
@@ -132,10 +185,31 @@ export default function MatchDetailPage() {
       </div>
 
       <section>
-        <h2 className="mb-4 text-base font-semibold text-gray-900">
-          審判候補一覧
-        </h2>
-        <CandidateList candidates={candidates} isLoading={candidatesLoading} />
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-gray-900">審判候補一覧</h2>
+          {selectedIds.size > 0 && (
+            <button
+              onClick={handleNotify}
+              disabled={notifying}
+              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              {notifying ? '送信中...' : `${selectedIds.size}名に通知を送る`}
+            </button>
+          )}
+        </div>
+
+        {notifyMessage && (
+          <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+            {notifyMessage}
+          </div>
+        )}
+
+        <CandidateList
+          candidates={candidates}
+          isLoading={candidatesLoading}
+          selectedIds={selectedIds}
+          onToggleSelect={handleToggleSelect}
+        />
       </section>
     </main>
   )

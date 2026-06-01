@@ -93,14 +93,14 @@
 
 **Independent Test**: 運営者が候補選択してLINE通知送信 → 審判がLINEで「参加」タップ → 管理画面リアルタイム更新 → 運営者がアサイン確定 → 確定通知が届く、という一連フローが通れば価値検証可能
 
-- [ ] T035 [P] [US3] Build LINE Flex Message builder for match notification (title, match_date formatted as M月D日(曜日), start_time, venue, age_group, compensation, accept/decline postback buttons with assignmentId) in src/lib/line/messages.ts
-- [ ] T036 [P] [US3] Implement POST assignments API in src/app/api/matches/[id]/assignments/route.ts: create assignment records (status=notified), send LINE push messages via src/lib/line/client.ts for each selected referee using Flex Message template
-- [ ] T037 [P] [US3] Implement PATCH assignment confirm API in src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts: update status to confirmed, set confirmed_at, send LINE confirmation message "アサインが確定しました"
-- [ ] T038 [US3] Implement POST /api/webhook/line route: verify x-line-signature HMAC-SHA256, parse postback events, lookup user by line_user_id, validate assignment ownership, update assignment status (accept→accepted/decline→declined with responded_at), send reply message in src/app/api/webhook/line/route.ts
-- [ ] T039 [US3] Create assignment status page with Supabase Realtime subscription to assignments table changes (INSERT/UPDATE) showing notified/accepted/declined/confirmed counts in src/app/(admin)/matches/[id]/assignments/page.tsx
-- [ ] T040 [US3] Add confirm assignment action button in assignment status page that calls PATCH confirm API and updates UI in src/app/(admin)/matches/[id]/assignments/page.tsx
-- [ ] T041 [US3] Create Supabase Edge Function for daily reminder: query assignments WHERE status='confirmed' AND match_date = tomorrow, send LINE push message "【リマインド】明日の試合があります: {title} {venue}" in supabase/functions/send-reminders/index.ts
-- [ ] T042 [US3] Configure pg_cron schedule to run reminder Edge Function nightly at 20:00 JST in supabase/migrations/20260101000005_cron.sql
+- [X] T035 [P] [US3] Build LINE Flex Message builder for match notification (title, match_date formatted as M月D日(曜日), start_time, venue, age_group, compensation, accept/decline postback buttons with assignmentId) in src/lib/line/messages.ts
+- [X] T036 [P] [US3] Implement POST assignments API in src/app/api/matches/[id]/assignments/route.ts: create assignment records (status=notified), send LINE push messages via src/lib/line/client.ts for each selected referee using Flex Message template
+- [X] T037 [P] [US3] Implement PATCH assignment confirm API in src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts: update status to confirmed, set confirmed_at, send LINE confirmation message "アサインが確定しました"
+- [X] T038 [US3] Implement POST /api/webhook/line route: verify x-line-signature HMAC-SHA256, parse postback events, lookup user by line_user_id, validate assignment ownership, update assignment status (accept→accepted/decline→declined with responded_at), send reply message in src/app/api/webhook/line/route.ts
+- [X] T039 [US3] Create assignment status page with Supabase Realtime subscription to assignments table changes (INSERT/UPDATE) showing notified/accepted/declined/confirmed counts in src/app/(admin)/matches/[id]/assignments/page.tsx
+- [X] T040 [US3] Add confirm assignment action button in assignment status page that calls PATCH confirm API and updates UI in src/app/(admin)/matches/[id]/assignments/page.tsx
+- [X] T041 [US3] Create Supabase Edge Function for daily reminder: query assignments WHERE status='confirmed' AND match_date = tomorrow, send LINE push message "【リマインド】明日の試合があります: {title} {venue}" in supabase/functions/send-reminders/index.ts
+- [X] T042 [US3] Configure pg_cron schedule to run reminder Edge Function nightly at 20:00 JST in supabase/migrations/20260101000005_cron.sql
 
 **Checkpoint**: User Story 3 complete — full match-to-assignment flow works end-to-end
 
