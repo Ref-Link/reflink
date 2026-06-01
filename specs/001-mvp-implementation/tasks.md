@@ -131,9 +131,9 @@
 
 **Independent Test**: アサイン確定済みの審判ユーザーとして履歴ページにアクセスし、日時・会場・年代・カテゴリが一覧表示され、フィルタが機能すれば価値検証可能
 
-- [ ] T051 [P] [US5] Implement GET assignments history API in src/app/api/assignments/route.ts: return confirmed assignments for the authenticated referee with match details (title, match_date, venue, age_group, role) ordered by match_date desc; support optional query params age_group and date_from/date_to for filtering
-- [ ] T052 [P] [US5] Create AssignmentHistory component displaying assignment cards with match_date (M月D日(曜日)), venue, age_group, role badge in src/components/history/AssignmentHistory.tsx
-- [ ] T053 [US5] Create referee history page with AssignmentHistory component and filter controls (age_group select, date range picker) in src/app/(referee)/history/page.tsx
+- [X] T051 [P] [US5] Implement GET assignments history API in src/app/api/assignments/route.ts: return confirmed assignments for the authenticated referee with match details (title, match_date, venue, age_group, role) ordered by match_date desc; support optional query params age_group and date_from/date_to for filtering
+- [X] T052 [P] [US5] Create AssignmentHistory component displaying assignment cards with match_date (M月D日(曜日)), venue, age_group, role badge in src/components/history/AssignmentHistory.tsx
+- [X] T053 [US5] Create referee history page with AssignmentHistory component and filter controls (age_group select, date range picker) in src/app/(referee)/history/page.tsx
 
 **Checkpoint**: User Story 5 complete — referee can view and filter assignment history independently
 
