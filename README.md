@@ -92,5 +92,5 @@ Webhook の「検証」ボタンで疎通確認後、「Webhookの利用」を O
 LINE Developers コンソール → LINE Login チャネル → コールバック URL:
 
 ```
-https://<your-vercel-domain>/api/auth/callback
+https://<your-vercel-domain>/api/auth/line/callback
 ```
