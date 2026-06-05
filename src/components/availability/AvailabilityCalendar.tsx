@@ -15,8 +15,8 @@ export interface NewAvailabilityData {
 }
 
 interface AvailabilityCalendarProps {
-  existingDates?: string[]
-  onAdd: (data: NewAvailabilityData) => Promise<void>
+  readonly existingDates?: string[]
+  readonly onAdd: (data: NewAvailabilityData) => Promise<void>
 }
 
 function getToday(): string {
@@ -79,84 +79,98 @@ export function AvailabilityCalendar({ existingDates = [], onAdd }: Availability
   const today = getToday()
 
   return (
-    <div className="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-      <h3 className="text-sm font-semibold text-gray-900">空き日程を追加</h3>
+    <div className="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 shadow-sm">
+      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">空き日程を追加</h3>
 
       {error && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-50 dark:bg-red-950 p-3 text-sm text-red-700 dark:text-red-300">{error}</div>
       )}
 
       <div>
-        <label className="block text-xs font-medium text-gray-600 mb-1">
+        <label htmlFor="avail_date" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
           日付 <span className="text-red-500">*</span>
         </label>
-        <input
-          type="date"
-          min={today}
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          className={`block w-full rounded-md border px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-            existingDates.includes(selectedDate)
-              ? 'border-yellow-400 bg-yellow-50'
-              : 'border-gray-300'
-          }`}
-        />
+        <div className={`overflow-hidden rounded-md border focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 ${
+          existingDates.includes(selectedDate)
+            ? 'border-yellow-400'
+            : 'border-gray-300 dark:border-gray-600'
+        }`}>
+          <input
+            id="avail_date"
+            type="date"
+            min={today}
+            value={selectedDate}
+            onChange={(e) => setSelectedDate(e.target.value)}
+            className={`block w-full rounded-md px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none ${
+              existingDates.includes(selectedDate)
+                ? 'bg-yellow-50 dark:bg-yellow-950'
+                : 'bg-white dark:bg-gray-800'
+            }`}
+          />
+        </div>
         {existingDates.includes(selectedDate) && (
-          <p className="mt-1 text-xs text-yellow-600">この日付はすでに登録済みです</p>
+          <p className="mt-1 text-xs text-yellow-600 dark:text-yellow-400">この日付はすでに登録済みです</p>
         )}
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">開始時刻</label>
-          <input
-            type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
-            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
+      <div className="flex gap-3">
+        <div className="flex-1 min-w-0">
+          <label htmlFor="avail_start_time" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">開始時刻</label>
+          <div className="overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+            <input
+              id="avail_start_time"
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              className="block w-full rounded-md bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none"
+            />
+          </div>
         </div>
-        <div>
-          <label className="block text-xs font-medium text-gray-600 mb-1">終了時刻</label>
-          <input
-            type="time"
-            value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
-            className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
+        <div className="flex-1 min-w-0">
+          <label htmlFor="avail_end_time" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">終了時刻</label>
+          <div className="overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+            <input
+              id="avail_end_time"
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              className="block w-full rounded-md bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none"
+            />
+          </div>
         </div>
       </div>
-      <p className="text-xs text-gray-500">未入力の場合は終日対応可として登録されます</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400">未入力の場合は終日対応可として登録されます</p>
 
-      <div>
-        <label className="block text-xs font-medium text-gray-600 mb-2">
+      <fieldset>
+        <legend className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">
           対応年代 <span className="text-red-500">*</span>
-        </label>
+        </legend>
         <div className="flex gap-2 flex-wrap">
           {AGE_GROUPS.map((group) => (
             <button
               key={group}
               type="button"
               onClick={() => toggleAgeGroup(group)}
-              className={`rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
+              className={`min-h-[44px] rounded-full px-3 py-1 text-xs font-medium border transition-colors ${
                 selectedAgeGroups.includes(group)
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
               }`}
             >
               {group}
             </button>
           ))}
         </div>
-      </div>
+      </fieldset>
 
       <div>
-        <label className="block text-xs font-medium text-gray-600 mb-1">備考</label>
+        <label htmlFor="avail_notes" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">備考</label>
         <textarea
+          id="avail_notes"
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={2}
-          className="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="任意メモ"
         />
       </div>
@@ -175,11 +189,17 @@ export function AvailabilityCalendar({ existingDates = [], onAdd }: Availability
 
 // List display for existing availabilities
 interface AvailabilityListProps {
-  items: AvailabilityRow[]
-  onDelete: (id: string) => Promise<void>
+  readonly items: AvailabilityRow[]
+  readonly onDelete: (id: string) => Promise<void>
 }
 
 const DAY_NAMES = ['日', '月', '火', '水', '木', '金', '土']
+
+function formatTimeRange(start: string | null, end: string | null): string {
+  if (start && end) return `${start.slice(0, 5)} – ${end.slice(0, 5)}`
+  if (start) return `${start.slice(0, 5)}〜`
+  return '終日'
+}
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00')
@@ -203,8 +223,8 @@ export function AvailabilityList({ items, onDelete }: AvailabilityListProps) {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
-        <p className="text-sm text-gray-500">登録済みの空き日程はありません</p>
+      <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 p-8 text-center">
+        <p className="text-sm text-gray-500 dark:text-gray-400">登録済みの空き日程はありません</p>
       </div>
     )
   }
@@ -212,22 +232,18 @@ export function AvailabilityList({ items, onDelete }: AvailabilityListProps) {
   return (
     <ul className="space-y-2">
       {items.map((item) => (
-        <li key={item.id} className="flex items-center justify-between rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm">
+        <li key={item.id} className="flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 shadow-sm">
           <div className="space-y-1">
-            <p className="text-sm font-semibold text-gray-900">{formatDate(item.date)}</p>
-            <p className="text-xs text-gray-500">
-              {item.start_time && item.end_time
-                ? `${item.start_time.slice(0, 5)} – ${item.end_time.slice(0, 5)}`
-                : item.start_time
-                ? `${item.start_time.slice(0, 5)}〜`
-                : '終日'}
+            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{formatDate(item.date)}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              {formatTimeRange(item.start_time, item.end_time)}
             </p>
             <div className="flex gap-1 flex-wrap">
               {item.age_groups.map((g) => (
                 <span key={g} className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">{g}</span>
               ))}
             </div>
-            {item.notes && <p className="text-xs text-gray-400">{item.notes}</p>}
+            {item.notes && <p className="text-xs text-gray-400 dark:text-gray-500">{item.notes}</p>}
           </div>
           <button
             type="button"

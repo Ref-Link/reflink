@@ -84,12 +84,12 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-50 dark:bg-red-950 p-4 text-sm text-red-700 dark:text-red-300">{error}</div>
       )}
 
       {/* S6853: htmlFor + id で label とコントロールを紐付け */}
       <div>
-        <label htmlFor="display_name" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="display_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           表示名 <span className="text-red-500">*</span>
         </label>
         <input
@@ -97,33 +97,33 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
           type="text"
           value={formData.display_name}
           onChange={(e) => setFormData((p) => ({ ...p, display_name: e.target.value }))}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="例: 田中太郎"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="real_name" className="block text-sm font-medium text-gray-700">実名（任意）</label>
+        <label htmlFor="real_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">実名（任意）</label>
         <input
           id="real_name"
           type="text"
           value={formData.real_name}
           onChange={(e) => setFormData((p) => ({ ...p, real_name: e.target.value }))}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="アサイン確定後のみ相手に開示されます"
         />
       </div>
 
       <div>
-        <label htmlFor="license_level" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="license_level" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           審判ライセンス <span className="text-red-500">*</span>
         </label>
         <select
           id="license_level"
           value={formData.license_level}
           onChange={(e) => setFormData((p) => ({ ...p, license_level: e.target.value }))}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           required
         >
           <option value="">選択してください</option>
@@ -135,7 +135,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
 
       {/* ボタングループは fieldset + legend で紐付け */}
       <fieldset>
-        <legend className="block text-sm font-medium text-gray-700 mb-2">
+        <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           担当役割 <span className="text-red-500">*</span>
         </legend>
         <div className="flex gap-3 flex-wrap">
@@ -145,10 +145,10 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
               type="button"
               aria-pressed={formData.role_type.includes(value)}
               onClick={() => setFormData((p) => ({ ...p, role_type: toggleArrayValue(p.role_type, value) }))}
-              className={`rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
+              className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
                 formData.role_type.includes(value)
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
               }`}
             >
               {label}
@@ -158,7 +158,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
       </fieldset>
 
       <fieldset>
-        <legend className="block text-sm font-medium text-gray-700 mb-2">
+        <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           対応年代 <span className="text-red-500">*</span>
         </legend>
         <div className="flex gap-3 flex-wrap">
@@ -168,10 +168,10 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
               type="button"
               aria-pressed={formData.age_groups.includes(group)}
               onClick={() => setFormData((p) => ({ ...p, age_groups: toggleArrayValue(p.age_groups, group) }))}
-              className={`rounded-full px-4 py-2 text-sm font-medium border transition-colors ${
+              className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
                 formData.age_groups.includes(group)
                   ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
               }`}
             >
               {group}
@@ -181,7 +181,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
       </fieldset>
 
       <div>
-        <label htmlFor="region" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="region" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           活動地域 <span className="text-red-500">*</span>
         </label>
         <input
@@ -189,14 +189,14 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
           type="text"
           value={formData.region}
           onChange={(e) => setFormData((p) => ({ ...p, region: e.target.value }))}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="例: 愛知西部"
           required
         />
       </div>
 
       <div>
-        <label htmlFor="travel_range_km" className="block text-sm font-medium text-gray-700">移動可能範囲（km）</label>
+        <label htmlFor="travel_range_km" className="block text-sm font-medium text-gray-700 dark:text-gray-300">移動可能範囲（km）</label>
         <input
           id="travel_range_km"
           type="number"
@@ -205,7 +205,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
           onChange={(e) =>
             setFormData((p) => ({ ...p, travel_range_km: e.target.value ? Number(e.target.value) : null }))
           }
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           placeholder="例: 30"
         />
       </div>

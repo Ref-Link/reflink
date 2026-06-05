@@ -50,8 +50,8 @@ export default function AvailabilityPage() {
   return (
     <main className="mx-auto max-w-lg px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">空き日程管理</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">空き日程管理</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           対応可能な日程を登録してください。運営者が試合の審判候補を探す際に使用されます。
         </p>
       </div>
@@ -60,16 +60,16 @@ export default function AvailabilityPage() {
         <AvailabilityCalendar existingDates={existingDates} onAdd={handleAdd} />
 
         <div>
-          <h2 className="mb-3 text-sm font-semibold text-gray-700">
+          <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">
             登録済み空き日程
             {items.length > 0 && (
-              <span className="ml-2 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">
+              <span className="ml-2 rounded-full bg-blue-100 dark:bg-blue-900 px-2 py-0.5 text-xs text-blue-700 dark:text-blue-200">
                 {items.length}件
               </span>
             )}
           </h2>
           {loading ? (
-            <p className="text-sm text-gray-500">読み込み中...</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">読み込み中...</p>
           ) : (
             <AvailabilityList items={items} onDelete={handleDelete} />
           )}

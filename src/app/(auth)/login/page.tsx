@@ -39,7 +39,7 @@ function LoginForm() {
   return (
     <>
       {errorParam && (
-        <div className="mb-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="mb-4 rounded-lg bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-300">
           ログインに失敗しました: {decodeURIComponent(errorParam)}
         </div>
       )}
@@ -63,7 +63,7 @@ function LoginForm() {
         <button
           onClick={signInWithGoogle}
           disabled={loading !== null}
-          className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-200 transition hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-60"
         >
           {loading === 'google' ? (
             <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-400 border-t-transparent" />
@@ -96,18 +96,18 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-md">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+      <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-gray-900 p-8 shadow-md">
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">RefLink</h1>
-          <p className="mt-2 text-sm text-gray-500">地域審判マッチングプラットフォーム</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">RefLink</h1>
+          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">地域審判マッチングプラットフォーム</p>
         </div>
 
         <Suspense fallback={<div className="space-y-3 animate-pulse"><div className="h-12 rounded-xl bg-gray-100" /><div className="h-12 rounded-xl bg-gray-100" /></div>}>
           <LoginForm />
         </Suspense>
 
-        <p className="mt-6 text-center text-xs text-gray-400">
+        <p className="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
           ログインすることで利用規約に同意したとみなされます
         </p>
       </div>

@@ -15,10 +15,10 @@ const STATUS_LABELS: Record<AssignmentStatus, string> = {
 }
 
 const STATUS_COLORS: Record<AssignmentStatus, string> = {
-  notified: 'bg-yellow-100 text-yellow-800',
-  accepted: 'bg-green-100 text-green-800',
-  declined: 'bg-red-100 text-red-800',
-  confirmed: 'bg-blue-100 text-blue-800',
+  notified: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+  accepted: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  declined: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+  confirmed: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -106,23 +106,23 @@ export default function AssignmentsPage() {
       <div className="mb-6">
         <Link
           href={`/admin/matches/${params.id}`}
-          className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
+          className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
         >
           ← 試合詳細に戻る
         </Link>
-        <h1 className="mt-3 text-xl font-bold text-gray-900">
+        <h1 className="mt-3 text-xl font-bold text-gray-900 dark:text-gray-100">
           {match?.title ?? '読み込み中...'}
         </h1>
-        <p className="mt-0.5 text-sm text-gray-500">アサイン状況</p>
+        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">アサイン状況</p>
       </div>
 
-      <div className="mb-6 grid grid-cols-4 gap-3">
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {(['notified', 'accepted', 'declined', 'confirmed'] as AssignmentStatus[]).map((status) => (
           <div
             key={status}
-            className="rounded-lg border border-gray-200 bg-white p-3 text-center shadow-sm"
+            className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-3 text-center shadow-sm"
           >
-            <div className="text-2xl font-bold text-gray-900">{counts[status]}</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{counts[status]}</div>
             <span
               className={`mt-1 inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_COLORS[status]}`}
             >
@@ -133,24 +133,24 @@ export default function AssignmentsPage() {
       </div>
 
       {confirmedMessage && (
-        <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+        <div className="mb-4 rounded-md bg-green-50 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
           {confirmedMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <div className="mb-4 rounded-md bg-red-50 dark:bg-red-950 p-3 text-sm text-red-700 dark:text-red-300">
           {errorMessage}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center py-12 text-sm text-gray-500">
+        <div className="flex items-center justify-center py-12 text-sm text-gray-500 dark:text-gray-400">
           読み込み中...
         </div>
       ) : assignments.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center">
-          <p className="text-sm font-medium text-gray-500">まだ通知が送信されていません</p>
-          <p className="mt-1 text-xs text-gray-400">
+        <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 py-12 text-center">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">まだ通知が送信されていません</p>
+          <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
             試合詳細ページから審判候補を選んで通知してください
           </p>
         </div>
@@ -159,12 +159,12 @@ export default function AssignmentsPage() {
           {assignments.map((assignment) => (
             <li
               key={assignment.id}
-              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+              className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 shadow-sm"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-gray-900">
+                    <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       {assignment.users.display_name}
                     </span>
                     <span
@@ -173,11 +173,11 @@ export default function AssignmentsPage() {
                       {STATUS_LABELS[assignment.status as AssignmentStatus]}
                     </span>
                   </div>
-                  <div className="mt-0.5 text-xs text-gray-500">
+                  <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
                     {ROLE_LABELS[assignment.role] ?? assignment.role}
                   </div>
                   {assignment.responded_at && (
-                    <div className="mt-0.5 text-xs text-gray-400">
+                    <div className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                       回答: {new Date(assignment.responded_at).toLocaleString('ja-JP')}
                     </div>
                   )}

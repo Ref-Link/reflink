@@ -42,10 +42,10 @@ const NAV_ITEMS = [
 
 export default function RefereeLayout({ children }: { readonly children: ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <header className="sticky top-0 z-10 border-b border-gray-200 bg-white">
+    <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-950">
+      <header className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div className="mx-auto flex h-14 max-w-lg items-center px-4">
-          <span className="text-base font-bold text-gray-900">RefLink</span>
+          <span className="text-base font-bold text-gray-900 dark:text-gray-100">RefLink</span>
         </div>
       </header>
 
@@ -54,14 +54,15 @@ export default function RefereeLayout({ children }: { readonly children: ReactNo
       {/* モバイルボトムナビ */}
       <nav
         aria-label="メインナビゲーション"
-        className="fixed bottom-0 left-0 right-0 z-10 border-t border-gray-200 bg-white"
+        className="fixed bottom-0 left-0 right-0 z-10 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <ul className="mx-auto flex max-w-lg">
           {NAV_ITEMS.map((item) => (
             <li key={item.href} className="flex-1">
               <Link
                 href={item.href}
-                className="flex flex-col items-center gap-1 py-2 text-gray-500 hover:text-blue-600 active:text-blue-700"
+                className="flex flex-col items-center gap-1 py-2 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 active:text-blue-700"
               >
                 {item.icon}
                 <span className="text-[10px] font-medium leading-none">{item.label}</span>

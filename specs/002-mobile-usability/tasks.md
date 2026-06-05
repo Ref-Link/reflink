@@ -21,9 +21,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until all three tasks in this phase are complete
 
-- [ ] T001 [P] Add `darkMode: 'media'` to the Tailwind config in tailwind.config.ts
-- [ ] T002 [P] Add `body { overflow-x: hidden; }` rule to src/app/globals.css
-- [ ] T003 [P] Export a `viewport` config object with `viewportFit: 'cover'` (and `width: 'device-width', initialScale: 1`) in src/app/layout.tsx using Next.js 14 App Router metadata API
+- [X] T001 [P] Add `darkMode: 'media'` to the Tailwind config in tailwind.config.ts
+- [X] T002 [P] Add `body { overflow-x: hidden; }` rule to src/app/globals.css
+- [X] T003 [P] Export a `viewport` config object with `viewportFit: 'cover'` (and `width: 'device-width', initialScale: 1`) in src/app/layout.tsx using Next.js 14 App Router metadata API
 
 **Checkpoint**: Tailwind `dark:` variants now active, safe-area-inset API enabled, horizontal overflow locked — user story implementation can begin in parallel
 
@@ -37,11 +37,11 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] Apply `surface-card`, `text-primary`, `text-secondary`, and `text-muted` dark mode token classes to the login form container, heading, and LINE login button in src/app/(auth)/login/page.tsx
-- [ ] T005 [P] [US1] Add `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` to the bottom `<nav>` element in src/app/(referee)/layout.tsx to prevent iPhone home-indicator overlap
-- [ ] T006 [P] [US1] In src/components/profile/ProfileForm.tsx: change role/age-group toggle buttons from `py-1`/`py-2` to `min-h-[44px]` (toggle-chip token), change all `<input>`/`<select>` from `py-2` to `py-3` (input-base token), and apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted`, `error-banner`, and `success-banner` dark mode tokens throughout
-- [ ] T007 [P] [US1] In src/components/availability/AvailabilityCalendar.tsx: change age-group toggle buttons from `px-3 py-1 text-xs` to add `min-h-[44px]` (toggle-chip token), change all `<input>`/`<textarea>` from `py-2` to `py-3` (input-base token), and apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens throughout
-- [ ] T008 [P] [US1] In src/components/history/AssignmentHistory.tsx: apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to all containers and text; replace status badge classes with `success`/`info`/`warning`/`danger`/`neutral` badge tokens from contracts/design-tokens.md (e.g. `bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200`)
+- [X] T004 [P] [US1] Apply `surface-card`, `text-primary`, `text-secondary`, and `text-muted` dark mode token classes to the login form container, heading, and LINE login button in src/app/(auth)/login/page.tsx
+- [X] T005 [P] [US1] Add `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` to the bottom `<nav>` element in src/app/(referee)/layout.tsx to prevent iPhone home-indicator overlap
+- [X] T006 [P] [US1] In src/components/profile/ProfileForm.tsx: change role/age-group toggle buttons from `py-1`/`py-2` to `min-h-[44px]` (toggle-chip token), change all `<input>`/`<select>` from `py-2` to `py-3` (input-base token), and apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted`, `error-banner`, and `success-banner` dark mode tokens throughout
+- [X] T007 [P] [US1] In src/components/availability/AvailabilityCalendar.tsx: change age-group toggle buttons from `px-3 py-1 text-xs` to add `min-h-[44px]` (toggle-chip token), change all `<input>`/`<textarea>` from `py-2` to `py-3` (input-base token), and apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens throughout
+- [X] T008 [P] [US1] In src/components/history/AssignmentHistory.tsx: apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to all containers and text; replace status badge classes with `success`/`info`/`warning`/`danger`/`neutral` badge tokens from contracts/design-tokens.md (e.g. `bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200`)
 
 **Checkpoint**: Referee flow (login → profile → availability → history) is fully functional on 375px mobile in both light and dark mode — User Story 1 is independently testable
 
@@ -55,13 +55,13 @@
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] Apply `surface-header` dark mode tokens (`dark:bg-gray-900 dark:border-gray-700`) and `text-primary` dark mode token to the header `<header>` element and logo/title text in src/app/admin/layout.tsx; add `px-4` to the content wrapper for consistent padding
-- [ ] T010 [P] [US2] In src/app/admin/matches/page.tsx: add `min-h-[44px]` to the 試合を作成 button (button-primary token); apply `surface-page`, `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to page background, cards, and text; apply `success`/`warning`/`danger`/`neutral` badge tokens to status badges
-- [ ] T011 [P] [US2] In src/app/admin/matches/[id]/page.tsx: add `min-h-[44px]` to the 通知を送る button (button-primary token); apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to detail sections and text
-- [ ] T012 [P] [US2] In src/app/admin/matches/[id]/assignments/page.tsx: change stats grid from `grid-cols-4` to `grid-cols-2 gap-3 sm:grid-cols-4` (responsive-grid token); apply `surface-card`, `text-primary`, `text-secondary` dark mode tokens to stats cards and text
-- [ ] T013 [P] [US2] In src/components/matches/CandidateList.tsx: apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to candidate rows; replace status/license badge classes with `success`/`info`/`warning`/`danger`/`license-s`/`license-1`/`license-2`/`license-default` badge tokens from contracts/design-tokens.md
-- [ ] T014 [P] [US2] In src/components/matches/MatchForm.tsx: change all `<input>`/`<select>`/`<textarea>` from `py-2` to `py-3` (input-base token); apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted`, `error-banner` dark mode tokens throughout
-- [ ] T015 [P] [US2] In src/components/members/ApprovalList.tsx: change 承認 button to use `button-primary` token (`min-h-[44px] py-2.5`) and 却下 button to use `button-secondary` token (`min-h-[44px] py-2.5`); apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to member rows and text
+- [X] T009 [P] [US2] Apply `surface-header` dark mode tokens (`dark:bg-gray-900 dark:border-gray-700`) and `text-primary` dark mode token to the header `<header>` element and logo/title text in src/app/admin/layout.tsx; add `px-4` to the content wrapper for consistent padding
+- [X] T010 [P] [US2] In src/app/admin/matches/page.tsx: add `min-h-[44px]` to the 試合を作成 button (button-primary token); apply `surface-page`, `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to page background, cards, and text; apply `success`/`warning`/`danger`/`neutral` badge tokens to status badges
+- [X] T011 [P] [US2] In src/app/admin/matches/[id]/page.tsx: add `min-h-[44px]` to the 通知を送る button (button-primary token); apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to detail sections and text
+- [X] T012 [P] [US2] In src/app/admin/matches/[id]/assignments/page.tsx: change stats grid from `grid-cols-4` to `grid-cols-2 gap-3 sm:grid-cols-4` (responsive-grid token); apply `surface-card`, `text-primary`, `text-secondary` dark mode tokens to stats cards and text
+- [X] T013 [P] [US2] In src/components/matches/CandidateList.tsx: apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to candidate rows; replace status/license badge classes with `success`/`info`/`warning`/`danger`/`license-s`/`license-1`/`license-2`/`license-default` badge tokens from contracts/design-tokens.md
+- [X] T014 [P] [US2] In src/components/matches/MatchForm.tsx: change all `<input>`/`<select>`/`<textarea>` from `py-2` to `py-3` (input-base token); apply `surface-card`, `surface-input`, `text-primary`, `text-secondary`, `text-muted`, `error-banner` dark mode tokens throughout
+- [X] T015 [P] [US2] In src/components/members/ApprovalList.tsx: change 承認 button to use `button-primary` token (`min-h-[44px] py-2.5`) and 却下 button to use `button-secondary` token (`min-h-[44px] py-2.5`); apply `surface-card`, `text-primary`, `text-secondary`, `text-muted` dark mode tokens to member rows and text
 
 **Checkpoint**: Admin flow (matches list → match detail → assignments view) is fully readable on 375px mobile in both light and dark mode — User Story 2 is independently testable
 
@@ -75,9 +75,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T016 [P] [US3] In src/app/(referee)/layout.tsx: apply `surface-header` dark mode tokens (`dark:bg-gray-900 dark:border-gray-700`) to the top header bar, and `text-primary` dark mode token (`dark:text-gray-100`) to any nav link/title text
-- [ ] T017 [P] [US3] Audit src/components/history/AssignmentHistory.tsx and src/components/matches/CandidateList.tsx for any license-type badge classes not yet matching design-tokens.md license badge tokens (`license-s`: `dark:bg-purple-900 dark:text-purple-200`; `license-1`: `dark:bg-blue-900 dark:text-blue-200`; `license-2`: `dark:bg-green-900 dark:text-green-200`; `license-default`: `dark:bg-gray-700 dark:text-gray-300`) and apply corrections
-- [ ] T018 [US3] Perform complete prefers-color-scheme dark/light toggle verification across all 9 screens listed in quickstart.md step 3 — fix any text that fails WCAG AA contrast (4.5:1 for body text) by applying the correct token from contracts/design-tokens.md
+- [X] T016 [P] [US3] In src/app/(referee)/layout.tsx: apply `surface-header` dark mode tokens (`dark:bg-gray-900 dark:border-gray-700`) to the top header bar, and `text-primary` dark mode token (`dark:text-gray-100`) to any nav link/title text
+- [X] T017 [P] [US3] Audit src/components/history/AssignmentHistory.tsx and src/components/matches/CandidateList.tsx for any license-type badge classes not yet matching design-tokens.md license badge tokens (`license-s`: `dark:bg-purple-900 dark:text-purple-200`; `license-1`: `dark:bg-blue-900 dark:text-blue-200`; `license-2`: `dark:bg-green-900 dark:text-green-200`; `license-default`: `dark:bg-gray-700 dark:text-gray-300`) and apply corrections
+- [X] T018 [US3] Perform complete prefers-color-scheme dark/light toggle verification across all 9 screens listed in quickstart.md step 3 — fix any text that fails WCAG AA contrast (4.5:1 for body text) by applying the correct token from contracts/design-tokens.md
 
 **Checkpoint**: All three user stories are independently functional. Theme switching works correctly on all screens.
 
@@ -87,11 +87,11 @@
 
 **Purpose**: Build validation, minimum-width verification, and end-to-end flow confirmation
 
-- [ ] T019 [P] Run `pnpm build` from the repository root and resolve any TypeScript or ESLint errors in the 15 modified files
-- [ ] T020 [P] Perform 320px minimum-width test: set Chrome DevTools to custom 320×568px device and visit all 9 screens from quickstart.md step 2 — confirm no horizontal scrollbar appears on any screen
-- [ ] T021 [P] Verify 44px tap-target compliance: in Chrome DevTools Elements panel, inspect height of every button, link, and input across all modified components and confirm ≥44px per quickstart.md step 4
-- [ ] T022 Perform SC-005 referee user flow: login → profile (save) → availability (add entry) → history — complete in under 5 minutes at 375px per quickstart.md SC-005 steps
-- [ ] T023 Perform SC-006 admin user flow: /admin/matches → match detail → assignments view — complete in under 3 minutes at 375px per quickstart.md SC-006 steps
+- [X] T019 [P] Run `pnpm build` from the repository root and resolve any TypeScript or ESLint errors in the 15 modified files
+- [X] T020 [P] Perform 320px minimum-width test: set Chrome DevTools to custom 320×568px device and visit all 9 screens from quickstart.md step 2 — confirm no horizontal scrollbar appears on any screen
+- [X] T021 [P] Verify 44px tap-target compliance: in Chrome DevTools Elements panel, inspect height of every button, link, and input across all modified components and confirm ≥44px per quickstart.md step 4
+- [X] T022 Perform SC-005 referee user flow: login → profile (save) → availability (add entry) → history — complete in under 5 minutes at 375px per quickstart.md SC-005 steps
+- [X] T023 Perform SC-006 admin user flow: /admin/matches → match detail → assignments view — complete in under 3 minutes at 375px per quickstart.md SC-006 steps
 
 ---
 
