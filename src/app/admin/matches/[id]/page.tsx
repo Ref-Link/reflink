@@ -14,9 +14,9 @@ const STATUS_LABELS: Record<MatchStatus, string> = {
 }
 
 const STATUS_COLORS: Record<MatchStatus, string> = {
-  open: 'bg-green-100 text-green-800',
-  filled: 'bg-blue-100 text-blue-800',
-  cancelled: 'bg-gray-100 text-gray-500',
+  open: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  filled: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  cancelled: 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400',
 }
 
 function formatMatchDate(dateStr: string): string {
@@ -122,21 +122,21 @@ export default function MatchDetailPage() {
         <div className="flex items-center justify-between">
           <Link
             href="/admin/matches"
-            className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
+            className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
           >
             ← 試合一覧に戻る
           </Link>
           <Link
             href={`/admin/matches/${params.id}/assignments`}
-            className="text-sm text-blue-600 hover:text-blue-500"
+            className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
           >
             アサイン状況 →
           </Link>
         </div>
 
-        <div className="mt-3 rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+        <div className="mt-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-5 shadow-sm">
           <div className="flex items-start justify-between gap-3">
-            <h1 className="text-lg font-bold text-gray-900">{match.title}</h1>
+            <h1 className="text-lg font-bold text-gray-900 dark:text-gray-100">{match.title}</h1>
             <span
               className={`inline-flex flex-shrink-0 items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_COLORS[match.status as MatchStatus]}`}
             >
@@ -146,39 +146,39 @@ export default function MatchDetailPage() {
 
           <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
             <div>
-              <dt className="text-xs font-medium text-gray-400">試合日</dt>
-              <dd className="mt-0.5 text-gray-900">{formatMatchDate(match.match_date)}</dd>
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">試合日</dt>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{formatMatchDate(match.match_date)}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium text-gray-400">開始時間</dt>
-              <dd className="mt-0.5 text-gray-900">{match.start_time.slice(0, 5)}</dd>
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">開始時間</dt>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{match.start_time.slice(0, 5)}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium text-gray-400">会場</dt>
-              <dd className="mt-0.5 text-gray-900">{match.venue}</dd>
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">会場</dt>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{match.venue}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium text-gray-400">対象年代</dt>
-              <dd className="mt-0.5 text-gray-900">{match.age_group}</dd>
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">対象年代</dt>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{match.age_group}</dd>
             </div>
             <div>
-              <dt className="text-xs font-medium text-gray-400">必要人数</dt>
-              <dd className="mt-0.5 text-gray-900">
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">必要人数</dt>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">
                 主審 {match.referees_needed}名 ／ 副審 {match.assistants_needed}名
               </dd>
             </div>
             {match.compensation != null && (
               <div>
-                <dt className="text-xs font-medium text-gray-400">報酬</dt>
-                <dd className="mt-0.5 text-gray-900">{match.compensation.toLocaleString()}円</dd>
+                <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">報酬</dt>
+                <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{match.compensation.toLocaleString()}円</dd>
               </div>
             )}
           </dl>
 
           {match.notes && (
-            <div className="mt-4 rounded-md bg-gray-50 p-3">
-              <dt className="text-xs font-medium text-gray-400">備考</dt>
-              <dd className="mt-1 whitespace-pre-wrap text-sm text-gray-700">{match.notes}</dd>
+            <div className="mt-4 rounded-md bg-gray-50 dark:bg-gray-800 p-3">
+              <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">備考</dt>
+              <dd className="mt-1 whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">{match.notes}</dd>
             </div>
           )}
         </div>
@@ -186,12 +186,12 @@ export default function MatchDetailPage() {
 
       <section>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-900">審判候補一覧</h2>
+          <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">審判候補一覧</h2>
           {selectedIds.size > 0 && (
             <button
               onClick={handleNotify}
               disabled={notifying}
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="min-h-[44px] rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {notifying ? '送信中...' : `${selectedIds.size}名に通知を送る`}
             </button>
@@ -199,7 +199,7 @@ export default function MatchDetailPage() {
         </div>
 
         {notifyMessage && (
-          <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+          <div className="mb-4 rounded-md bg-green-50 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
             {notifyMessage}
           </div>
         )}

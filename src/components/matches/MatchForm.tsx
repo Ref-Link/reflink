@@ -78,16 +78,16 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
   }
 
   const inputClass =
-    'mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+    'mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">{error}</div>
+        <div className="rounded-md bg-red-50 dark:bg-red-950 p-4 text-sm text-red-700 dark:text-red-300">{error}</div>
       )}
 
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           試合名 <span className="text-red-500">*</span>
         </label>
         <input
@@ -101,38 +101,42 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="match_date" className="block text-sm font-medium text-gray-700">
+      <div className="flex gap-4">
+        <div className="flex-1 min-w-0">
+          <label htmlFor="match_date" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             試合日 <span className="text-red-500">*</span>
           </label>
-          <input
-            id="match_date"
-            type="date"
-            value={formData.match_date}
-            onChange={(e) => setFormData((p) => ({ ...p, match_date: e.target.value }))}
-            className={inputClass}
-            required
-          />
+          <div className="mt-1 overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+            <input
+              id="match_date"
+              type="date"
+              value={formData.match_date}
+              onChange={(e) => setFormData((p) => ({ ...p, match_date: e.target.value }))}
+              className="block w-full rounded-md bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none"
+              required
+            />
+          </div>
         </div>
 
-        <div>
-          <label htmlFor="start_time" className="block text-sm font-medium text-gray-700">
+        <div className="flex-1 min-w-0">
+          <label htmlFor="start_time" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             開始時間 <span className="text-red-500">*</span>
           </label>
-          <input
-            id="start_time"
-            type="time"
-            value={formData.start_time}
-            onChange={(e) => setFormData((p) => ({ ...p, start_time: e.target.value }))}
-            className={inputClass}
-            required
-          />
+          <div className="mt-1 overflow-hidden rounded-md border border-gray-300 dark:border-gray-600 focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500">
+            <input
+              id="start_time"
+              type="time"
+              value={formData.start_time}
+              onChange={(e) => setFormData((p) => ({ ...p, start_time: e.target.value }))}
+              className="block w-full rounded-md bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:outline-none"
+              required
+            />
+          </div>
         </div>
       </div>
 
       <div>
-        <label htmlFor="venue" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="venue" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           会場 <span className="text-red-500">*</span>
         </label>
         <input
@@ -147,7 +151,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
       </div>
 
       <div>
-        <label htmlFor="age_group" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="age_group" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           対象年代 <span className="text-red-500">*</span>
         </label>
         <select
@@ -166,7 +170,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label htmlFor="referees_needed" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="referees_needed" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             主審人数 <span className="text-red-500">*</span>
           </label>
           <input
@@ -181,7 +185,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
         </div>
 
         <div>
-          <label htmlFor="assistants_needed" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="assistants_needed" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
             副審人数 <span className="text-red-500">*</span>
           </label>
           <input
@@ -197,7 +201,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
       </div>
 
       <div>
-        <label htmlFor="compensation" className="block text-sm font-medium text-gray-700">
+        <label htmlFor="compensation" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
           報酬額（円）
         </label>
         <input
@@ -214,7 +218,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
       </div>
 
       <div>
-        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">備考</label>
+        <label htmlFor="notes" className="block text-sm font-medium text-gray-700 dark:text-gray-300">備考</label>
         <textarea
           id="notes"
           rows={3}

@@ -59,18 +59,18 @@ export default function ProfilePage() {
   return (
     <main className="mx-auto max-w-lg px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
           {isNew ? 'プロフィール登録' : 'プロフィール編集'}
         </h1>
         {isNew && (
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             まずプロフィールを登録してください。登録後に空き日程を設定できます。
           </p>
         )}
       </div>
 
       {saved && (
-        <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+        <div className="mb-4 rounded-md bg-green-50 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
           プロフィールを保存しました
         </div>
       )}

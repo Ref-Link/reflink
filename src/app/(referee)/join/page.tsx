@@ -77,52 +77,52 @@ export default function JoinPage() {
   }
 
   const statusColor: Record<CommunityMemberRow['status'], string> = {
-    pending: 'bg-yellow-100 text-yellow-800',
-    approved: 'bg-green-100 text-green-800',
-    rejected: 'bg-gray-100 text-gray-500',
+    pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+    approved: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+    rejected: 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400',
   }
 
   return (
     <main className="mx-auto max-w-lg px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-gray-900">コミュニティに参加する</h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">コミュニティに参加する</h1>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           参加したいコミュニティを選んで申請してください。管理者が承認すると試合の候補として表示されるようになります。
         </p>
       </div>
 
       {successMessage && (
-        <div className="mb-4 rounded-md bg-green-50 p-3 text-sm text-green-700">
+        <div className="mb-4 rounded-md bg-green-50 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
           {successMessage}
         </div>
       )}
       {errorMessage && (
-        <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <div className="mb-4 rounded-md bg-red-50 dark:bg-red-950 p-3 text-sm text-red-700 dark:text-red-300">
           {errorMessage}
         </div>
       )}
 
       {loading ? (
-        <div className="flex items-center justify-center py-12 text-sm text-gray-500">
+        <div className="flex items-center justify-center py-12 text-sm text-gray-500 dark:text-gray-400">
           読み込み中...
         </div>
       ) : communities.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 py-12 text-center">
-          <p className="text-sm font-medium text-gray-500">参加できるコミュニティがありません</p>
+        <div className="rounded-lg border border-dashed border-gray-300 dark:border-gray-600 py-12 text-center">
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">参加できるコミュニティがありません</p>
         </div>
       ) : (
         <ul className="space-y-3">
           {communities.map((community) => (
             <li
               key={community.id}
-              className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+              className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 shadow-sm"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold text-gray-900">{community.name}</div>
-                  <div className="mt-0.5 text-xs text-gray-500">{community.region}</div>
+                  <div className="text-sm font-semibold text-gray-900 dark:text-gray-100">{community.name}</div>
+                  <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{community.region}</div>
                   {community.description && (
-                    <div className="mt-1 text-xs text-gray-600">{community.description}</div>
+                    <div className="mt-1 text-xs text-gray-600 dark:text-gray-400">{community.description}</div>
                   )}
                 </div>
                 <div className="flex-shrink-0">
