@@ -23,10 +23,13 @@ function LoginForm() {
 
   async function signInWithGoogle() {
     setLoading('google')
+    // Store 'next' in a cookie so the server-side callback can read it.
+    // redirectTo must be a clean URL without query params for Supabase local URL matching.
+    document.cookie = `auth_next=${encodeURIComponent(next)}; path=/; max-age=600; SameSite=Lax`
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${globalThis.location.origin}/api/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: `${globalThis.location.origin}/api/auth/callback`,
       },
     })
   }

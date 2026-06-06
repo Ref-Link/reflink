@@ -3,11 +3,13 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { ProfileForm, type ProfileFormData } from '@/components/profile/ProfileForm'
+import { createClient } from '@/lib/supabase/client'
 import type { UserRow } from '@/types/database'
 
 export default function ProfilePage() {
   const router = useRouter()
   const [profile, setProfile] = useState<UserRow | null>(null)
+  const [defaultDisplayName, setDefaultDisplayName] = useState('')
   const [loading, setLoading] = useState(true)
   const [saved, setSaved] = useState(false)
 
@@ -15,6 +17,10 @@ export default function ProfilePage() {
     const res = await fetch('/api/profile')
     if (res.ok) {
       setProfile(await res.json())
+    } else {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      setDefaultDisplayName(user?.user_metadata?.full_name ?? user?.email ?? '')
     }
     setLoading(false)
   }, [])
@@ -87,7 +93,7 @@ export default function ProfilePage() {
                 region: profile.region,
                 travel_range_km: profile.travel_range_km,
               }
-            : undefined
+            : { display_name: defaultDisplayName }
         }
         onSubmit={handleSubmit}
         submitLabel={isNew ? '登録して空き日程へ進む' : '保存する'}
