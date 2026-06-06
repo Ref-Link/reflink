@@ -18,7 +18,7 @@
 
 **Purpose**: Confirm environment before making changes
 
-- [ ] T001 Verify `supabase/migrations/` directory — confirm no file with timestamp `20260606000001` already exists; list existing migration files to confirm the new migration name is unique
+- [X] T001 Verify `supabase/migrations/` directory — confirm no file with timestamp `20260606000001` already exists; list existing migration files to confirm the new migration name is unique
 
 ---
 
@@ -28,7 +28,7 @@
 
 **⚠️ CRITICAL**: T005 (LINE linkage in callback) cannot be completed until this migration exists and is applied
 
-- [ ] T002 Create `supabase/migrations/20260606000001_google_ux_line_linkage.sql` — add `public.get_line_user_id_by_email(lookup_email TEXT) RETURNS TEXT` as a `SECURITY DEFINER` SQL function (exact SQL from `specs/003-google-login-ux/data-model.md`) with `GRANT EXECUTE ON FUNCTION public.get_line_user_id_by_email(TEXT) TO service_role`
+- [X] T002 Create `supabase/migrations/20260606000001_google_ux_line_linkage.sql` — add `public.get_line_user_id_by_email(lookup_email TEXT) RETURNS TEXT` as a `SECURITY DEFINER` SQL function (exact SQL from `specs/003-google-login-ux/data-model.md`) with `GRANT EXECUTE ON FUNCTION public.get_line_user_id_by_email(TEXT) TO service_role`
 
 **Checkpoint**: Migration file created — run `supabase db reset` or `supabase migration up` locally to apply
 
@@ -42,8 +42,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T003 [P] [US1] Read `src/app/(referee)/profile/page.tsx` in full, then add a `defaultDisplayName` state variable and a `supabase.auth.getUser()` call (using the browser client) inside the effect or fetch logic that runs when `profile` is null — seed `defaultDisplayName` from `user.user_metadata.full_name ?? user.email ?? ''` — pass it as the initial `display_name` value to `ProfileForm` (or equivalent form component) when rendering the new-user state
-- [ ] T004 [US1] Read `src/app/api/auth/callback/route.ts` in full, then: (a) remove the `supabase.from('users').insert(...)` stub creation block that runs on new user detection, and (b) change the new-user redirect target from `` `${origin}/profile?setup=true` `` to `` `${origin}/profile` ``
+- [X] T003 [P] [US1] Read `src/app/(referee)/profile/page.tsx` in full, then add a `defaultDisplayName` state variable and a `supabase.auth.getUser()` call (using the browser client) inside the effect or fetch logic that runs when `profile` is null — seed `defaultDisplayName` from `user.user_metadata.full_name ?? user.email ?? ''` — pass it as the initial `display_name` value to `ProfileForm` (or equivalent form component) when rendering the new-user state
+- [X] T004 [US1] Read `src/app/api/auth/callback/route.ts` in full, then: (a) remove the `supabase.from('users').insert(...)` stub creation block that runs on new user detection, and (b) change the new-user redirect target from `` `${origin}/profile?setup=true` `` to `` `${origin}/profile` ``
 
 **Checkpoint**: User Story 1 independently testable — verify Flow 1 and Flow 2 from `specs/003-google-login-ux/quickstart.md`
 
@@ -57,7 +57,7 @@
 
 ### Implementation for User Story 2
 
-- [ ] T005 [US2] In `src/app/api/auth/callback/route.ts` (already read in T004), after the profile existence check, add the LINE linkage block: get `currentLineUserId` from `profile?.line_user_id ?? null`; if `!currentLineUserId && user.email`, wrap in try/catch — call `createAdminClient().rpc('get_line_user_id_by_email', { lookup_email: user.email })` — if `linkedId` is returned, call `supabase.from('users').update({ line_user_id: linkedId }).eq('id', user.id)` — catch block must be silent (FR-004: linkage failure must not block login). Exact code pattern in `specs/003-google-login-ux/plan.md` Phase 1 "Change 2".
+- [X] T005 [US2] In `src/app/api/auth/callback/route.ts` (already read in T004), after the profile existence check, add the LINE linkage block: get `currentLineUserId` from `profile?.line_user_id ?? null`; if `!currentLineUserId && user.email`, wrap in try/catch — call `createAdminClient().rpc('get_line_user_id_by_email', { lookup_email: user.email })` — if `linkedId` is returned, call `supabase.from('users').update({ line_user_id: linkedId }).eq('id', user.id)` — catch block must be silent (FR-004: linkage failure must not block login). Exact code pattern in `specs/003-google-login-ux/plan.md` Phase 1 "Change 2".
 
 **Checkpoint**: User Story 2 independently testable — verify Flow 3, Flow 4, and Flow 6 from `specs/003-google-login-ux/quickstart.md`
 
@@ -71,7 +71,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T006 [US3] Read `src/app/api/auth/callback/route.ts` and confirm the `next` parameter handling already exists (per `specs/003-google-login-ux/research.md` Decision 4: line ~29 reads `const redirectTo = next.startsWith('/') ? \`${origin}${next}\` : origin`). **No code change is required.** Verify by running quickstart.md Flow 5 manually.
+- [X] T006 [US3] Read `src/app/api/auth/callback/route.ts` and confirm the `next` parameter handling already exists (per `specs/003-google-login-ux/research.md` Decision 4: line ~29 reads `const redirectTo = next.startsWith('/') ? \`${origin}${next}\` : origin`). **No code change is required.** Verify by running quickstart.md Flow 5 manually.
 
 **Checkpoint**: User Story 3 independently testable — verify Flow 5 from `specs/003-google-login-ux/quickstart.md`
 
