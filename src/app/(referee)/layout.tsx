@@ -49,7 +49,24 @@ export default function RefereeLayout({ children }: { readonly children: ReactNo
         </div>
       </header>
 
-      <div className="flex-1 pb-20">{children}</div>
+      <div className="flex-1 pb-0">{children}</div>
+
+      <footer className="border-t border-gray-200 dark:border-gray-700 py-4 pb-24 text-center">
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href="/terms"
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            利用規約
+          </Link>
+          <Link
+            href="/privacy"
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            プライバシーポリシー
+          </Link>
+        </div>
+      </footer>
 
       {/* モバイルボトムナビ */}
       <nav

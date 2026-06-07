@@ -1,6 +1,7 @@
 'use client'
 
 import { Suspense, useState, useEffect } from 'react'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useSearchParams } from 'next/navigation'
 
@@ -108,7 +109,11 @@ export default function LoginPage() {
         </Suspense>
 
         <p className="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
-          ログインすることで利用規約に同意したとみなされます
+          ログインすることで
+          <Link href="/terms" className="underline hover:text-gray-600 dark:hover:text-gray-300">利用規約</Link>
+          および
+          <Link href="/privacy" className="underline hover:text-gray-600 dark:hover:text-gray-300">プライバシーポリシー</Link>
+          に同意したとみなされます
         </p>
       </div>
     </div>

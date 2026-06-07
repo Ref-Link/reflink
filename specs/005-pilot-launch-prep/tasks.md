@@ -24,7 +24,7 @@ description: "Task list for Pilot Launch Preparation"
 
 **Purpose**: `public/` ディレクトリが存在しないため、アセット配置前に新規作成する。
 
-- [ ] T001 Create `public/` directory at repository root (required before any asset can be placed)
+- [X] T001 Create `public/` directory at repository root (required before any asset can be placed)
 
 ---
 
@@ -34,7 +34,7 @@ description: "Task list for Pilot Launch Preparation"
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーフェーズを開始してはならない。
 
-- [ ] T002 Add `/terms` and `/privacy` to `publicPaths` array in `src/middleware.ts` (change: `['/login', '/api/auth', '/api/webhook', '/auth']` → add `/terms` and `/privacy`)
+- [X] T002 Add `/terms` and `/privacy` to `publicPaths` array in `src/middleware.ts` (change: `['/login', '/api/auth', '/api/webhook', '/auth']` → add `/terms` and `/privacy`)
 
 **Checkpoint**: ミドルウェア更新完了 — 以降のユーザーストーリー実装を並行して開始できる
 
@@ -48,9 +48,9 @@ description: "Task list for Pilot Launch Preparation"
 
 ### Implementation for User Story 1
 
-- [ ] T003 [P] [US1] Create `public/manifest.json` with PWA manifest (name: "RefLink", short_name: "RefLink", description: "地域サッカー審判マッチングプラットフォーム", start_url: "/", display: "standalone", background_color: "#F9FAFB", theme_color: "#2563EB", lang: "ja", icons for icon-192.png and icon-512.png)
-- [ ] T004 [P] [US1] Create placeholder PNG icon files in `public/`: `icon-32.png` (32×32), `icon-192.png` (192×192), `icon-512.png` (512×512), and `og-image.png` (1200×630) — use Node.js or any available tool to generate solid-color PNGs (background #2563EB); must be valid PNG files (not empty) so browsers can load them
-- [ ] T005 [US1] Update `metadata` export in `src/app/layout.tsx`: set `title: "RefLink"`, `description: "地域サッカー審判マッチングプラットフォーム"`, add `openGraph` block (title, description, type: "website", locale: "ja_JP", siteName: "RefLink", images: [{url: "/og-image.png", width: 1200, height: 630, alt: "RefLink"}]), add `icons` block (icon: [{url: "/icon-32.png", sizes: "32x32"}, {url: "/icon-192.png", sizes: "192x192"}], apple: [{url: "/icon-192.png", sizes: "192x192"}]), add `manifest: "/manifest.json"` — depends on T003, T004
+- [X] T003 [P] [US1] Create `public/manifest.json` with PWA manifest (name: "RefLink", short_name: "RefLink", description: "地域サッカー審判マッチングプラットフォーム", start_url: "/", display: "standalone", background_color: "#F9FAFB", theme_color: "#2563EB", lang: "ja", icons for icon-192.png and icon-512.png)
+- [X] T004 [P] [US1] Create placeholder PNG icon files in `public/`: `icon-32.png` (32×32), `icon-192.png` (192×192), `icon-512.png` (512×512), and `og-image.png` (1200×630) — use Node.js or any available tool to generate solid-color PNGs (background #2563EB); must be valid PNG files (not empty) so browsers can load them
+- [X] T005 [US1] Update `metadata` export in `src/app/layout.tsx`: set `title: "RefLink"`, `description: "地域サッカー審判マッチングプラットフォーム"`, add `openGraph` block (title, description, type: "website", locale: "ja_JP", siteName: "RefLink", images: [{url: "/og-image.png", width: 1200, height: 630, alt: "RefLink"}]), add `icons` block (icon: [{url: "/icon-32.png", sizes: "32x32"}, {url: "/icon-192.png", sizes: "192x192"}], apple: [{url: "/icon-192.png", sizes: "192x192"}]), add `manifest: "/manifest.json"` — depends on T003, T004
 
 **Checkpoint**: User Story 1 完了 — ブランディング設定が独立して検証可能
 
@@ -64,7 +64,7 @@ description: "Task list for Pilot Launch Preparation"
 
 ### Implementation for User Story 2
 
-- [ ] T006 [US2] Create `src/app/terms/page.tsx`: export metadata with title "利用規約 | RefLink", define `TERMS_SECTIONS` array with `LegalSection[]` type containing all 6 required sections (FR-006: サービスの目的・利用資格・禁止事項・免責事項・規約変更について・問い合わせ先) with Pilot-appropriate Japanese content, render using the layout pattern from data-model.md (max-w-2xl, px-4 py-8, section headings h2, paragraph text-sm leading-7)
+- [X] T006 [US2] Create `src/app/terms/page.tsx`: export metadata with title "利用規約 | RefLink", define `TERMS_SECTIONS` array with `LegalSection[]` type containing all 6 required sections (FR-006: サービスの目的・利用資格・禁止事項・免責事項・規約変更について・問い合わせ先) with Pilot-appropriate Japanese content, render using the layout pattern from data-model.md (max-w-2xl, px-4 py-8, section headings h2, paragraph text-sm leading-7)
 
 **Checkpoint**: User Story 2 完了 — 利用規約ページが独立して検証可能（認証なしで 200 OK）
 
@@ -78,7 +78,7 @@ description: "Task list for Pilot Launch Preparation"
 
 ### Implementation for User Story 3
 
-- [ ] T007 [US3] Create `src/app/privacy/page.tsx`: export metadata with title "プライバシーポリシー | RefLink", define `PRIVACY_SECTIONS` array with `LegalSection[]` type containing all 6 required sections (FR-007: 収集する個人情報の種類・利用目的・第三者提供（LINE連携含む）・データ保管管理・ユーザーの権利（削除・訂正）・問い合わせ先) with Pilot-appropriate Japanese content, render using same layout pattern as terms page
+- [X] T007 [US3] Create `src/app/privacy/page.tsx`: export metadata with title "プライバシーポリシー | RefLink", define `PRIVACY_SECTIONS` array with `LegalSection[]` type containing all 6 required sections (FR-007: 収集する個人情報の種類・利用目的・第三者提供（LINE連携含む）・データ保管管理・ユーザーの権利（削除・訂正）・問い合わせ先) with Pilot-appropriate Japanese content, render using same layout pattern as terms page
 
 **Checkpoint**: User Story 3 完了 — プライバシーポリシーページが独立して検証可能（認証なしで 200 OK）
 
@@ -92,9 +92,9 @@ description: "Task list for Pilot Launch Preparation"
 
 ### Implementation for User Story 4
 
-- [ ] T008 [P] [US4] Update `src/app/(referee)/layout.tsx`: add `<footer>` element after the `flex-1` content div and before the fixed bottom nav — use `border-t border-gray-200 dark:border-gray-700 py-4 pb-24 text-center` with flex row containing `<Link href="/terms">利用規約</Link>` and `<Link href="/privacy">プライバシーポリシー</Link>` (text-xs text-gray-400); change existing `flex-1` div's `pb-20` to `pb-0` to avoid double padding
-- [ ] T009 [P] [US4] Update `src/app/admin/layout.tsx`: add same `<footer>` element with `pb-4` (no fixed nav in admin) containing `<Link href="/terms">利用規約</Link>` and `<Link href="/privacy">プライバシーポリシー</Link>`
-- [ ] T010 [US4] Update disclaimer text in `src/app/(auth)/login/page.tsx`: replace plain text `"ログインすることで利用規約に同意したとみなされます"` with inline-linked version containing `<Link href="/terms" className="underline ...">利用規約</Link>` および `<Link href="/privacy" className="underline ...">プライバシーポリシー</Link>` per the pattern in data-model.md
+- [X] T008 [P] [US4] Update `src/app/(referee)/layout.tsx`: add `<footer>` element after the `flex-1` content div and before the fixed bottom nav — use `border-t border-gray-200 dark:border-gray-700 py-4 pb-24 text-center` with flex row containing `<Link href="/terms">利用規約</Link>` and `<Link href="/privacy">プライバシーポリシー</Link>` (text-xs text-gray-400); change existing `flex-1` div's `pb-20` to `pb-0` to avoid double padding
+- [X] T009 [P] [US4] Update `src/app/admin/layout.tsx`: add same `<footer>` element with `pb-4` (no fixed nav in admin) containing `<Link href="/terms">利用規約</Link>` and `<Link href="/privacy">プライバシーポリシー</Link>`
+- [X] T010 [US4] Update disclaimer text in `src/app/(auth)/login/page.tsx`: replace plain text `"ログインすることで利用規約に同意したとみなされます"` with inline-linked version containing `<Link href="/terms" className="underline ...">利用規約</Link>` および `<Link href="/privacy" className="underline ...">プライバシーポリシー</Link>` per the pattern in data-model.md
 
 **Checkpoint**: User Story 4 完了 — 全フッター・ログインページのリンクが検証可能
 
@@ -104,8 +104,8 @@ description: "Task list for Pilot Launch Preparation"
 
 **Purpose**: ビルド検証と手動検証シナリオの実行
 
-- [ ] T011 Run `pnpm build` from repository root and confirm zero TypeScript type errors and zero ESLint errors
-- [ ] T012 Run quickstart.md validation scenarios manually: Story 1 (1-1 to 1-3), Story 2 (2-1 to 2-3), Story 3 (3-1 to 3-2), Story 4 (4-1 to 4-3) — confirm all acceptance criteria pass
+- [X] T011 Run `pnpm build` from repository root and confirm zero TypeScript type errors and zero ESLint errors
+- [ ] T012 Run quickstart.md validation scenarios manually (browser verification — pending manual QA): Story 1 (1-1 to 1-3), Story 2 (2-1 to 2-3), Story 3 (3-1 to 3-2), Story 4 (4-1 to 4-3) — confirm all acceptance criteria pass
 
 ---
 

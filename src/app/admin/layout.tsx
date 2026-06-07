@@ -28,6 +28,22 @@ export default function AdminLayout({ children }: { readonly children: ReactNode
         </div>
       </header>
       <div className="px-4">{children}</div>
+      <footer className="border-t border-gray-200 dark:border-gray-700 py-4 pb-4 text-center">
+        <div className="flex items-center justify-center gap-4">
+          <Link
+            href="/terms"
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            利用規約
+          </Link>
+          <Link
+            href="/privacy"
+            className="text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            プライバシーポリシー
+          </Link>
+        </div>
+      </footer>
     </div>
   )
 }
