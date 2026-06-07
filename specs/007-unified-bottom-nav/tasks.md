@@ -41,8 +41,8 @@ _No foundational tasks — all three user stories are fully independent and can 
 
 ### Implementation for User Story 1
 
-- [ ] T001 [US1] Create `src/components/nav/RefereeBottomNav.tsx` — `'use client'` component using `usePathname()` from `next/navigation`, 4 nav items in order: `{ href: '/', label: 'ホーム' }`, `{ href: '/profile', label: 'プロフィール' }`, `{ href: '/availability', label: '空き日程' }`, `{ href: '/history', label: '担当履歴' }`, active state via strict equality (`pathname === item.href`) with `text-blue-600 dark:text-blue-400`, inactive `text-gray-500 dark:text-gray-400`, fixed positioning with `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}`
-- [ ] T002 [US1] Modify `src/app/(referee)/layout.tsx` — remove `NAV_ITEMS` array and inline `<nav>` block, import and render `<RefereeBottomNav />` in the layout shell, remove `pb-24` from `<footer>` (safe-area padding is now handled inside `RefereeBottomNav`) (depends on T001)
+- [X] T001 [US1] Create `src/components/nav/RefereeBottomNav.tsx` — `'use client'` component using `usePathname()` from `next/navigation`, 4 nav items in order: `{ href: '/', label: 'ホーム' }`, `{ href: '/profile', label: 'プロフィール' }`, `{ href: '/availability', label: '空き日程' }`, `{ href: '/history', label: '担当履歴' }`, active state via strict equality (`pathname === item.href`) with `text-blue-600 dark:text-blue-400`, inactive `text-gray-500 dark:text-gray-400`, fixed positioning with `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}`
+- [X] T002 [US1] Modify `src/app/(referee)/layout.tsx` — remove `NAV_ITEMS` array and inline `<nav>` block, import and render `<RefereeBottomNav />` in the layout shell, remove `pb-24` from `<footer>` (safe-area padding is now handled inside `RefereeBottomNav`) (depends on T001)
 
 **Checkpoint**: Referee bottom nav is fully functional. Validate against quickstart.md Test 1.
 
@@ -56,8 +56,8 @@ _No foundational tasks — all three user stories are fully independent and can 
 
 ### Implementation for User Story 2
 
-- [ ] T003 [P] [US2] Create `src/components/nav/AdminBottomNav.tsx` — `'use client'` component using `usePathname()` from `next/navigation`, 3 nav items in order: `{ href: '/', label: 'ホーム' }`, `{ href: '/admin/matches', label: '試合管理' }`, `{ href: '/admin/members', label: 'メンバー管理' }`, active state via strict equality with `text-blue-600 dark:text-blue-400`, inactive `text-gray-500 dark:text-gray-400`, same `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` as RefereeBottomNav
-- [ ] T004 [US2] Modify `src/app/admin/layout.tsx` — remove `NAV_ITEMS` constant and `<nav aria-label="管理ナビゲーション">` element from inside `<header>`, change content wrapper from `<div className="px-4">` to `<div className="px-4 pb-20">`, import and render `<AdminBottomNav />` before `<footer>` (depends on T003)
+- [X] T003 [P] [US2] Create `src/components/nav/AdminBottomNav.tsx` — `'use client'` component using `usePathname()` from `next/navigation`, 3 nav items in order: `{ href: '/', label: 'ホーム' }`, `{ href: '/admin/matches', label: '試合管理' }`, `{ href: '/admin/members', label: 'メンバー管理' }`, active state via strict equality with `text-blue-600 dark:text-blue-400`, inactive `text-gray-500 dark:text-gray-400`, same `style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}` as RefereeBottomNav
+- [X] T004 [US2] Modify `src/app/admin/layout.tsx` — remove `NAV_ITEMS` constant and `<nav aria-label="管理ナビゲーション">` element from inside `<header>`, change content wrapper from `<div className="px-4">` to `<div className="px-4 pb-20">`, import and render `<AdminBottomNav />` before `<footer>` (depends on T003)
 
 **Checkpoint**: Admin bottom nav is fully functional. Validate against quickstart.md Test 2.
 
@@ -71,9 +71,9 @@ _No foundational tasks — all three user stories are fully independent and can 
 
 ### Implementation for User Story 3
 
-- [ ] T005 [P] [US3] Create `src/app/api/communities/my-memberships/route.ts` — `GET` handler: verify authenticated session (return 401 if not authenticated), query `community_members` joined with `regional_communities(name)` via `.select('community_id, status, regional_communities(name)').eq('user_id', userId).in('status', ['pending', 'approved']).order('created_at', { ascending: true })`, normalize response to `{ community_id: string, community_name: string, status: 'pending' | 'approved' }[]`, return `NextResponse.json(memberships)`
-- [ ] T006 [P] [US3] Create `src/components/profile/CommunityMemberships.tsx` — `'use client'` component: `useEffect` fetch from `/api/communities/my-memberships` on mount, loading state renders `読み込み中...`, empty state renders "まだコミュニティに参加していません" + "コミュニティを追加" button linking to `/join`, populated state renders list of `{ community_name, status }` each with a status badge (pending → `申請中` yellow, approved → `承認済み` green, matching `STATUS_COLORS` pattern from `AdminMembersClient`) plus "コミュニティを追加" button always visible at bottom
-- [ ] T007 [US3] Modify `src/app/(referee)/profile/page.tsx` — import `CommunityMemberships` from `@/components/profile/CommunityMemberships`, render `<CommunityMemberships />` after the `<ProfileForm />` closing tag inside `<main>`, conditional render only when `!isNew` (skip for first-time registration flow) (depends on T006)
+- [X] T005 [P] [US3] Create `src/app/api/communities/my-memberships/route.ts` — `GET` handler: verify authenticated session (return 401 if not authenticated), query `community_members` joined with `regional_communities(name)` via `.select('community_id, status, regional_communities(name)').eq('user_id', userId).in('status', ['pending', 'approved']).order('created_at', { ascending: true })`, normalize response to `{ community_id: string, community_name: string, status: 'pending' | 'approved' }[]`, return `NextResponse.json(memberships)`
+- [X] T006 [P] [US3] Create `src/components/profile/CommunityMemberships.tsx` — `'use client'` component: `useEffect` fetch from `/api/communities/my-memberships` on mount, loading state renders `読み込み中...`, empty state renders "まだコミュニティに参加していません" + "コミュニティを追加" button linking to `/join`, populated state renders list of `{ community_name, status }` each with a status badge (pending → `申請中` yellow, approved → `承認済み` green, matching `STATUS_COLORS` pattern from `AdminMembersClient`) plus "コミュニティを追加" button always visible at bottom
+- [X] T007 [US3] Modify `src/app/(referee)/profile/page.tsx` — import `CommunityMemberships` from `@/components/profile/CommunityMemberships`, render `<CommunityMemberships />` after the `<ProfileForm />` closing tag inside `<main>`, conditional render only when `!isNew` (skip for first-time registration flow) (depends on T006)
 
 **Checkpoint**: Community memberships section is fully functional. Validate against quickstart.md Test 3.
 
@@ -83,9 +83,9 @@ _No foundational tasks — all three user stories are fully independent and can 
 
 **Purpose**: Edge-case verification and end-to-end validation across all user stories.
 
-- [ ] T008 [P] Verify `/join` page shows referee bottom nav with no item highlighted (no `/join` match in `RefereeBottomNav` — all items should render in inactive style)
-- [ ] T009 [P] Verify dual-role user (organizer + referee): navigate through referee screens → `/` → admin screens via bottom nav without errors or layout breaks
-- [ ] T010 Run all four quickstart.md smoke tests (Tests 1–4) end-to-end on a mobile viewport
+- [X] T008 [P] Verify `/join` page shows referee bottom nav with no item highlighted (no `/join` match in `RefereeBottomNav` — all items should render in inactive style)
+- [X] T009 [P] Verify dual-role user (organizer + referee): navigate through referee screens → `/` → admin screens via bottom nav without errors or layout breaks
+- [X] T010 Run all four quickstart.md smoke tests (Tests 1–4) end-to-end on a mobile viewport
 
 ---
 

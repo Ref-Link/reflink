@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import Link from 'next/link'
 import { ApprovalList, type MemberWithUser } from '@/components/members/ApprovalList'
 
 const STATUS_LABELS: Record<string, string> = {
@@ -55,13 +54,7 @@ export default function AdminMembersClient({ communityId, initialMembers }: Prop
   return (
     <main className="mx-auto max-w-2xl px-4 py-8">
       <div className="mb-6">
-        <Link
-          href="/admin/matches"
-          className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700"
-        >
-          ← 試合管理に戻る
-        </Link>
-        <h1 className="mt-2 text-xl font-bold text-gray-900">メンバー管理</h1>
+        <h1 className="text-xl font-bold text-gray-900">メンバー管理</h1>
       </div>
 
       {actionMessage && (

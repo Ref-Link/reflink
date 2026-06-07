@@ -1,10 +1,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
-
-const NAV_ITEMS = [
-  { href: '/admin/matches', label: '試合管理' },
-  { href: '/admin/members', label: 'メンバー管理' },
-] as const
+import { AdminBottomNav } from '@/components/nav/AdminBottomNav'
 
 export default function AdminLayout({ children }: { readonly children: ReactNode }) {
   return (
@@ -14,20 +10,9 @@ export default function AdminLayout({ children }: { readonly children: ReactNode
           <div className="flex h-14 items-center justify-between">
             <Link href="/" className="text-base font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400">RefLink 管理</Link>
           </div>
-          <nav aria-label="管理ナビゲーション" className="-mb-px flex gap-6">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="border-b-2 border-transparent py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
         </div>
       </header>
-      <div className="px-4">{children}</div>
+      <div className="px-4 pb-20">{children}</div>
       <footer className="border-t border-gray-200 dark:border-gray-700 py-4 pb-4 text-center">
         <div className="flex items-center justify-center gap-4">
           <Link
@@ -44,6 +29,7 @@ export default function AdminLayout({ children }: { readonly children: ReactNode
           </Link>
         </div>
       </footer>
+      <AdminBottomNav />
     </div>
   )
 }
