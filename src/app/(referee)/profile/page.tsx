@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { ProfileForm, type ProfileFormData } from '@/components/profile/ProfileForm'
+import { CommunityMemberships } from '@/components/profile/CommunityMemberships'
 import { createClient } from '@/lib/supabase/client'
 import type { UserRow } from '@/types/database'
 
@@ -98,6 +99,8 @@ export default function ProfilePage() {
         onSubmit={handleSubmit}
         submitLabel={isNew ? '登録して空き日程へ進む' : '保存する'}
       />
+
+      {!isNew && <CommunityMemberships />}
     </main>
   )
 }
