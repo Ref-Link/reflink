@@ -17,7 +17,7 @@
 
 **Purpose**: Create new component scaffold
 
-- [ ] T001 Create `src/components/home/HomeScreen.tsx` with `HomeScreenProps` interface (`displayName: string`, `isAdmin: boolean`, `isReferee: boolean`), outer layout structure (`min-h-screen bg-gray-50`), sticky header containing "RefLink" brand text, and `<main className="mx-auto max-w-lg px-4 py-8">` with entry card container `<div className="mt-6 flex flex-col gap-4">` as a Server Component (no `'use client'`)
+- [X] T001 Create `src/components/home/HomeScreen.tsx` with `HomeScreenProps` interface (`displayName: string`, `isAdmin: boolean`, `isReferee: boolean`), outer layout structure (`min-h-screen bg-gray-50`), sticky header containing "RefLink" brand text, and `<main className="mx-auto max-w-lg px-4 py-8">` with entry card container `<div className="mt-6 flex flex-col gap-4">` as a Server Component (no `'use client'`)
 
 ---
 
@@ -27,7 +27,7 @@
 
 **⚠️ CRITICAL**: Phase 3+ cannot begin until this phase is complete
 
-- [ ] T002 Replace `src/app/page.tsx`: import `createClient` from `@/utils/supabase/server`; call `supabase.auth.getUser()` and redirect to `/login` if no user; fetch `users.display_name` and all `community_members` rows for `user_id` in parallel via `Promise.all`; derive `isAdmin` (`role∈{organizer,manager} && status==='approved'`) and `isReferee` (`role==='referee'`) flags; render `<HomeScreen displayName={userData?.display_name ?? ''} isAdmin={isAdmin} isReferee={isReferee} />`
+- [X] T002 Replace `src/app/page.tsx`: import `createClient` from `@/utils/supabase/server`; call `supabase.auth.getUser()` and redirect to `/login` if no user; fetch `users.display_name` and all `community_members` rows for `user_id` in parallel via `Promise.all`; derive `isAdmin` (`role∈{organizer,manager} && status==='approved'`) and `isReferee` (`role==='referee'`) flags; render `<HomeScreen displayName={userData?.display_name ?? ''} isAdmin={isAdmin} isReferee={isReferee} />`
 
 **Checkpoint**: `page.tsx` renders `HomeScreen` — user story implementation can begin
 
@@ -41,8 +41,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] Add admin entry card to `src/components/home/HomeScreen.tsx`: when `isAdmin === true`, render `<Link href="/admin/matches">` card with label "試合・メンバーを管理する", sub-description "試合の登録・審判の割当・メンバー承認", Tailwind styles `min-h-[80px] w-full p-4 bg-white rounded-xl shadow-sm border flex items-center gap-4` for tap-target compliance (SC-004)
-- [ ] T004 [P] [US1] Update `src/app/admin/layout.tsx`: replace `<span>RefLink 管理</span>` with `<Link href="/">RefLink 管理</Link>` (import `Link` from `next/link`) to add home navigation per FR-009
+- [X] T003 [US1] Add admin entry card to `src/components/home/HomeScreen.tsx`: when `isAdmin === true`, render `<Link href="/admin/matches">` card with label "試合・メンバーを管理する", sub-description "試合の登録・審判の割当・メンバー承認", Tailwind styles `min-h-[80px] w-full p-4 bg-white rounded-xl shadow-sm border flex items-center gap-4` for tap-target compliance (SC-004)
+- [X] T004 [P] [US1] Update `src/app/admin/layout.tsx`: replace `<span>RefLink 管理</span>` with `<Link href="/">RefLink 管理</Link>` (import `Link` from `next/link`) to add home navigation per FR-009
 
 **Checkpoint**: Organizer-only account sees admin entry card; admin layout header links back to `/`
 
@@ -56,7 +56,7 @@
 
 ### Implementation for User Story 2
 
-- [ ] T005 [US2] Add referee entry card to `src/components/home/HomeScreen.tsx`: when `isReferee === true`, render `<Link href="/profile">` card with label "審判として参加する", sub-description "プロフィール・空き日程・担当履歴", same card Tailwind styles as admin card (`min-h-[80px] w-full p-4 bg-white rounded-xl shadow-sm border flex items-center gap-4`)
+- [X] T005 [US2] Add referee entry card to `src/components/home/HomeScreen.tsx`: when `isReferee === true`, render `<Link href="/profile">` card with label "審判として参加する", sub-description "プロフィール・空き日程・担当履歴", same card Tailwind styles as admin card (`min-h-[80px] w-full p-4 bg-white rounded-xl shadow-sm border flex items-center gap-4`)
 
 **Checkpoint**: Dual-role account sees both admin and referee entry cards; single-role accounts still see only their respective card
 
@@ -70,8 +70,8 @@
 
 ### Implementation for User Story 3
 
-- [ ] T006 [P] [US3] Add join entry card to `src/components/home/HomeScreen.tsx`: when `!isAdmin && !isReferee`, render `<Link href="/join">` card with label "コミュニティに参加する", sub-description "審判として活動するにはコミュニティへの参加が必要です", same card Tailwind styles
-- [ ] T007 [P] [US3] Update `src/app/(referee)/layout.tsx`: replace `<span>RefLink</span>` with `<Link href="/">RefLink</Link>` (import `Link` from `next/link`) to add home navigation per FR-009
+- [X] T006 [P] [US3] Add join entry card to `src/components/home/HomeScreen.tsx`: when `!isAdmin && !isReferee`, render `<Link href="/join">` card with label "コミュニティに参加する", sub-description "審判として活動するにはコミュニティへの参加が必要です", same card Tailwind styles
+- [X] T007 [P] [US3] Update `src/app/(referee)/layout.tsx`: replace `<span>RefLink</span>` with `<Link href="/">RefLink</Link>` (import `Link` from `next/link`) to add home navigation per FR-009
 
 **Checkpoint**: Referee-only account sees referee entry; new account with no membership sees join entry; referee layout header links back to `/`
 
@@ -81,7 +81,7 @@
 
 **Purpose**: Accessibility compliance and final validation
 
-- [ ] T008 [P] Verify all SVG icons in `src/components/home/HomeScreen.tsx` have `aria-hidden="true"` and all entry cards are wrapped in `<Link>` elements (not `<div onClick>`) per ui-contracts.md accessibility requirements
+- [X] T008 [P] Verify all SVG icons in `src/components/home/HomeScreen.tsx` have `aria-hidden="true"` and all entry cards are wrapped in `<Link>` elements (not `<div onClick>`) per ui-contracts.md accessibility requirements
 - [ ] T009 Manual verification of all 4 role scenarios in order: (A) organizer-only → admin card only; (B) referee-only → referee card only; (C) dual-role → both cards; (D) no membership → join card only; plus confirm both layout headers link home
 
 ---

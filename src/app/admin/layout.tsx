@@ -12,7 +12,7 @@ export default function AdminLayout({ children }: { readonly children: ReactNode
       <header className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div className="mx-auto max-w-2xl px-4">
           <div className="flex h-14 items-center justify-between">
-            <span className="text-base font-bold text-gray-900 dark:text-gray-100">RefLink 管理</span>
+            <Link href="/" className="text-base font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400">RefLink 管理</Link>
           </div>
           <nav aria-label="管理ナビゲーション" className="-mb-px flex gap-6">
             {NAV_ITEMS.map((item) => (

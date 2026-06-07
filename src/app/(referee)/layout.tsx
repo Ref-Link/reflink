@@ -45,7 +45,7 @@ export default function RefereeLayout({ children }: { readonly children: ReactNo
     <div className="flex min-h-screen flex-col bg-gray-50 dark:bg-gray-950">
       <header className="sticky top-0 z-10 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <div className="mx-auto flex h-14 max-w-lg items-center px-4">
-          <span className="text-base font-bold text-gray-900 dark:text-gray-100">RefLink</span>
+          <Link href="/" className="text-base font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400">RefLink</Link>
         </div>
       </header>
 
