@@ -16,6 +16,7 @@ export interface Database {
           travel_range_km: number | null
           experience_years: number | null
           referred_by: string | null
+          phone_number: string | null
           created_at: string
           updated_at: string
         }
@@ -31,6 +32,7 @@ export interface Database {
           travel_range_km?: number | null
           experience_years?: number | null
           referred_by?: string | null
+          phone_number?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -46,6 +48,7 @@ export interface Database {
           travel_range_km?: number | null
           experience_years?: number | null
           referred_by?: string | null
+          phone_number?: string | null
           created_at?: string
           updated_at?: string
         }

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { verifySignature, replyTextMessage } from '@/lib/line/client'
+import { verifySignature, replyTextMessage, pushTextMessage } from '@/lib/line/client'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 interface LinePostbackEvent {
@@ -97,6 +97,25 @@ export async function POST(request: Request) {
         : '辞退を受け付けました。\nまたの機会にご協力をお願いします。'
 
     await replyTextMessage(replyToken, replyText)
+
+    if (action === 'accept') {
+      const { data: userWithPhone } = await supabase
+        .from('users')
+        .select('phone_number')
+        .eq('id', userRecord.id)
+        .single()
+
+      if (!userWithPhone?.phone_number) {
+        const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
+        const followUpText =
+          `【電話番号登録のお願い】\nアサイン確定時に運営者との緊急連絡手段として電話番号が必要です。以下のリンクからプロフィールに電話番号をご登録ください。\n${appUrl}/profile`
+        try {
+          await pushTextMessage(lineUserId, followUpText)
+        } catch (err) {
+          console.error('LINE follow-up push failed:', err)
+        }
+      }
+    }
   }
 
   return NextResponse.json({ status: 'ok' })

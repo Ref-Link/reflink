@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { pushTextMessage } from '@/lib/line/client'
 
@@ -54,6 +55,34 @@ export async function PATCH(
 
   if (assignment.status === 'confirmed') {
     return NextResponse.json({ error: 'Assignment already confirmed' }, { status: 409 })
+  }
+
+  const adminClient = createAdminClient()
+
+  const { data: organizerUser } = await adminClient
+    .from('users')
+    .select('phone_number')
+    .eq('id', user.id)
+    .single()
+
+  if (!organizerUser?.phone_number) {
+    return NextResponse.json(
+      { error: 'ORGANIZER_PHONE_MISSING', message: '電話番号を登録してからアサインを確定してください' },
+      { status: 400 }
+    )
+  }
+
+  const { data: refereeUser } = await adminClient
+    .from('users')
+    .select('phone_number')
+    .eq('id', assignment.user_id)
+    .single()
+
+  if (!refereeUser?.phone_number) {
+    return NextResponse.json(
+      { error: 'REFEREE_PHONE_MISSING', message: '審判の連絡先が未登録のため確定できません。審判に登録を依頼してください。' },
+      { status: 400 }
+    )
   }
 
   const { data: updated, error: updateError } = await supabase

@@ -93,6 +93,7 @@ export default function ProfilePage() {
                 age_groups: profile.age_groups,
                 region: profile.region,
                 travel_range_km: profile.travel_range_km,
+                phone_number: profile.phone_number ?? '',
               }
             : { display_name: defaultDisplayName }
         }
