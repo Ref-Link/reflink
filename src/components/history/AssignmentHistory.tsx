@@ -1,5 +1,7 @@
 'use client'
 
+import { ContactInfo } from '@/components/ui/ContactInfo'
+
 const DAY_NAMES = ['日', '月', '火', '水', '木', '金', '土']
 
 function formatDate(dateStr: string): string {
@@ -22,6 +24,7 @@ export interface AssignmentHistoryItem {
     start_time: string
     venue: string
     age_group: string
+    organizer_phone: string | null
   } | null
 }
 
@@ -81,6 +84,12 @@ export function AssignmentHistory({ items }: AssignmentHistoryProps) {
                 </span>
               </div>
             </div>
+            {item.status === 'confirmed' && (
+              <div className="mt-2 border-t border-gray-100 dark:border-gray-700 pt-2">
+                <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">運営者連絡先</p>
+                <ContactInfo phone={match.organizer_phone ?? null} />
+              </div>
+            )}
           </li>
         )
       })}

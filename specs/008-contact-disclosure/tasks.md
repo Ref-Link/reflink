@@ -24,9 +24,9 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T001 Create `supabase/migrations/20260608000001_add_phone_number.sql` — `ALTER TABLE public.users ADD COLUMN phone_number text CONSTRAINT users_phone_number_check CHECK (phone_number ~ '^0[0-9]{9,10}$')` per data-model.md
-- [ ] T002 [P] Add `phone_number: string | null` to `Row`, `Insert`, and `Update` in `src/types/database.ts` users table type per data-model.md
-- [ ] T003 [P] Create `src/lib/phone.ts` with `normalizePhoneNumber`, `isValidPhoneNumber`, and `formatPhoneNumber` — exact implementations from data-model.md (11-digit: `0XX-XXXX-XXXX`, 10-digit: `0X-XXXX-XXXX`)
+- [X] T001 Create `supabase/migrations/20260608000001_add_phone_number.sql` — `ALTER TABLE public.users ADD COLUMN phone_number text CONSTRAINT users_phone_number_check CHECK (phone_number ~ '^0[0-9]{9,10}$')` per data-model.md
+- [X] T002 [P] Add `phone_number: string | null` to `Row`, `Insert`, and `Update` in `src/types/database.ts` users table type per data-model.md
+- [X] T003 [P] Create `src/lib/phone.ts` with `normalizePhoneNumber`, `isValidPhoneNumber`, and `formatPhoneNumber` — exact implementations from data-model.md (11-digit: `0XX-XXXX-XXXX`, 10-digit: `0X-XXXX-XXXX`)
 
 **Checkpoint**: Migration ready, TypeScript types updated, phone utilities available — user story implementation can begin
 
@@ -38,9 +38,9 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Independent Test**: 電話番号未登録の運営者で「確定」ボタンを押してインラインフォームが表示され、入力後に確定が完了することを確認。次に運営者登録済み・審判未登録の状態で「確定」を押し、「審判の連絡先が未登録のため確定できません」が表示されることを確認。フロントエンドを迂回したAPI直接呼び出しでも400が返ることを確認。
 
-- [ ] T004 [US1] Add phone check gate to `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` — fetch organizer's and referee's `phone_number` using service_role client; return `{ error: 'ORGANIZER_PHONE_MISSING' }` (400) or `{ error: 'REFEREE_PHONE_MISSING' }` (400) per contracts/confirm-assignment.md before the existing confirm logic
-- [ ] T005 [P] [US1] Create `src/components/ui/ContactInfo.tsx` — accepts `phone: string | null`; renders `formatPhoneNumber(phone)` + `<a href="tel:...">📞 発信</a>` + `<a href="sms:...">💬 SMS</a>` when non-null; renders「連絡先未登録」text only when null
-- [ ] T006 [US1] Update `src/app/admin/matches/[id]/assignments/page.tsx` to handle confirm errors: on `ORGANIZER_PHONE_MISSING` show inline phone input form that calls `PATCH /api/profile` then retries confirm; on `REFEREE_PHONE_MISSING` show error message「審判の連絡先が未登録のため確定できません。審判に登録を依頼してください。」
+- [X] T004 [US1] Add phone check gate to `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` — fetch organizer's and referee's `phone_number` using service_role client; return `{ error: 'ORGANIZER_PHONE_MISSING' }` (400) or `{ error: 'REFEREE_PHONE_MISSING' }` (400) per contracts/confirm-assignment.md before the existing confirm logic
+- [X] T005 [P] [US1] Create `src/components/ui/ContactInfo.tsx` — accepts `phone: string | null`; renders `formatPhoneNumber(phone)` + `<a href="tel:...">📞 発信</a>` + `<a href="sms:...">💬 SMS</a>` when non-null; renders「連絡先未登録」text only when null
+- [X] T006 [US1] Update `src/app/admin/matches/[id]/assignments/page.tsx` to handle confirm errors: on `ORGANIZER_PHONE_MISSING` show inline phone input form that calls `PATCH /api/profile` then retries confirm; on `REFEREE_PHONE_MISSING` show error message「審判の連絡先が未登録のため確定できません。審判に登録を依頼してください。」
 
 **Checkpoint**: User Story 1 fully functional — confirm gate works at API level, inline organizer phone registration completes the confirmation flow
 
@@ -52,8 +52,8 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Independent Test**: 確定済みアサインのある試合のアサイン状況画面を開き、確定済み審判の行に「090-1234-5678」形式の電話番号と「📞 発信」「💬 SMS」ボタンが表示されることを確認。accepted 状態の行では電話番号が表示されないことも確認。
 
-- [ ] T007 [US2] Create `src/app/api/matches/[id]/assignments/contact-info/route.ts` — GET endpoint for organizer/admin role; queries assignments where `match_id=[id]` and `status='confirmed'`; fetches each referee's `users.phone_number` via service_role client; returns `{ [assignmentId]: string | null }` per contracts/confirm-assignment.md
-- [ ] T008 [US2] Update `src/app/admin/matches/[id]/assignments/page.tsx` — after realtime subscription updates, fetch from `GET /api/matches/[id]/assignments/contact-info`; render `<ContactInfo phone={contactMap[assignment.id]}>` in each confirmed assignment row
+- [X] T007 [US2] Create `src/app/api/matches/[id]/assignments/contact-info/route.ts` — GET endpoint for organizer/admin role; queries assignments where `match_id=[id]` and `status='confirmed'`; fetches each referee's `users.phone_number` via service_role client; returns `{ [assignmentId]: string | null }` per contracts/confirm-assignment.md
+- [X] T008 [US2] Update `src/app/admin/matches/[id]/assignments/page.tsx` — after realtime subscription updates, fetch from `GET /api/matches/[id]/assignments/contact-info`; render `<ContactInfo phone={contactMap[assignment.id]}>` in each confirmed assignment row
 
 **Checkpoint**: User Story 2 complete — admin sees referee phone numbers with call/SMS buttons on assignment status page
 
@@ -65,10 +65,10 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Independent Test**: 確定済みアサインのある審判アカウントで担当履歴画面を開き、運営者の電話番号（ハイフン補完済み）と2ボタンが表示されることを確認。notified または accepted 状態の試合では電話番号が表示されないことを確認。
 
-- [ ] T009 [US3] Update `src/app/api/assignments/route.ts` — add `organizer:users!created_by(phone_number)` to the Supabase select; flatten to `matches.organizer_phone` in response shape (existing `status='confirmed'` filter already satisfies disclosure condition) per contracts/profile.md
-- [ ] T010 [US3] Add `organizer_phone: string | null` to `AssignmentHistoryItem.matches` type in `src/components/history/AssignmentHistory.tsx`
-- [ ] T011 [US3] Render `<ContactInfo phone={item.matches?.organizer_phone ?? null}>` for confirmed assignments in `src/components/history/AssignmentHistory.tsx` (depends on T010 and T005)
-- [ ] T012 [US3] Update `src/app/(referee)/history/page.tsx` — ensure data from `GET /api/assignments` is typed as the updated `AssignmentHistoryItem[]` shape and passed to `<AssignmentHistory>`
+- [X] T009 [US3] Update `src/app/api/assignments/route.ts` — add `organizer:users!created_by(phone_number)` to the Supabase select; flatten to `matches.organizer_phone` in response shape (existing `status='confirmed'` filter already satisfies disclosure condition) per contracts/profile.md
+- [X] T010 [US3] Add `organizer_phone: string | null` to `AssignmentHistoryItem.matches` type in `src/components/history/AssignmentHistory.tsx`
+- [X] T011 [US3] Render `<ContactInfo phone={item.matches?.organizer_phone ?? null}>` for confirmed assignments in `src/components/history/AssignmentHistory.tsx` (depends on T010 and T005)
+- [X] T012 [US3] Update `src/app/(referee)/history/page.tsx` — ensure data from `GET /api/assignments` is typed as the updated `AssignmentHistoryItem[]` shape and passed to `<AssignmentHistory>`
 
 **Checkpoint**: User Story 3 complete — referee sees organizer phone numbers with call/SMS buttons on assignment history page
 
@@ -80,7 +80,7 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Independent Test**: 電話番号未登録の審判がLINEで「参加」をタップし、アサインが `accepted` に更新された後にフォローアップメッセージ（`${NEXT_PUBLIC_APP_URL}/profile` リンク付き）が届くことを確認。電話番号登録済みの審判の場合はメッセージが送信されないことも確認。
 
-- [ ] T013 [US4] Update `src/app/api/webhook/line/route.ts` — in the `accept` action handler, after updating assignment to `accepted`, fetch `user.phone_number`; if null, call existing `pushTextMessage` with the follow-up template from research.md:「【電話番号登録のお願い】アサイン確定時に運営者との緊急連絡手段として電話番号が必要です。以下のリンクからプロフィールに電話番号をご登録ください。\n{NEXT_PUBLIC_APP_URL}/profile」
+- [X] T013 [US4] Update `src/app/api/webhook/line/route.ts` — in the `accept` action handler, after updating assignment to `accepted`, fetch `user.phone_number`; if null, call existing `pushTextMessage` with the follow-up template from research.md:「【電話番号登録のお願い】アサイン確定時に運営者との緊急連絡手段として電話番号が必要です。以下のリンクからプロフィールに電話番号をご登録ください。\n{NEXT_PUBLIC_APP_URL}/profile」
 
 **Checkpoint**: User Story 4 complete — LINE follow-up message sent automatically to referees who accept without a registered phone number
 
@@ -92,9 +92,9 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Independent Test**: プロフィール画面に電話番号入力欄が表示され、「090-1234-5678」を入力して保存すると「09012345678」として保存され、次回表示時は「090-1234-5678」で表示されることを確認。「0901234」（桁数不足）入力でエラーが表示されることを確認。
 
-- [ ] T014 [US5] Update `src/app/api/profile/route.ts` — if `phone_number` present in request body: call `normalizePhoneNumber`, validate with `isValidPhoneNumber`, return `{ error: '電話番号は0始まりの10〜11桁の数字で入力してください' }` (400) if invalid, otherwise include normalized value in `updatePayload` per contracts/profile.md
-- [ ] T015 [P] [US5] Add `phone_number` text input field to `src/components/profile/ProfileForm.tsx` — add to `ProfileFormData` interface and render an `<input type="tel">` with format hint; normalize display value using `formatPhoneNumber` when pre-filling existing number
-- [ ] T016 [US5] Update `src/app/(referee)/profile/page.tsx` — pass `user.phone_number` from the profile fetch as initial value to `<ProfileForm>` so existing number is pre-filled
+- [X] T014 [US5] Update `src/app/api/profile/route.ts` — if `phone_number` present in request body: call `normalizePhoneNumber`, validate with `isValidPhoneNumber`, return `{ error: '電話番号は0始まりの10〜11桁の数字で入力してください' }` (400) if invalid, otherwise include normalized value in `updatePayload` per contracts/profile.md
+- [X] T015 [P] [US5] Add `phone_number` text input field to `src/components/profile/ProfileForm.tsx` — add to `ProfileFormData` interface and render an `<input type="tel">` with format hint; normalize display value using `formatPhoneNumber` when pre-filling existing number
+- [X] T016 [US5] Update `src/app/(referee)/profile/page.tsx` — pass `user.phone_number` from the profile fetch as initial value to `<ProfileForm>` so existing number is pre-filled
 
 **Checkpoint**: User Story 5 complete — referee can register and update their phone number through the profile page
 
@@ -104,9 +104,9 @@ description: "Task list for アサイン確定後の連絡先情報開示"
 
 **Purpose**: Type safety verification and edge case validation across all stories.
 
-- [ ] T017 Run `tsc --noEmit` from repo root and fix any TypeScript errors introduced by `phone_number` additions across all modified files
-- [ ] T018 [P] Verify `ContactInfo` renders both 10-digit (`0X-XXXX-XXXX`) and 11-digit (`0XX-XXXX-XXXX`) formats correctly by inspecting the rendered HTML for both cases
-- [ ] T019 [P] Verify that admin assignments page and referee history page do NOT show phone numbers for `accepted` (unconfirmed) assignments — confirmed-only disclosure (FR-011, FR-012, SC-004)
+- [X] T017 Run `tsc --noEmit` from repo root and fix any TypeScript errors introduced by `phone_number` additions across all modified files
+- [X] T018 [P] Verify `ContactInfo` renders both 10-digit (`0X-XXXX-XXXX`) and 11-digit (`0XX-XXXX-XXXX`) formats correctly by inspecting the rendered HTML for both cases
+- [X] T019 [P] Verify that admin assignments page and referee history page do NOT show phone numbers for `accepted` (unconfirmed) assignments — confirmed-only disclosure (FR-011, FR-012, SC-004)
 
 ---
 

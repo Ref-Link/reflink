@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { LicenseLevel, AgeGroup } from '@/types/domain'
+import { formatPhoneNumber, normalizePhoneNumber } from '@/lib/phone'
 
 const LICENSE_LEVELS: LicenseLevel[] = ['S級', '1級', '2級', '3級', '4級']
 const AGE_GROUPS: AgeGroup[] = ['U12', 'U15', 'U18', 'Senior']
@@ -24,6 +25,7 @@ export interface ProfileFormData {
   age_groups: string[]
   region: string
   travel_range_km: number | null
+  phone_number: string
 }
 
 // S6759: props を Readonly でマーク
@@ -42,6 +44,9 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
     age_groups: initialData?.age_groups ?? [],
     region: initialData?.region ?? '',
     travel_range_km: initialData?.travel_range_km ?? null,
+    phone_number: initialData?.phone_number
+      ? formatPhoneNumber(normalizePhoneNumber(initialData.phone_number))
+      : '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -103,16 +108,35 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
         />
       </div>
 
-      <div>
-        <label htmlFor="real_name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">実名（任意）</label>
-        <input
-          id="real_name"
-          type="text"
-          value={formData.real_name}
-          onChange={(e) => setFormData((p) => ({ ...p, real_name: e.target.value }))}
-          className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="アサイン確定後のみ相手に開示されます"
-        />
+      <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 p-3">
+        <p className="mb-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">アサイン確定後に運営者へ開示</p>
+        <p className="mb-3 text-xs text-amber-600 dark:text-amber-500">
+          電話番号の登録がないとアサイン確定ができません
+        </p>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label htmlFor="real_name" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">氏名</label>
+            <input
+              id="real_name"
+              type="text"
+              value={formData.real_name}
+              onChange={(e) => setFormData((p) => ({ ...p, real_name: e.target.value }))}
+              className="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="例: 田中太郎"
+            />
+          </div>
+          <div>
+            <label htmlFor="phone_number" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">電話番号（確定に必要）</label>
+            <input
+              id="phone_number"
+              type="tel"
+              value={formData.phone_number}
+              onChange={(e) => setFormData((p) => ({ ...p, phone_number: e.target.value }))}
+              className="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="090-1234-5678"
+            />
+          </div>
+        </div>
       </div>
 
       <div>

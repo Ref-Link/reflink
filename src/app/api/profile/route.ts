@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextResponse } from 'next/server'
 import type { Database } from '@/types/database'
+import { normalizePhoneNumber, isValidPhoneNumber } from '@/lib/phone'
 
 type UserInsert = Database['public']['Tables']['users']['Insert']
 type UserUpdate = Database['public']['Tables']['users']['Update']
@@ -38,7 +39,17 @@ export async function PATCH(request: Request) {
   }
 
   const body = await request.json()
-  const { display_name, real_name, license_level, role_type, age_groups, region, travel_range_km, line_user_id } = body
+  const { display_name, real_name, license_level, role_type, age_groups, region, travel_range_km, line_user_id, phone_number } = body
+
+  if (phone_number !== undefined && phone_number !== '') {
+    const normalized = normalizePhoneNumber(String(phone_number))
+    if (!isValidPhoneNumber(normalized)) {
+      return NextResponse.json(
+        { error: '電話番号は0始まりの10〜11桁の数字で入力してください' },
+        { status: 400 }
+      )
+    }
+  }
 
   // Check if profile exists to decide insert vs update
   const { data: existing } = await supabase
@@ -66,6 +77,7 @@ export async function PATCH(request: Request) {
       real_name: real_name != null ? String(real_name) : null,
       line_user_id: line_user_id != null ? String(line_user_id) : null,
       travel_range_km: travel_range_km != null ? Number(travel_range_km) : null,
+      phone_number: phone_number !== undefined && phone_number !== '' ? normalizePhoneNumber(String(phone_number)) : null,
     }
 
     const { data, error } = await supabase
@@ -91,6 +103,7 @@ export async function PATCH(request: Request) {
   if (region !== undefined) updatePayload.region = String(region)
   if (travel_range_km !== undefined) updatePayload.travel_range_km = travel_range_km != null ? Number(travel_range_km) : null
   if (line_user_id !== undefined) updatePayload.line_user_id = line_user_id != null ? String(line_user_id) : null
+  if (phone_number !== undefined) updatePayload.phone_number = phone_number !== '' ? normalizePhoneNumber(String(phone_number)) : null
 
   const { data, error } = await supabase
     .from('users')

@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { ContactInfo } from '@/components/ui/ContactInfo'
 import type { AssignmentRow, MatchRow } from '@/types/database'
 import type { AssignmentStatus } from '@/types/domain'
 
@@ -39,6 +40,16 @@ export default function AssignmentsPage() {
   const [confirmedMessage, setConfirmedMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  // Inline phone registration state
+  const [showPhoneForm, setShowPhoneForm] = useState(false)
+  const [pendingAssignmentId, setPendingAssignmentId] = useState<string | null>(null)
+  const [phoneInput, setPhoneInput] = useState('')
+  const [phoneSaving, setPhoneSaving] = useState(false)
+  const [phoneError, setPhoneError] = useState<string | null>(null)
+
+  // Contact info map: assignmentId → referee phone_number
+  const [contactMap, setContactMap] = useState<Record<string, string | null>>({})
+
   const fetchMatch = useCallback(async () => {
     const res = await fetch(`/api/matches/${params.id}`)
     if (res.ok) setMatch(await res.json())
@@ -55,9 +66,17 @@ export default function AssignmentsPage() {
     setLoading(false)
   }, [params.id])
 
+  const fetchContactInfo = useCallback(async () => {
+    const res = await fetch(`/api/matches/${params.id}/assignments/contact-info`)
+    if (res.ok) {
+      setContactMap(await res.json())
+    }
+  }, [params.id])
+
   useEffect(() => {
     fetchMatch()
     fetchAssignments()
+    fetchContactInfo()
 
     const supabase = createClient()
     const channel = supabase
@@ -70,16 +89,20 @@ export default function AssignmentsPage() {
           table: 'assignments',
           filter: `match_id=eq.${params.id}`,
         },
-        () => { fetchAssignments() }
+        () => {
+          fetchAssignments()
+          fetchContactInfo()
+        }
       )
       .subscribe()
 
     return () => { supabase.removeChannel(channel) }
-  }, [fetchMatch, fetchAssignments, params.id])
+  }, [fetchMatch, fetchAssignments, fetchContactInfo, params.id])
 
   async function handleConfirm(assignmentId: string) {
     setConfirmingId(assignmentId)
     setErrorMessage(null)
+    setShowPhoneForm(false)
     const res = await fetch(`/api/matches/${params.id}/assignments/${assignmentId}/confirm`, {
       method: 'PATCH',
     })
@@ -88,9 +111,41 @@ export default function AssignmentsPage() {
       setConfirmedMessage('アサインを確定しました')
       setTimeout(() => setConfirmedMessage(null), 3000)
       fetchAssignments()
+      fetchContactInfo()
     } else {
       const json = await res.json()
-      setErrorMessage(json.error ?? '確定に失敗しました')
+      if (json.error === 'ORGANIZER_PHONE_MISSING') {
+        setPendingAssignmentId(assignmentId)
+        setShowPhoneForm(true)
+        setPhoneInput('')
+        setPhoneError(null)
+      } else if (json.error === 'REFEREE_PHONE_MISSING') {
+        setErrorMessage('審判の連絡先が未登録のため確定できません。審判に登録を依頼してください。')
+      } else {
+        setErrorMessage(json.error ?? '確定に失敗しました')
+      }
+    }
+  }
+
+  async function handlePhoneSave() {
+    setPhoneSaving(true)
+    setPhoneError(null)
+    const res = await fetch('/api/profile', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone_number: phoneInput }),
+    })
+    if (!res.ok) {
+      const json = await res.json()
+      setPhoneError(json.error ?? '保存に失敗しました')
+      setPhoneSaving(false)
+      return
+    }
+    setPhoneSaving(false)
+    setShowPhoneForm(false)
+    if (pendingAssignmentId) {
+      await handleConfirm(pendingAssignmentId)
+      setPendingAssignmentId(null)
     }
   }
 
@@ -143,6 +198,39 @@ export default function AssignmentsPage() {
         </div>
       )}
 
+      {showPhoneForm && (
+        <div className="mb-4 rounded-md border border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950 p-4">
+          <p className="mb-2 text-sm font-medium text-yellow-800 dark:text-yellow-300">
+            確定するには電話番号の登録が必要です
+          </p>
+          {phoneError && (
+            <p className="mb-2 text-xs text-red-600 dark:text-red-400">{phoneError}</p>
+          )}
+          <div className="flex gap-2">
+            <input
+              type="tel"
+              value={phoneInput}
+              onChange={(e) => setPhoneInput(e.target.value)}
+              placeholder="例: 090-1234-5678"
+              className="flex-1 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
+            <button
+              onClick={handlePhoneSave}
+              disabled={phoneSaving || !phoneInput.trim()}
+              className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50"
+            >
+              {phoneSaving ? '保存中...' : '保存して確定'}
+            </button>
+            <button
+              onClick={() => { setShowPhoneForm(false); setPendingAssignmentId(null) }}
+              className="rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+            >
+              キャンセル
+            </button>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="flex items-center justify-center py-12 text-sm text-gray-500 dark:text-gray-400">
           読み込み中...
@@ -179,6 +267,11 @@ export default function AssignmentsPage() {
                   {assignment.responded_at && (
                     <div className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">
                       回答: {new Date(assignment.responded_at).toLocaleString('ja-JP')}
+                    </div>
+                  )}
+                  {assignment.status === 'confirmed' && (
+                    <div className="mt-1">
+                      <ContactInfo phone={contactMap[assignment.id] ?? null} />
                     </div>
                   )}
                 </div>

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -14,20 +15,24 @@ export async function GET(request: Request) {
   const date_from = searchParams.get('date_from')
   const date_to = searchParams.get('date_to')
 
-  let query = supabase
+  const adminClient = createAdminClient()
+
+  let query = adminClient
     .from('assignments')
     .select(`
       id,
       role,
       status,
       confirmed_at,
+      user_id,
       matches (
         id,
         title,
         match_date,
         start_time,
         venue,
-        age_group
+        age_group,
+        created_by
       )
     `)
     .eq('user_id', user.id)
@@ -63,5 +68,42 @@ export async function GET(request: Request) {
     return matchB.match_date.localeCompare(matchA.match_date)
   })
 
-  return NextResponse.json(filtered)
+  // Fetch organizer phone numbers for all confirmed assignments
+  const organizerIds = filtered
+    .map((item) => (item.matches as unknown as { created_by: string } | null)?.created_by)
+    .filter((id): id is string => !!id)
+
+  const uniqueOrganizerIds = Array.from(new Set(organizerIds))
+  const { data: organizerUsers } = uniqueOrganizerIds.length > 0
+    ? await adminClient.from('users').select('id, phone_number').in('id', uniqueOrganizerIds)
+    : { data: [] }
+
+  const phoneByOrganizerId = Object.fromEntries(
+    (organizerUsers ?? []).map((u) => [u.id, u.phone_number])
+  )
+
+  // Flatten organizer.phone_number into matches.organizer_phone
+  const result = filtered.map((item) => {
+    const matchData = item.matches as unknown as {
+      id: string; title: string; match_date: string; start_time: string;
+      venue: string; age_group: string; created_by: string
+    } | null
+    return {
+      id: item.id,
+      role: item.role,
+      status: item.status,
+      confirmed_at: item.confirmed_at,
+      matches: matchData ? {
+        id: matchData.id,
+        title: matchData.title,
+        match_date: matchData.match_date,
+        start_time: matchData.start_time,
+        venue: matchData.venue,
+        age_group: matchData.age_group,
+        organizer_phone: phoneByOrganizerId[matchData.created_by] ?? null,
+      } : null,
+    }
+  })
+
+  return NextResponse.json(result)
 }
