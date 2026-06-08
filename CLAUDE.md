@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/007-unified-bottom-nav/plan.md
+specs/008-contact-disclosure/plan.md
 <!-- SPECKIT END -->
