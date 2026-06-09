@@ -1,13 +1,13 @@
 'use client'
 
-import type { Candidate } from '@/types/domain'
+import type { Candidate, AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const LICENSE_ORDER: Record<string, number> = {
-  'S級': 0,
-  '1級': 1,
-  '2級': 2,
-  '3級': 3,
-  '4級': 4,
+  '1級': 0,
+  '2級': 1,
+  '3級': 2,
+  '4級': 3,
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -99,7 +99,7 @@ export function CandidateList({
                   <span>
                     役割: {candidate.role_type.map((r) => ROLE_LABELS[r] ?? r).join('・')}
                   </span>
-                  <span>年代: {candidate.age_groups.join('・')}</span>
+                  <span>年代: {candidate.age_groups.map((g) => AGE_GROUP_LABELS[g as AgeGroup] ?? g).join('・')}</span>
                   <span>地域: {candidate.region}</span>
                   {candidate.travel_range_km != null && (
                     <span>移動範囲: {candidate.travel_range_km}km</span>

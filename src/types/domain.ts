@@ -13,11 +13,19 @@ export type MatchStatus = 'open' | 'filled' | 'cancelled'
 // Referee roles within a match
 export type RefereeRole = 'referee' | 'assistant_referee'
 
-// License levels
-export type LicenseLevel = 'S級' | '1級' | '2級' | '3級' | '4級'
+// License levels (JFA審判ライセンス)
+export type LicenseLevel = '1級' | '2級' | '3級' | '4級'
 
-// Age groups
+// Age groups (internal DB values)
 export type AgeGroup = 'U12' | 'U15' | 'U18' | 'Senior'
+
+// Display labels for age groups (JFA登録種別)
+export const AGE_GROUP_LABELS: Record<AgeGroup, string> = {
+  U12: '第4種(U-12)',
+  U15: '第3種(U-15)',
+  U18: '第2種(U-18)',
+  Senior: '第1種(大学・社会人)',
+}
 
 // Candidate for assignment (includes trust visibility data)
 export interface Candidate {

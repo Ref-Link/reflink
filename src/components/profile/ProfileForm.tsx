@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import type { LicenseLevel, AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 import { formatPhoneNumber, normalizePhoneNumber } from '@/lib/phone'
 
-const LICENSE_LEVELS: LicenseLevel[] = ['S級', '1級', '2級', '3級', '4級']
+const LICENSE_LEVELS: LicenseLevel[] = ['1級', '2級', '3級', '4級']
 const AGE_GROUPS: AgeGroup[] = ['U12', 'U15', 'U18', 'Senior']
 const ROLE_OPTIONS = [
   { value: 'referee', label: '主審' },
@@ -198,7 +199,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
               }`}
             >
-              {group}
+              {AGE_GROUP_LABELS[group]}
             </button>
           ))}
         </div>

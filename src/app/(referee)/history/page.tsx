@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { AssignmentHistory, type AssignmentHistoryItem } from '@/components/history/AssignmentHistory'
 import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const AGE_GROUPS: AgeGroup[] = ['U12', 'U15', 'U18', 'Senior']
 
@@ -59,7 +60,7 @@ export default function HistoryPage() {
           >
             <option value="">すべて</option>
             {AGE_GROUPS.map((g) => (
-              <option key={g} value={g}>{g}</option>
+              <option key={g} value={g}>{AGE_GROUP_LABELS[g]}</option>
             ))}
           </select>
         </div>
