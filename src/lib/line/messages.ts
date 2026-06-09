@@ -1,4 +1,6 @@
 import type { messagingApi } from '@line/bot-sdk'
+import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const WEEKDAYS = ['日', '月', '火', '水', '木', '金', '土']
 
@@ -61,7 +63,7 @@ export function buildMatchNotificationMessage(
     } as messagingApi.FlexText,
     {
       type: 'text',
-      text: `年代: ${age_group}`,
+      text: `年代: ${AGE_GROUP_LABELS[age_group as AgeGroup] ?? age_group}`,
       size: 'sm',
       color: '#555555',
       margin: 'xs',

@@ -5,7 +5,8 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { CandidateList } from '@/components/matches/CandidateList'
 import type { MatchRow } from '@/types/database'
-import type { Candidate, MatchStatus } from '@/types/domain'
+import type { Candidate, MatchStatus, AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const STATUS_LABELS: Record<MatchStatus, string> = {
   open: '募集中',
@@ -159,7 +160,7 @@ export default function MatchDetailPage() {
             </div>
             <div>
               <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">対象年代</dt>
-              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{match.age_group}</dd>
+              <dd className="mt-0.5 text-gray-900 dark:text-gray-100">{AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}</dd>
             </div>
             <div>
               <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">必要人数</dt>
