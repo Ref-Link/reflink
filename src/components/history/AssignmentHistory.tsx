@@ -1,6 +1,8 @@
 'use client'
 
 import { ContactInfo } from '@/components/ui/ContactInfo'
+import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const DAY_NAMES = ['日', '月', '火', '水', '木', '金', '土']
 
@@ -37,7 +39,7 @@ const ROLE_LABELS: Record<string, string> = {
   assistant_referee: '副審',
 }
 
-const AGE_GROUP_COLORS: Record<string, string> = {
+const AGE_GROUP_COLORS: Record<AgeGroup, string> = {
   U12: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   U15: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   U18: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200',
@@ -58,7 +60,7 @@ export function AssignmentHistory({ items }: AssignmentHistoryProps) {
       {items.map((item) => {
         const match = item.matches
         if (!match) return null
-        const ageGroupColor = AGE_GROUP_COLORS[match.age_group] ?? 'bg-gray-100 text-gray-700'
+        const ageGroupColor = AGE_GROUP_COLORS[match.age_group as AgeGroup] ?? 'bg-gray-100 text-gray-700'
 
         return (
           <li
@@ -77,7 +79,7 @@ export function AssignmentHistory({ items }: AssignmentHistoryProps) {
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs font-medium ${ageGroupColor}`}
                 >
-                  {match.age_group}
+                  {AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}
                 </span>
                 <span className="rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-0.5 text-xs font-medium text-gray-600 dark:text-gray-400">
                   {ROLE_LABELS[item.role] ?? item.role}

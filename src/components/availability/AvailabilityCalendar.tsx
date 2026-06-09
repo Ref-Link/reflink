@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 import type { AvailabilityRow } from '@/types/database'
 
 const AGE_GROUPS: AgeGroup[] = ['U12', 'U15', 'U18', 'Senior']
@@ -157,7 +158,7 @@ export function AvailabilityCalendar({ existingDates = [], onAdd }: Availability
                   : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
               }`}
             >
-              {group}
+              {AGE_GROUP_LABELS[group]}
             </button>
           ))}
         </div>
@@ -240,7 +241,7 @@ export function AvailabilityList({ items, onDelete }: AvailabilityListProps) {
             </p>
             <div className="flex gap-1 flex-wrap">
               {item.age_groups.map((g) => (
-                <span key={g} className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">{g}</span>
+                <span key={g} className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700">{AGE_GROUP_LABELS[g as AgeGroup] ?? g}</span>
               ))}
             </div>
             {item.notes && <p className="text-xs text-gray-400 dark:text-gray-500">{item.notes}</p>}

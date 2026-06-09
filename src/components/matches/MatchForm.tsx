@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const AGE_GROUPS: AgeGroup[] = ['U12', 'U15', 'U18', 'Senior']
 
@@ -163,7 +164,7 @@ export function MatchForm({ initialData, onSubmit, submitLabel = '登録する' 
         >
           <option value="">選択してください</option>
           {AGE_GROUPS.map((g) => (
-            <option key={g} value={g}>{g}</option>
+            <option key={g} value={g}>{AGE_GROUP_LABELS[g]}</option>
           ))}
         </select>
       </div>
