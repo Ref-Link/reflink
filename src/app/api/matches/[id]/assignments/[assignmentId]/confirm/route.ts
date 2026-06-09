@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { pushTextMessage } from '@/lib/line/client'
+import type { AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 async function getOrganizerMembership(supabase: ReturnType<typeof createClient>, userId: string) {
   const { data } = await supabase
@@ -113,7 +115,7 @@ export async function PATCH(
         `${match.title}\n` +
         `📅 ${dateStr} ${timeStr}\n` +
         `📍 ${match.venue}\n` +
-        `対象年代: ${match.age_group}`
+        `対象年代: ${AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}`
       await pushTextMessage(referee.line_user_id, confirmText)
     } catch (lineError) {
       console.error('LINE push failed:', lineError)

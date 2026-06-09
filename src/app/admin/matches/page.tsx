@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { MatchForm, type MatchFormData } from '@/components/matches/MatchForm'
 import type { MatchRow } from '@/types/database'
-import type { MatchStatus } from '@/types/domain'
+import type { MatchStatus, AgeGroup } from '@/types/domain'
+import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const STATUS_LABELS: Record<MatchStatus, string> = {
   open: '募集中',
@@ -117,7 +118,7 @@ export default function AdminMatchesPage() {
                       {formatMatchDate(match.match_date)} {match.start_time.slice(0, 5)}〜
                     </div>
                     <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
-                      {match.venue} ／ {match.age_group}
+                      {match.venue} ／ {AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}
                     </div>
                   </div>
                   <div className="flex-shrink-0 text-right text-xs text-gray-400 dark:text-gray-500">
