@@ -18,7 +18,7 @@
 
 _既存プロジェクトへの局所変更のみ。新規ファイル・依存追加・DBマイグレーション不要。_
 
-- [ ] T001 Confirm 4 target files exist and review current state: `src/components/matches/CandidateList.tsx`, `src/app/admin/matches/[id]/page.tsx`, `src/lib/line/messages.ts`, `src/app/api/matches/[id]/assignments/route.ts`
+- [x] T001 Confirm 4 target files exist and review current state: `src/components/matches/CandidateList.tsx`, `src/app/admin/matches/[id]/page.tsx`, `src/lib/line/messages.ts`, `src/app/api/matches/[id]/assignments/route.ts`
 
 ---
 
@@ -40,13 +40,13 @@ _`RefereeRole` 型は `src/types/domain.ts` に既存。`assignments.role` カ�
 
 ### Implementation for User Story 1
 
-- [ ] T002 [P] [US1] `CandidateListProps` インターフェースに `selectedRoles?: Map<string, 'referee' | 'assistant_referee'>`, `matchRecruitedRoles?: RefereeRole[]`, `onRoleChange?: (id: string, role: 'referee' | 'assistant_referee') => void` を追加する `src/components/matches/CandidateList.tsx`
-- [ ] T003 [P] [US1] `src/app/admin/matches/[id]/page.tsx` に `selectedRoles: Map<string, 'referee' | 'assistant_referee'>` ステートと `matchRecruitedRoles` 計算（`match.referees_needed > 0 ? ['referee'] : []` + `match.assistants_needed > 0 ? ['assistant_referee'] : []`）を追加する
-- [ ] T004 [US1] `src/components/matches/CandidateList.tsx` に、選択済み候補でかつ `availableRoles.length === 2` の場合にインライン表示するロールピッカー（主審/副審 2ボタントグル、min-h-[44px]）を追加する（T002 に依存）
-- [ ] T005 [US1] `src/app/admin/matches/[id]/page.tsx` の `handleToggleSelect` を修正する: チェックON時に `availableRolesFor(candidate, matchRecruitedRoles).length === 1` なら自動で `selectedRoles` に設定、チェックOFF時に `selectedRoles` から削除（T003 に依存）
-- [ ] T006 [US1] `src/app/admin/matches/[id]/page.tsx` に `notifyReady` 計算（`selectedIds.size > 0 && Array.from(selectedIds).every(id => selectedRoles.has(id))`）を追加し、送信ボタンの `disabled` 条件を `!notifyReady || notifying` に変更し、ボタンラベルを選択内容（例: `主審1名・副審1名に通知を送る`）を反映するよう更新する（T005 に依存）
-- [ ] T007 [US1] `src/app/admin/matches/[id]/page.tsx` の `handleNotify` 内のロール決定ロジックを `selectedRoles.get(userId)` に置き換える（現行の `role_type.includes('referee') ? 'referee' : 'assistant_referee'` を削除）（T006 に依存）
-- [ ] T008 [US1] `src/app/admin/matches/[id]/page.tsx` の `<CandidateList>` JSXに `selectedRoles`, `matchRecruitedRoles`, `onRoleChange` props を渡すよう更新する（T004, T007 に依存）
+- [x] T002 [P] [US1] `CandidateListProps` インターフェースに `selectedRoles?: Map<string, 'referee' | 'assistant_referee'>`, `matchRecruitedRoles?: RefereeRole[]`, `onRoleChange?: (id: string, role: 'referee' | 'assistant_referee') => void` を追加する `src/components/matches/CandidateList.tsx`
+- [x] T003 [P] [US1] `src/app/admin/matches/[id]/page.tsx` に `selectedRoles: Map<string, 'referee' | 'assistant_referee'>` ステートと `matchRecruitedRoles` 計算（`match.referees_needed > 0 ? ['referee'] : []` + `match.assistants_needed > 0 ? ['assistant_referee'] : []`）を追加する
+- [x] T004 [US1] `src/components/matches/CandidateList.tsx` に、選択済み候補でかつ `availableRoles.length === 2` の場合にインライン表示するロールピッカー（主審/副審 2ボタントグル、min-h-[44px]）を追加する（T002 に依存）
+- [x] T005 [US1] `src/app/admin/matches/[id]/page.tsx` の `handleToggleSelect` を修正する: チェックON時に `availableRolesFor(candidate, matchRecruitedRoles).length === 1` なら自動で `selectedRoles` に設定、チェックOFF時に `selectedRoles` から削除（T003 に依存）
+- [x] T006 [US1] `src/app/admin/matches/[id]/page.tsx` に `notifyReady` 計算（`selectedIds.size > 0 && Array.from(selectedIds).every(id => selectedRoles.has(id))`）を追加し、送信ボタンの `disabled` 条件を `!notifyReady || notifying` に変更し、ボタンラベルを選択内容（例: `主審1名・副審1名に通知を送る`）を反映するよう更新する（T005 に依存）
+- [x] T007 [US1] `src/app/admin/matches/[id]/page.tsx` の `handleNotify` 内のロール決定ロジックを `selectedRoles.get(userId)` に置き換える（現行の `role_type.includes('referee') ? 'referee' : 'assistant_referee'` を削除）（T006 に依存）
+- [x] T008 [US1] `src/app/admin/matches/[id]/page.tsx` の `<CandidateList>` JSXに `selectedRoles`, `matchRecruitedRoles`, `onRoleChange` props を渡すよう更新する（T004, T007 に依存）
 
 **Checkpoint**: User Story 1 完了後 — 候補選択→ロール指定→通知送信→アサイン一覧でロール確認が独立してテスト可能
 
@@ -60,8 +60,8 @@ _`RefereeRole` 型は `src/types/domain.ts` に既存。`assignments.role` カ�
 
 ### Implementation for User Story 2
 
-- [ ] T009 [P] [US2] `src/lib/line/messages.ts` の `MatchNotificationParams` に `role: 'referee' | 'assistant_referee'` を追加し、ヘッダーテキストを `role === 'referee' ? '【主審募集】' : '【副審募集】'` に、`altText` を `${role === 'referee' ? '【主審募集】' : '【副審募集】'}${title} ${dateFormatted}` に変更する
-- [ ] T010 [US2] `src/app/api/matches/[id]/assignments/route.ts` の `buildMatchNotificationMessage` 呼び出しに `role` を追加する: `buildMatchNotificationMessage({ ..., role: role as 'referee' | 'assistant_referee' })`（T009 に依存）
+- [x] T009 [P] [US2] `src/lib/line/messages.ts` の `MatchNotificationParams` に `role: 'referee' | 'assistant_referee'` を追加し、ヘッダーテキストを `role === 'referee' ? '【主審募集】' : '【副審募集】'` に、`altText` を `${role === 'referee' ? '【主審募集】' : '【副審募集】'}${title} ${dateFormatted}` に変更する
+- [x] T010 [US2] `src/app/api/matches/[id]/assignments/route.ts` の `buildMatchNotificationMessage` 呼び出しに `role` を追加する: `buildMatchNotificationMessage({ ..., role: role as 'referee' | 'assistant_referee' })`（T009 に依存）
 
 **Checkpoint**: User Story 1 AND 2 の組み合わせで、選択したロールがLINE通知ヘッダーに反映されることを確認できる
 
