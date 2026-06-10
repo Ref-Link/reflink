@@ -21,12 +21,13 @@ export interface MatchNotificationParams {
   venue: string
   age_group: string
   compensation: number | null
+  role: 'referee' | 'assistant_referee'
 }
 
 export function buildMatchNotificationMessage(
   params: MatchNotificationParams
 ): messagingApi.FlexMessage {
-  const { assignmentId, title, match_date, start_time, venue, age_group, compensation } = params
+  const { assignmentId, title, match_date, start_time, venue, age_group, compensation, role } = params
 
   const dateFormatted = formatMatchDate(match_date)
   const timeFormatted = formatStartTime(start_time)
@@ -34,7 +35,7 @@ export function buildMatchNotificationMessage(
   const bodyContents: messagingApi.FlexComponent[] = [
     {
       type: 'text',
-      text: '【審判募集】',
+      text: role === 'referee' ? '【主審募集】' : '【副審募集】',
       weight: 'bold',
       size: 'sm',
       color: '#1DB446',
@@ -118,7 +119,7 @@ export function buildMatchNotificationMessage(
 
   return {
     type: 'flex',
-    altText: `【試合審判募集】${title} ${dateFormatted}`,
+    altText: `${role === 'referee' ? '【主審募集】' : '【副審募集】'}${title} ${dateFormatted}`,
     contents,
   }
 }

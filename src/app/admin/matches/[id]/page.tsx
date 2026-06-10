@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { CandidateList } from '@/components/matches/CandidateList'
 import type { MatchRow } from '@/types/database'
-import type { Candidate, MatchStatus, AgeGroup } from '@/types/domain'
+import type { Candidate, MatchStatus, AgeGroup, RefereeRole } from '@/types/domain'
 import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const STATUS_LABELS: Record<MatchStatus, string> = {
@@ -36,6 +36,7 @@ export default function MatchDetailPage() {
   const [matchLoading, setMatchLoading] = useState(true)
   const [candidatesLoading, setCandidatesLoading] = useState(true)
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [selectedRoles, setSelectedRoles] = useState<Map<string, RefereeRole>>(new Map())
   const [notifying, setNotifying] = useState(false)
   const [notifyMessage, setNotifyMessage] = useState<string | null>(null)
 
@@ -65,17 +66,41 @@ export default function MatchDetailPage() {
     fetchCandidates()
   }, [fetchMatch, fetchCandidates])
 
+  const matchRecruitedRoles: RefereeRole[] = match
+    ? [
+        ...(match.referees_needed > 0 ? (['referee'] as const) : []),
+        ...(match.assistants_needed > 0 ? (['assistant_referee'] as const) : []),
+      ]
+    : []
+
   function handleToggleSelect(id: string) {
-    setSelectedIds((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) {
-        next.delete(id)
-      } else {
-        next.add(id)
+    if (selectedIds.has(id)) {
+      setSelectedIds((prev) => { const next = new Set(prev); next.delete(id); return next })
+      setSelectedRoles((prev) => { const next = new Map(prev); next.delete(id); return next })
+    } else {
+      setSelectedIds((prev) => { const next = new Set(prev); next.add(id); return next })
+      const candidate = candidates.find((c) => c.id === id)
+      if (candidate) {
+        const available = matchRecruitedRoles.filter((r) => candidate.role_type.includes(r))
+        if (available.length === 1) {
+          setSelectedRoles((prev) => { const next = new Map(prev); next.set(id, available[0]); return next })
+        }
       }
-      return next
-    })
+    }
   }
+
+  const notifyReady = selectedIds.size > 0 && Array.from(selectedIds).every((id) => selectedRoles.has(id))
+
+  const notifyButtonLabel = (() => {
+    if (notifying) return '送信中...'
+    const refCount = Array.from(selectedRoles.values()).filter((r) => r === 'referee').length
+    const assCount = Array.from(selectedRoles.values()).filter((r) => r === 'assistant_referee').length
+    const parts = [
+      refCount > 0 && `主審${refCount}名`,
+      assCount > 0 && `副審${assCount}名`,
+    ].filter(Boolean)
+    return parts.length > 0 ? `${parts.join('・')}に通知を送る` : `${selectedIds.size}名に通知を送る`
+  })()
 
   async function handleNotify() {
     if (selectedIds.size === 0) return
@@ -83,9 +108,7 @@ export default function MatchDetailPage() {
     setNotifyMessage(null)
 
     const candidatePayload = Array.from(selectedIds).map((userId) => {
-      const candidate = candidates.find((c) => c.id === userId)
-      const role =
-        candidate?.role_type.includes('referee') ? 'referee' : 'assistant_referee'
+      const role = selectedRoles.get(userId) ?? 'referee'
       return { userId, role }
     })
 
@@ -101,6 +124,7 @@ export default function MatchDetailPage() {
       const sent = (json.assignments as unknown[]).length
       setNotifyMessage(`${sent}名に通知を送りました`)
       setSelectedIds(new Set())
+      setSelectedRoles(new Map())
     } else {
       const json = await res.json()
       setNotifyMessage(json.error ?? '通知の送信に失敗しました')
@@ -196,10 +220,10 @@ export default function MatchDetailPage() {
           {selectedIds.size > 0 && (
             <button
               onClick={handleNotify}
-              disabled={notifying}
+              disabled={!notifyReady || notifying}
               className="min-h-[44px] rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              {notifying ? '送信中...' : `${selectedIds.size}名に通知を送る`}
+              {notifyButtonLabel}
             </button>
           )}
         </div>
@@ -215,6 +239,11 @@ export default function MatchDetailPage() {
           isLoading={candidatesLoading}
           selectedIds={selectedIds}
           onToggleSelect={handleToggleSelect}
+          selectedRoles={selectedRoles}
+          matchRecruitedRoles={matchRecruitedRoles}
+          onRoleChange={(id, role) =>
+            setSelectedRoles((prev) => { const next = new Map(prev); next.set(id, role); return next })
+          }
         />
       </section>
     </main>

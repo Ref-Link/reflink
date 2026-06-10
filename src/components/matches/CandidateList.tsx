@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Candidate, AgeGroup } from '@/types/domain'
+import type { Candidate, AgeGroup, RefereeRole } from '@/types/domain'
 import { AGE_GROUP_LABELS } from '@/types/domain'
 
 const LICENSE_ORDER: Record<string, number> = {
@@ -44,6 +44,9 @@ interface CandidateListProps {
   readonly isLoading?: boolean
   readonly selectedIds?: Set<string>
   readonly onToggleSelect?: (id: string) => void
+  readonly selectedRoles?: Map<string, RefereeRole>
+  readonly matchRecruitedRoles?: RefereeRole[]
+  readonly onRoleChange?: (id: string, role: RefereeRole) => void
 }
 
 export function CandidateList({
@@ -51,6 +54,9 @@ export function CandidateList({
   isLoading = false,
   selectedIds,
   onToggleSelect,
+  selectedRoles,
+  matchRecruitedRoles,
+  onRoleChange,
 }: CandidateListProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
@@ -79,6 +85,13 @@ export function CandidateList({
       <ul className="divide-y divide-gray-200 dark:divide-gray-700 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         {candidates.map((candidate) => {
           const isExpanded = expandedId === candidate.id
+          const availableRoles = (matchRecruitedRoles ?? []).filter(
+            (r) => candidate.role_type.includes(r)
+          )
+          const candidateHasBothRoles =
+            candidate.role_type.includes('referee') &&
+            candidate.role_type.includes('assistant_referee')
+          const showRolePicker = !!(selectedIds?.has(candidate.id) && candidateHasBothRoles)
           return (
             <li key={candidate.id} className="px-4 py-3">
               <div className="flex items-center gap-3">
@@ -107,6 +120,25 @@ export function CandidateList({
                   <span className="shrink-0 text-xs text-gray-400 dark:text-gray-500">{isExpanded ? '▲' : '▼'}</span>
                 </button>
               </div>
+
+              {showRolePicker && (
+                <div className="mt-2 pl-7 flex gap-2 min-h-[44px] items-center">
+                  {availableRoles.map((role) => (
+                    <button
+                      key={role}
+                      type="button"
+                      onClick={() => onRoleChange?.(candidate.id, role)}
+                      className={`px-3 py-1.5 rounded-md text-xs font-medium border ${
+                        selectedRoles?.get(candidate.id) === role
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600'
+                      }`}
+                    >
+                      {ROLE_LABELS[role]}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {isExpanded && (
                 <div className="mt-2 pl-7 space-y-1">
