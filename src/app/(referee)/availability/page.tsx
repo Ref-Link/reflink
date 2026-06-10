@@ -7,6 +7,7 @@ import type { AvailabilityRow } from '@/types/database'
 export default function AvailabilityPage() {
   const [items, setItems] = useState<AvailabilityRow[]>([])
   const [loading, setLoading] = useState(true)
+  const [defaultAgeGroups, setDefaultAgeGroups] = useState<string[]>([])
 
   const fetchAvailabilities = useCallback(async () => {
     const res = await fetch('/api/availability')
@@ -18,6 +19,14 @@ export default function AvailabilityPage() {
 
   useEffect(() => {
     fetchAvailabilities()
+    fetch('/api/profile').then(async (res) => {
+      if (res.ok) {
+        const profile = await res.json()
+        if (Array.isArray(profile.age_groups)) {
+          setDefaultAgeGroups(profile.age_groups)
+        }
+      }
+    })
   }, [fetchAvailabilities])
 
   async function handleAdd(data: NewAvailabilityData) {
@@ -57,7 +66,7 @@ export default function AvailabilityPage() {
       </div>
 
       <div className="space-y-6">
-        <AvailabilityCalendar existingDates={existingDates} onAdd={handleAdd} />
+        <AvailabilityCalendar existingDates={existingDates} defaultAgeGroups={defaultAgeGroups} onAdd={handleAdd} />
 
         <div>
           <h2 className="mb-3 text-sm font-semibold text-gray-700 dark:text-gray-300">

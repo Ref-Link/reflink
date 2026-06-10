@@ -39,7 +39,29 @@ export async function GET() {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json(data)
+  const matchIds = (data ?? []).map((m) => m.id)
+  const { data: confirmedAssignments } = matchIds.length > 0
+    ? await supabase
+        .from('assignments')
+        .select('match_id, role')
+        .in('match_id', matchIds)
+        .eq('status', 'confirmed')
+    : { data: [] }
+
+  const countsByMatch: Record<string, { confirmed_referees: number; confirmed_assistants: number }> = {}
+  for (const a of confirmedAssignments ?? []) {
+    if (!countsByMatch[a.match_id]) countsByMatch[a.match_id] = { confirmed_referees: 0, confirmed_assistants: 0 }
+    if (a.role === 'referee') countsByMatch[a.match_id].confirmed_referees++
+    else if (a.role === 'assistant_referee') countsByMatch[a.match_id].confirmed_assistants++
+  }
+
+  const enriched = (data ?? []).map((m) => ({
+    ...m,
+    confirmed_referees: countsByMatch[m.id]?.confirmed_referees ?? 0,
+    confirmed_assistants: countsByMatch[m.id]?.confirmed_assistants ?? 0,
+  }))
+
+  return NextResponse.json(enriched)
 }
 
 export async function POST(request: Request) {

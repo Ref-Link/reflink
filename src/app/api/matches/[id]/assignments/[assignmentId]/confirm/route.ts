@@ -35,7 +35,7 @@ export async function PATCH(
 
   const { data: match } = await supabase
     .from('matches')
-    .select('id, community_id, title, match_date, start_time, venue, age_group')
+    .select('id, community_id, title, match_date, start_time, venue, age_group, referees_needed, assistants_needed')
     .eq('id', params.id)
     .eq('community_id', membership.community_id)
     .single()
@@ -96,6 +96,25 @@ export async function PATCH(
 
   if (updateError || !updated) {
     return NextResponse.json({ error: updateError?.message ?? 'Failed to confirm' }, { status: 500 })
+  }
+
+  const { data: allConfirmed } = await supabase
+    .from('assignments')
+    .select('role')
+    .eq('match_id', params.id)
+    .eq('status', 'confirmed')
+
+  const confirmedReferees = (allConfirmed ?? []).filter((a) => a.role === 'referee').length
+  const confirmedAssistants = (allConfirmed ?? []).filter((a) => a.role === 'assistant_referee').length
+
+  if (
+    confirmedReferees >= match.referees_needed &&
+    confirmedAssistants >= match.assistants_needed
+  ) {
+    await supabase
+      .from('matches')
+      .update({ status: 'filled', updated_at: new Date().toISOString() })
+      .eq('id', params.id)
   }
 
   const { data: referee } = await supabase

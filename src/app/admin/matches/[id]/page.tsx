@@ -26,10 +26,12 @@ function formatMatchDate(dateStr: string): string {
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日（${days[d.getDay()]}）`
 }
 
+type MatchWithCounts = MatchRow & { confirmed_referees: number; confirmed_assistants: number }
+
 export default function MatchDetailPage() {
   const params = useParams<{ id: string }>()
   const router = useRouter()
-  const [match, setMatch] = useState<MatchRow | null>(null)
+  const [match, setMatch] = useState<MatchWithCounts | null>(null)
   const [candidates, setCandidates] = useState<Candidate[]>([])
   const [matchLoading, setMatchLoading] = useState(true)
   const [candidatesLoading, setCandidatesLoading] = useState(true)
@@ -165,7 +167,10 @@ export default function MatchDetailPage() {
             <div>
               <dt className="text-xs font-medium text-gray-400 dark:text-gray-500">必要人数</dt>
               <dd className="mt-0.5 text-gray-900 dark:text-gray-100">
-                主審 {match.referees_needed}名 ／ 副審 {match.assistants_needed}名
+                {[
+                  match.referees_needed > 0 && `主審 ${match.confirmed_referees}/${match.referees_needed}名`,
+                  match.assistants_needed > 0 && `副審 ${match.confirmed_assistants}/${match.assistants_needed}名`,
+                ].filter(Boolean).join(' ／ ')}
               </dd>
             </div>
             {match.compensation != null && (

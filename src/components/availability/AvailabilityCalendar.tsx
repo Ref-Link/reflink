@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import type { AgeGroup } from '@/types/domain'
 import { AGE_GROUP_LABELS } from '@/types/domain'
 import type { AvailabilityRow } from '@/types/database'
@@ -12,11 +12,11 @@ export interface NewAvailabilityData {
   start_time: string | null
   end_time: string | null
   age_groups: string[]
-  notes: string | null
 }
 
 interface AvailabilityCalendarProps {
   readonly existingDates?: string[]
+  readonly defaultAgeGroups?: string[]
   readonly onAdd: (data: NewAvailabilityData) => Promise<void>
 }
 
@@ -24,14 +24,17 @@ function getToday(): string {
   return new Date().toISOString().split('T')[0]
 }
 
-export function AvailabilityCalendar({ existingDates = [], onAdd }: AvailabilityCalendarProps) {
+export function AvailabilityCalendar({ existingDates = [], defaultAgeGroups = [], onAdd }: AvailabilityCalendarProps) {
   const [selectedDate, setSelectedDate] = useState('')
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
-  const [selectedAgeGroups, setSelectedAgeGroups] = useState<string[]>([])
-  const [notes, setNotes] = useState('')
+  const [selectedAgeGroups, setSelectedAgeGroups] = useState<string[]>(defaultAgeGroups)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    setSelectedAgeGroups(defaultAgeGroups)
+  }, [defaultAgeGroups])
 
   function toggleAgeGroup(group: string) {
     setSelectedAgeGroups((prev) =>
@@ -62,14 +65,12 @@ export function AvailabilityCalendar({ existingDates = [], onAdd }: Availability
         start_time: startTime || null,
         end_time: endTime || null,
         age_groups: selectedAgeGroups,
-        notes: notes.trim() || null,
       })
       // Reset form on success
       setSelectedDate('')
       setStartTime('')
       setEndTime('')
-      setSelectedAgeGroups([])
-      setNotes('')
+      setSelectedAgeGroups(defaultAgeGroups)
     } catch (err) {
       setError(err instanceof Error ? err.message : '登録に失敗しました')
     } finally {
@@ -163,18 +164,6 @@ export function AvailabilityCalendar({ existingDates = [], onAdd }: Availability
           ))}
         </div>
       </fieldset>
-
-      <div>
-        <label htmlFor="avail_notes" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">備考</label>
-        <textarea
-          id="avail_notes"
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          rows={2}
-          className="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="任意メモ"
-        />
-      </div>
 
       <button
         type="button"
