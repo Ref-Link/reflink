@@ -38,14 +38,14 @@ export default async function AdminMembersPage() {
   const userIds = (rawMembers ?? []).map((m) => m.user_id)
   const { data: userData } = await adminClient
     .from('users')
-    .select('id, display_name, license_level, region')
+    .select('id, display_name, license_level, region, age_groups, role_type, travel_range_km')
     .in('id', userIds)
 
   const usersById = new Map((userData ?? []).map((u) => [u.id, u]))
 
   const members: MemberWithUser[] = (rawMembers ?? []).map((m) => ({
     ...m,
-    users: usersById.get(m.user_id) ?? { display_name: '', license_level: '', region: '' },
+    users: usersById.get(m.user_id) ?? { display_name: '', license_level: '', region: '', age_groups: [], role_type: [], travel_range_km: null },
   }))
 
   return (

@@ -31,7 +31,7 @@ export async function GET(
   const adminClient = createAdminClient()
   const { data, error } = await adminClient
     .from('community_members')
-    .select('*, users!user_id(display_name, license_level, region)')
+    .select('*, users!user_id(display_name, license_level, region, age_groups, role_type, travel_range_km)')
     .eq('community_id', communityId)
     .order('created_at', { ascending: false })
 

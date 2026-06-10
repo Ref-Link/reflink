@@ -35,8 +35,8 @@
 
 **Independent Test**: プロフィールに U15・U18 を設定した審判が空き日程追加フォームを開くと、U15・U18 ボタンが選択済みで表示される。フォームリセット後も同様。
 
-- [ ] T001 [US1] `AvailabilityCalendar` に `defaultAgeGroups: string[]` prop を追加し、`selectedAgeGroups` の初期値をそれで初期化、フォームリセット後も `defaultAgeGroups` に戻すよう変更 — `src/components/availability/AvailabilityCalendar.tsx`
-- [ ] T002 [US1] `AvailabilityPage` の mount 時に `GET /api/profile` を呼び出し `profile.age_groups` を取得して `<AvailabilityCalendar defaultAgeGroups={...} />` に渡す（profile 未取得中は空配列） — `src/app/(referee)/availability/page.tsx`
+- [X] T001 [US1] `AvailabilityCalendar` に `defaultAgeGroups: string[]` prop を追加し、`selectedAgeGroups` の初期値をそれで初期化、フォームリセット後も `defaultAgeGroups` に戻すよう変更 — `src/components/availability/AvailabilityCalendar.tsx`
+- [X] T002 [US1] `AvailabilityPage` の mount 時に `GET /api/profile` を呼び出し `profile.age_groups` を取得して `<AvailabilityCalendar defaultAgeGroups={...} />` に渡す（profile 未取得中は空配列） — `src/app/(referee)/availability/page.tsx`
 
 **Checkpoint**: User Story 1 完了。審判が空き日程フォームを開くと対応年代がプリセットされる。
 
@@ -48,10 +48,10 @@
 
 **Independent Test**: 試合一覧で各試合カードの右下に「主審 1/1名」「副審 0/2名」のような表示があることを確認。詳細画面の必要人数セクションでも同様。
 
-- [ ] T003 [P] [US4] `GET /api/matches` で matches 取得後、match id 一覧で assignments を一括クエリし `confirmed_referees` / `confirmed_assistants` を各試合オブジェクトにマージして返す — `src/app/api/matches/route.ts`
-- [ ] T004 [P] [US4] `GET /api/matches/[id]` でも同様に confirmed counts を単一試合レスポンスに追加する — `src/app/api/matches/[id]/route.ts`
-- [ ] T005 [US4] 試合一覧カードの右側人数表示を「主審 {confirmed_referees}/{referees_needed}名」「副審 {confirmed_assistants}/{assistants_needed}名」形式に変更（needed=0 の役割は非表示） — `src/app/admin/matches/page.tsx`
-- [ ] T006 [US4] 試合詳細の `必要人数` `<dd>` を「主審 {confirmed}/{needed}名 ／ 副審 {confirmed}/{needed}名」形式に変更（needed=0 の役割は非表示） — `src/app/admin/matches/[id]/page.tsx`
+- [X] T003 [P] [US4] `GET /api/matches` で matches 取得後、match id 一覧で assignments を一括クエリし `confirmed_referees` / `confirmed_assistants` を各試合オブジェクトにマージして返す — `src/app/api/matches/route.ts`
+- [X] T004 [P] [US4] `GET /api/matches/[id]` でも同様に confirmed counts を単一試合レスポンスに追加する — `src/app/api/matches/[id]/route.ts`
+- [X] T005 [US4] 試合一覧カードの右側人数表示を「主審 {confirmed_referees}/{referees_needed}名」「副審 {confirmed_assistants}/{assistants_needed}名」形式に変更（needed=0 の役割は非表示） — `src/app/admin/matches/page.tsx`
+- [X] T006 [US4] 試合詳細の `必要人数` `<dd>` を「主審 {confirmed}/{needed}名 ／ 副審 {confirmed}/{needed}名」形式に変更（needed=0 の役割は非表示） — `src/app/admin/matches/[id]/page.tsx`
 
 **Note**: T005 は T003 完了後に実施。T006 は T004 完了後に実施。T003・T004 は並行実施可。
 
@@ -65,7 +65,7 @@
 
 **Independent Test**: 必要人数（主審 1 名・副審 2 名）の最後の 1 名を確定した直後に試合一覧でステータスが「確定済」になっていることを確認。
 
-- [ ] T007 [US5] `PATCH confirm` ルートで match の select に `referees_needed, assistants_needed` を追加し、アサイン確定後に当試合の confirmed 数を再集計して閾値を満たした場合 `matches.status = 'filled'` に更新する — `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts`
+- [X] T007 [US5] `PATCH confirm` ルートで match の select に `referees_needed, assistants_needed` を追加し、アサイン確定後に当試合の confirmed 数を再集計して閾値を満たした場合 `matches.status = 'filled'` に更新する — `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts`
 
 **Checkpoint**: User Story 5 完了。最後のアサイン確定でステータスが自動更新される。
 
@@ -77,7 +77,7 @@
 
 **Independent Test**: 空き日程追加フォームを開いて備考テキストエリアが表示されないことを確認。登録済み一覧に既存備考付きアイテムがある場合は備考テキストが引き続き表示されることを確認。
 
-- [ ] T008 [US2] `AvailabilityCalendar` から `notes` state・textarea・label・`NewAvailabilityData.notes` フィールドを削除（`AvailabilityList` の既存 notes 表示は変更しない） — `src/components/availability/AvailabilityCalendar.tsx`
+- [X] T008 [US2] `AvailabilityCalendar` から `notes` state・textarea・label・`NewAvailabilityData.notes` フィールドを削除（`AvailabilityList` の既存 notes 表示は変更しない） — `src/components/availability/AvailabilityCalendar.tsx`
 
 **Note**: T001 と同じファイルだが独立した変更（notes 削除は age_groups プリセットと干渉しない）。T001 完了後に実施。
 
@@ -91,8 +91,8 @@
 
 **Independent Test**: 担当履歴リストの試合をタップして詳細セクション（必要審判人数・報酬・備考）が展開される。再タップで折り畳まれる。報酬・備考未設定の試合では該当行が非表示。
 
-- [ ] T009 [US3] `GET /api/assignments` の Supabase select の matches join に `referees_needed, assistants_needed, compensation, notes` を追加し、フラット化処理でこれらを `matches` オブジェクトに含める — `src/app/api/assignments/route.ts`
-- [ ] T010 [US3] `AssignmentHistoryItem.matches` 型に `referees_needed`, `assistants_needed`, `compensation: number | null`, `notes: string | null` を追加し、`AssignmentHistory` コンポーネントにアコーディオン展開を実装（`expandedId` state; タップで展開/折り畳み; 必要人数・報酬・備考を展開セクションに表示; compensation=0 は「無償」表示; null フィールドは非表示） — `src/components/history/AssignmentHistory.tsx`
+- [X] T009 [US3] `GET /api/assignments` の Supabase select の matches join に `referees_needed, assistants_needed, compensation, notes` を追加し、フラット化処理でこれらを `matches` オブジェクトに含める — `src/app/api/assignments/route.ts`
+- [X] T010 [US3] `AssignmentHistoryItem.matches` 型に `referees_needed`, `assistants_needed`, `compensation: number | null`, `notes: string | null` を追加し、`AssignmentHistory` コンポーネントにアコーディオン展開を実装（`expandedId` state; タップで展開/折り畳み; 必要人数・報酬・備考を展開セクションに表示; compensation=0 は「無償」表示; null フィールドは非表示） — `src/components/history/AssignmentHistory.tsx`
 
 **Note**: T010 は T009 完了後に実施。
 
@@ -106,10 +106,10 @@
 
 **Independent Test**: 審判候補一覧で候補をタップして年代・役割・移動範囲が展開される。別候補をタップすると前が折り畳まれ新しい候補が展開される。メンバー管理でも同様。
 
-- [ ] T011 [P] [US6] `CandidateList` をアコーディオン化: collapsed では display_name + license badge + チェックボックスのみ表示; タップで license, age_groups, role_type, region, travel_range_km（null なら非表示）を展開; `expandedId` state で単一展開を強制 (FR-009) — `src/components/matches/CandidateList.tsx`
-- [ ] T012 [P] [US6] `GET /api/communities/[id]/members` の `users!user_id(...)` select に `age_groups, role_type, travel_range_km` を追加（real_name・phone_number は含めない） — `src/app/api/communities/[id]/members/route.ts`
-- [ ] T013 [US6] `MemberWithUser.users` 型に `age_groups: string[]`, `role_type: string[]`, `travel_range_km: number | null` を追加; `ApprovalList` の pending メンバー表示にアコーディオンを追加（collapsed: display_name + license + 承認/却下ボタン; expanded: license, age_groups, role_type, travel_range_km を詳細表示） — `src/components/members/ApprovalList.tsx`
-- [ ] T014 [US6] `AdminMembersClient` の承認済み/却下メンバー一覧にアコーディオンを追加（collapsed: display_name + role + status badge; expanded: license, age_groups, role_type, travel_range_km; 両セクションで `expandedId` を共有し単一展開） — `src/app/admin/members/AdminMembersClient.tsx`
+- [X] T011 [P] [US6] `CandidateList` をアコーディオン化: collapsed では display_name + license badge + チェックボックスのみ表示; タップで license, age_groups, role_type, region, travel_range_km（null なら非表示）を展開; `expandedId` state で単一展開を強制 (FR-009) — `src/components/matches/CandidateList.tsx`
+- [X] T012 [P] [US6] `GET /api/communities/[id]/members` の `users!user_id(...)` select に `age_groups, role_type, travel_range_km` を追加（real_name・phone_number は含めない） — `src/app/api/communities/[id]/members/route.ts`
+- [X] T013 [US6] `MemberWithUser.users` 型に `age_groups: string[]`, `role_type: string[]`, `travel_range_km: number | null` を追加; `ApprovalList` の pending メンバー表示にアコーディオンを追加（collapsed: display_name + license + 承認/却下ボタン; expanded: license, age_groups, role_type, travel_range_km を詳細表示） — `src/components/members/ApprovalList.tsx`
+- [X] T014 [US6] `AdminMembersClient` の承認済み/却下メンバー一覧にアコーディオンを追加（collapsed: display_name + role + status badge; expanded: license, age_groups, role_type, travel_range_km; 両セクションで `expandedId` を共有し単一展開） — `src/app/admin/members/AdminMembersClient.tsx`
 
 **Note**: T011 と T012 は並行実施可。T013 は T012 完了後に実施。T014 は T013 と並行実施可（AdminMembersClient は ApprovalList とは別ファイル）。
 
@@ -119,7 +119,7 @@
 
 ## Final Phase: Polish & Cross-Cutting Concerns
 
-- [ ] T015 [P] 全アコーディオン展開箇所で `real_name`・`phone_number` が表示されないことを確認（FR-010 コンプライアンス） — `CandidateList.tsx`, `ApprovalList.tsx`, `AdminMembersClient.tsx`
+- [X] T015 [P] 全アコーディオン展開箇所で `real_name`・`phone_number` が表示されないことを確認（FR-010 コンプライアンス） — `CandidateList.tsx`, `ApprovalList.tsx`, `AdminMembersClient.tsx`
 
 ---
 

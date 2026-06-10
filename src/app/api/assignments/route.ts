@@ -32,7 +32,11 @@ export async function GET(request: Request) {
         start_time,
         venue,
         age_group,
-        created_by
+        created_by,
+        referees_needed,
+        assistants_needed,
+        compensation,
+        notes
       )
     `)
     .eq('user_id', user.id)
@@ -86,7 +90,9 @@ export async function GET(request: Request) {
   const result = filtered.map((item) => {
     const matchData = item.matches as unknown as {
       id: string; title: string; match_date: string; start_time: string;
-      venue: string; age_group: string; created_by: string
+      venue: string; age_group: string; created_by: string;
+      referees_needed: number; assistants_needed: number;
+      compensation: number | null; notes: string | null
     } | null
     return {
       id: item.id,
@@ -101,6 +107,10 @@ export async function GET(request: Request) {
         venue: matchData.venue,
         age_group: matchData.age_group,
         organizer_phone: phoneByOrganizerId[matchData.created_by] ?? null,
+        referees_needed: matchData.referees_needed,
+        assistants_needed: matchData.assistants_needed,
+        compensation: matchData.compensation,
+        notes: matchData.notes,
       } : null,
     }
   })

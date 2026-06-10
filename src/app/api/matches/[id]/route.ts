@@ -43,5 +43,14 @@ export async function GET(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json(data)
+  const { data: confirmedAssignments } = await supabase
+    .from('assignments')
+    .select('role')
+    .eq('match_id', params.id)
+    .eq('status', 'confirmed')
+
+  const confirmed_referees = (confirmedAssignments ?? []).filter((a) => a.role === 'referee').length
+  const confirmed_assistants = (confirmedAssignments ?? []).filter((a) => a.role === 'assistant_referee').length
+
+  return NextResponse.json({ ...data, confirmed_referees, confirmed_assistants })
 }
