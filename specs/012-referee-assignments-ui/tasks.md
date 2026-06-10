@@ -18,7 +18,7 @@
 
 **Purpose**: 既存プロジェクトへの追加機能のため、セットアップは最小限
 
-- [ ] T001 既存 `package.json` と `src/types/database.ts` を確認し、新規パッケージ不要・スキーマ変更不要を確認する
+- [x] T001 既存 `package.json` と `src/types/database.ts` を確認し、新規パッケージ不要・スキーマ変更不要を確認する
 
 ---
 
@@ -28,8 +28,8 @@
 
 **⚠️ CRITICAL**: このフェーズが完了するまでUI実装は開始しない
 
-- [ ] T002 [P] `GET /api/assignments/pending` を実装する — ログイン中審判の `status='notified'` アサインをmatchesとJOINして返す。ソートは `match_date ASC` → `src/app/api/assignments/pending/route.ts`
-- [ ] T003 [P] `PATCH /api/assignments/[id]/respond` を実装する — `{ action: "accept" | "decline" }` を受け取り、LINE Webhookと同一ロジック（notified確認・二重防止・responded_at更新）で処理する → `src/app/api/assignments/[id]/respond/route.ts`
+- [x] T002 [P] `GET /api/assignments/pending` を実装する — ログイン中審判の `status='notified'` アサインをmatchesとJOINして返す。ソートは `match_date ASC` → `src/app/api/assignments/pending/route.ts`
+- [x] T003 [P] `PATCH /api/assignments/[id]/respond` を実装する — `{ action: "accept" | "decline" }` を受け取り、LINE Webhookと同一ロジック（notified確認・二重防止・responded_at更新）で処理する → `src/app/api/assignments/[id]/respond/route.ts`
 
 **Checkpoint**: `curl` または `fetch` でエンドポイントの動作を確認できる状態
 
@@ -43,9 +43,9 @@
 
 ### Implementation for User Story 1
 
-- [ ] T004 [P] [US1] `PendingList.tsx` を実装する — 募集カード一覧（試合タイトル・日時・会場・年代バッジ・担当役割）、参加・辞退ボタン、送信中のローディング状態・ボタン無効化、回答済み表示、空状態を含む → `src/components/assignments/PendingList.tsx`
-- [ ] T005 [P] [US1] `AssignmentTabs.tsx` を実装する — URLクエリ `?tab=recruiting`（デフォルト）/ `?tab=history` でアクティブタブを管理するサブタブUIコンポーネント（`useRouter` + `useSearchParams` 使用）→ `src/components/assignments/AssignmentTabs.tsx`
-- [ ] T006 [US1] `assignments/page.tsx` を実装する — `AssignmentTabs` でサブタブ切り替え、`?tab=recruiting` 時は `PendingList`、`?tab=history` 時は既存 `AssignmentHistory` を表示。未回答募集がある場合は `recruiting` タブをデフォルト表示 → `src/app/(referee)/assignments/page.tsx`
+- [x] T004 [P] [US1] `PendingList.tsx` を実装する — 募集カード一覧（試合タイトル・日時・会場・年代バッジ・担当役割）、参加・辞退ボタン、送信中のローディング状態・ボタン無効化、回答済み表示、空状態を含む → `src/components/assignments/PendingList.tsx`
+- [x] T005 [P] [US1] `AssignmentTabs.tsx` を実装する — URLクエリ `?tab=recruiting`（デフォルト）/ `?tab=history` でアクティブタブを管理するサブタブUIコンポーネント（`useRouter` + `useSearchParams` 使用）→ `src/components/assignments/AssignmentTabs.tsx`
+- [x] T006 [US1] `assignments/page.tsx` を実装する — `AssignmentTabs` でサブタブ切り替え、`?tab=recruiting` 時は `PendingList`、`?tab=history` 時は既存 `AssignmentHistory` を表示。未回答募集がある場合は `recruiting` タブをデフォルト表示 → `src/app/(referee)/assignments/page.tsx`
 
 **Checkpoint**: `/assignments` にアクセスして募集一覧が表示され、参加・辞退が動作することを確認
 
@@ -59,7 +59,7 @@
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] `RefereeBottomNav.tsx` を更新する — 「担当履歴」→「担当」に改名、`href` を `/history` → `/assignments` に変更、`useEffect` + `usePathname` で `/api/assignments/pending` をフェッチしてバッジ件数を管理、件数が0の場合はバッジ非表示 → `src/components/nav/RefereeBottomNav.tsx`
+- [x] T007 [US2] `RefereeBottomNav.tsx` を更新する — 「担当履歴」→「担当」に改名、`href` を `/history` → `/assignments` に変更、`useEffect` + `usePathname` で `/api/assignments/pending` をフェッチしてバッジ件数を管理、件数が0の場合はバッジ非表示 → `src/components/nav/RefereeBottomNav.tsx`
 
 **Checkpoint**: ボトムナビに「担当」タブが表示され、未回答件数バッジが正しく表示・非表示になることを確認
 
@@ -73,7 +73,7 @@
 
 ### Implementation for User Story 3
 
-- [ ] T008 [US3] `history/page.tsx` をリダイレクトに置き換える — Next.js の `redirect('/assignments?tab=history')` を呼ぶサーバーコンポーネントとして書き換え → `src/app/(referee)/history/page.tsx`
+- [x] T008 [US3] `history/page.tsx` をリダイレクトに置き換える — Next.js の `redirect('/assignments?tab=history')` を呼ぶサーバーコンポーネントとして書き換え → `src/app/(referee)/history/page.tsx`
 
 **Checkpoint**: `/history` が `/assignments?tab=history` にリダイレクトされ、「履歴」サブタブが表示されることを確認
 
@@ -83,9 +83,9 @@
 
 **Purpose**: エッジケース・UX補完・全体通しの動作確認
 
-- [ ] T009 [P] 回答済み（accepted/declined）の募集カードが「参加済み」「辞退済み」状態で正しく表示されること（ボタン非活性化）を `PendingList.tsx` で確認・修正する → `src/components/assignments/PendingList.tsx`
-- [ ] T010 [P] `AssignmentTabs.tsx` のデフォルトタブロジックを確認する — 未回答募集がゼロ件の場合は `?tab=history` をデフォルトとして表示する → `src/components/assignments/AssignmentTabs.tsx`
-- [ ] T011 quickstart.md の全手順をローカルで実行し、募集確認・参加・辞退・バッジ更新・履歴表示・リダイレクトが正常動作することを確認する
+- [x] T009 [P] 回答済み（accepted/declined）の募集カードが「参加済み」「辞退済み」状態で正しく表示されること（ボタン非活性化）を `PendingList.tsx` で確認・修正する → `src/components/assignments/PendingList.tsx`
+- [x] T010 [P] `AssignmentTabs.tsx` のデフォルトタブロジックを確認する — 未回答募集がゼロ件の場合は `?tab=history` をデフォルトとして表示する → `src/components/assignments/AssignmentTabs.tsx`
+- [x] T011 quickstart.md の全手順をローカルで実行し、募集確認・参加・辞退・バッジ更新・履歴表示・リダイレクトが正常動作することを確認する
 
 ---
 
