@@ -29,8 +29,8 @@
 
 ### Implementation for User Story 1
 
-- [ ] T001 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の assignment select クエリを `.select('id, user_id, match_id, status, role')` に変更する
-- [ ] T002 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の `status === 'confirmed'` チェック直後（L58付近）に、対象ロールの確定済み件数カウントクエリを追加し、`match.referees_needed`（role=referee）または `match.assistants_needed`（role=assistant_referee）以上であれば `{ error: 'SLOT_FULL', message: '<ロール名>の確定人数が募集人数に達しています' }` を HTTP 409 で返す
+- [x] T001 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の assignment select クエリを `.select('id, user_id, match_id, status, role')` に変更する
+- [x] T002 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の `status === 'confirmed'` チェック直後（L58付近）に、対象ロールの確定済み件数カウントクエリを追加し、`match.referees_needed`（role=referee）または `match.assistants_needed`（role=assistant_referee）以上であれば `{ error: 'SLOT_FULL', message: '<ロール名>の確定人数が募集人数に達しています' }` を HTTP 409 で返す
 
 **Checkpoint**: この時点でAPIレベルの過剰確定が防止できること。quickstart.md シナリオ1・4で検証可能。
 
@@ -44,9 +44,9 @@
 
 ### Implementation for User Story 2
 
-- [ ] T003 [P] [US2] `src/app/admin/matches/[id]/assignments/page.tsx` の `counts` 計算ブロック付近に、ロール別確定済み件数の計算を追加する（`confirmedByRole = { referee: assignments.filter(...).length, assistant_referee: ... }`）
-- [ ] T004 [US2] `src/app/admin/matches/[id]/assignments/page.tsx` に `isSlotFull(role: string): boolean` ヘルパーを追加し（match が null なら false、referee なら confirmedByRole.referee >= match.referees_needed）、確定ボタンの `disabled` 属性に `|| isSlotFull(assignment.role)` を追加する（T003 に依存）
-- [ ] T005 [P] [US2] `src/app/admin/matches/[id]/assignments/page.tsx` の `handleConfirm` 内エラー分岐に `SLOT_FULL` ケースを追加し、「〇〇の確定人数が募集人数に達しています」を `setErrorMessage` で表示する
+- [x] T003 [P] [US2] `src/app/admin/matches/[id]/assignments/page.tsx` の `counts` 計算ブロック付近に、ロール別確定済み件数の計算を追加する（`confirmedByRole = { referee: assignments.filter(...).length, assistant_referee: ... }`）
+- [x] T004 [US2] `src/app/admin/matches/[id]/assignments/page.tsx` に `isSlotFull(role: string): boolean` ヘルパーを追加し（match が null なら false、referee なら confirmedByRole.referee >= match.referees_needed）、確定ボタンの `disabled` 属性に `|| isSlotFull(assignment.role)` を追加する（T003 に依存）
+- [x] T005 [P] [US2] `src/app/admin/matches/[id]/assignments/page.tsx` の `handleConfirm` 内エラー分岐に `SLOT_FULL` ケースを追加し、「〇〇の確定人数が募集人数に達しています」を `setErrorMessage` で表示する
 
 **Checkpoint**: この時点で UI からも過剰確定が抑止できること。quickstart.md シナリオ1〜3で総合検証可能。
 

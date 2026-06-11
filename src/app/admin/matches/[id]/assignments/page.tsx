@@ -121,6 +121,8 @@ export default function AssignmentsPage() {
         setPhoneError(null)
       } else if (json.error === 'REFEREE_PHONE_MISSING') {
         setErrorMessage('審判の連絡先が未登録のため確定できません。審判に登録を依頼してください。')
+      } else if (json.error === 'SLOT_FULL') {
+        setErrorMessage(json.message ?? '確定人数が募集人数に達しています')
       } else {
         setErrorMessage(json.error ?? '確定に失敗しました')
       }
@@ -154,6 +156,18 @@ export default function AssignmentsPage() {
     accepted: assignments.filter((a) => a.status === 'accepted').length,
     declined: assignments.filter((a) => a.status === 'declined').length,
     confirmed: assignments.filter((a) => a.status === 'confirmed').length,
+  }
+
+  const confirmedByRole = {
+    referee: assignments.filter((a) => a.role === 'referee' && a.status === 'confirmed').length,
+    assistant_referee: assignments.filter((a) => a.role === 'assistant_referee' && a.status === 'confirmed').length,
+  }
+
+  function isSlotFull(role: string): boolean {
+    if (!match) return false
+    if (role === 'referee') return confirmedByRole.referee >= match.referees_needed
+    if (role === 'assistant_referee') return confirmedByRole.assistant_referee >= match.assistants_needed
+    return false
   }
 
   return (
@@ -278,7 +292,7 @@ export default function AssignmentsPage() {
                 {assignment.status === 'accepted' && (
                   <button
                     onClick={() => handleConfirm(assignment.id)}
-                    disabled={confirmingId === assignment.id}
+                    disabled={confirmingId === assignment.id || isSlotFull(assignment.role)}
                     className="min-h-[44px] rounded-md bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-500 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                   >
                     {confirmingId === assignment.id ? '処理中...' : '確定'}

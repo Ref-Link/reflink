@@ -46,7 +46,7 @@ export async function PATCH(
 
   const { data: assignment, error: assignError } = await supabase
     .from('assignments')
-    .select('id, user_id, match_id, status')
+    .select('id, user_id, match_id, status, role')
     .eq('id', params.assignmentId)
     .eq('match_id', params.id)
     .single()
@@ -57,6 +57,23 @@ export async function PATCH(
 
   if (assignment.status === 'confirmed') {
     return NextResponse.json({ error: 'Assignment already confirmed' }, { status: 409 })
+  }
+
+  const { count: confirmedCount } = await supabase
+    .from('assignments')
+    .select('id', { count: 'exact', head: true })
+    .eq('match_id', params.id)
+    .eq('role', assignment.role)
+    .eq('status', 'confirmed')
+
+  const needed = assignment.role === 'referee' ? match.referees_needed : match.assistants_needed
+  const roleLabel = assignment.role === 'referee' ? '主審' : '副審'
+
+  if ((confirmedCount ?? 0) >= needed) {
+    return NextResponse.json(
+      { error: 'SLOT_FULL', message: `${roleLabel}の確定人数が募集人数に達しています` },
+      { status: 409 }
+    )
   }
 
   const adminClient = createAdminClient()
