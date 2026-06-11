@@ -21,13 +21,14 @@ export interface MatchNotificationParams {
   venue: string
   age_group: string
   compensation: number | null
+  notes?: string | null
   role: 'referee' | 'assistant_referee'
 }
 
 export function buildMatchNotificationMessage(
   params: MatchNotificationParams
 ): messagingApi.FlexMessage {
-  const { assignmentId, title, match_date, start_time, venue, age_group, compensation, role } = params
+  const { assignmentId, title, match_date, start_time, venue, age_group, compensation, notes, role } = params
 
   const dateFormatted = formatMatchDate(match_date)
   const timeFormatted = formatStartTime(start_time)
@@ -78,6 +79,17 @@ export function buildMatchNotificationMessage(
       size: 'sm',
       color: '#555555',
       margin: 'xs',
+    } as messagingApi.FlexText)
+  }
+
+  if (notes) {
+    bodyContents.push({
+      type: 'text',
+      text: `備考: ${notes}`,
+      size: 'sm',
+      color: '#555555',
+      margin: 'xs',
+      wrap: true,
     } as messagingApi.FlexText)
   }
 

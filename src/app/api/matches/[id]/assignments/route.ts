@@ -103,6 +103,7 @@ export async function POST(
           venue: match.venue,
           age_group: match.age_group,
           compensation: match.compensation,
+          notes: match.notes,
           role: role as 'referee' | 'assistant_referee',
         })
         await pushMessage(referee.line_user_id, [flexMessage])
