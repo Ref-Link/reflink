@@ -60,17 +60,15 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
       setError('表示名を入力してください')
       return
     }
-    if (!formData.license_level) {
-      setError('ライセンスを選択してください')
-      return
-    }
-    if (formData.role_type.length === 0) {
-      setError('担当役割を選択してください')
-      return
-    }
-    if (formData.age_groups.length === 0) {
-      setError('対応年代を選択してください')
-      return
+    if (formData.license_level) {
+      if (formData.role_type.length === 0) {
+        setError('担当役割を選択してください')
+        return
+      }
+      if (formData.age_groups.length === 0) {
+        setError('対応年代を選択してください')
+        return
+      }
     }
     if (!formData.region.trim()) {
       setError('活動地域を入力してください')
@@ -142,68 +140,71 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
 
       <div>
         <label htmlFor="license_level" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          審判ライセンス <span className="text-red-500">*</span>
+          審判ライセンス
         </label>
         <select
           id="license_level"
           value={formData.license_level}
           onChange={(e) => setFormData((p) => ({ ...p, license_level: e.target.value }))}
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          required
         >
-          <option value="">選択してください</option>
+          <option value="">なし（審判資格なし）</option>
           {LICENSE_LEVELS.map((level) => (
             <option key={level} value={level}>{level}</option>
           ))}
         </select>
       </div>
 
-      {/* ボタングループは fieldset + legend で紐付け */}
-      <fieldset>
-        <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          担当役割 <span className="text-red-500">*</span>
-        </legend>
-        <div className="flex gap-3 flex-wrap">
-          {ROLE_OPTIONS.map(({ value, label }) => (
-            <button
-              key={value}
-              type="button"
-              aria-pressed={formData.role_type.includes(value)}
-              onClick={() => setFormData((p) => ({ ...p, role_type: toggleArrayValue(p.role_type, value) }))}
-              className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
-                formData.role_type.includes(value)
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      </fieldset>
+      {formData.license_level && (
+        <>
+          {/* ボタングループは fieldset + legend で紐付け */}
+          <fieldset>
+            <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              担当役割 <span className="text-red-500">*</span>
+            </legend>
+            <div className="flex gap-3 flex-wrap">
+              {ROLE_OPTIONS.map(({ value, label }) => (
+                <button
+                  key={value}
+                  type="button"
+                  aria-pressed={formData.role_type.includes(value)}
+                  onClick={() => setFormData((p) => ({ ...p, role_type: toggleArrayValue(p.role_type, value) }))}
+                  className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
+                    formData.role_type.includes(value)
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </fieldset>
 
-      <fieldset>
-        <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          対応年代 <span className="text-red-500">*</span>
-        </legend>
-        <div className="flex gap-3 flex-wrap">
-          {AGE_GROUPS.map((group) => (
-            <button
-              key={group}
-              type="button"
-              aria-pressed={formData.age_groups.includes(group)}
-              onClick={() => setFormData((p) => ({ ...p, age_groups: toggleArrayValue(p.age_groups, group) }))}
-              className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
-                formData.age_groups.includes(group)
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
-              }`}
-            >
-              {AGE_GROUP_LABELS[group]}
-            </button>
-          ))}
-        </div>
-      </fieldset>
+          <fieldset>
+            <legend className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              対応年代 <span className="text-red-500">*</span>
+            </legend>
+            <div className="flex gap-3 flex-wrap">
+              {AGE_GROUPS.map((group) => (
+                <button
+                  key={group}
+                  type="button"
+                  aria-pressed={formData.age_groups.includes(group)}
+                  onClick={() => setFormData((p) => ({ ...p, age_groups: toggleArrayValue(p.age_groups, group) }))}
+                  className={`min-h-[44px] rounded-full px-4 py-1 text-sm font-medium border transition-colors ${
+                    formData.age_groups.includes(group)
+                      ? 'bg-blue-600 text-white border-blue-600'
+                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:border-blue-400'
+                  }`}
+                >
+                  {AGE_GROUP_LABELS[group]}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+        </>
+      )}
 
       <div>
         <label htmlFor="region" className="block text-sm font-medium text-gray-700 dark:text-gray-300">

@@ -29,8 +29,8 @@ function licenseColor(order: number): string {
   return 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
 }
 
-function LicenseBadge({ level }: { readonly level: string }) {
-  const order = LICENSE_ORDER[level] ?? 99
+function LicenseBadge({ level }: { readonly level: string | null }) {
+  const order = (level ? LICENSE_ORDER[level] : undefined) ?? 99
   const colorClass = licenseColor(order)
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${colorClass}`}>

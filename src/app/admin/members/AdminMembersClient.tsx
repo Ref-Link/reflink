@@ -124,7 +124,7 @@ export default function AdminMembersClient({ communityId, initialMembers }: Prop
                         </span>
                       </div>
                       <div className="mt-0.5 text-xs text-gray-500">
-                        {member.users.license_level} · {member.users.region}
+                        {member.users.license_level ?? 'なし'} · {member.users.region}
                       </div>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
@@ -142,7 +142,7 @@ export default function AdminMembersClient({ communityId, initialMembers }: Prop
                       <dl className="space-y-1">
                         <div className="flex gap-2">
                           <dt className="text-xs text-gray-400 w-20 shrink-0">ライセンス</dt>
-                          <dd className="text-xs text-gray-700">{member.users.license_level}</dd>
+                          <dd className="text-xs text-gray-700">{member.users.license_level ?? 'なし'}</dd>
                         </div>
                         {member.users.age_groups.length > 0 && (
                           <div className="flex gap-2">

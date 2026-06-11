@@ -20,7 +20,7 @@ export interface MemberWithUser {
   created_at: string
   users: {
     display_name: string
-    license_level: string
+    license_level: string | null
     region: string
     age_groups: string[]
     role_type: string[]
@@ -105,7 +105,7 @@ export function ApprovalList({ communityId, members, onAction }: ApprovalListPro
                       {member.users.display_name}
                     </div>
                     <div className="mt-0.5 flex gap-2 text-xs text-gray-500 dark:text-gray-400">
-                      <span>{member.users.license_level}</span>
+                      <span>{member.users.license_level ?? 'なし'}</span>
                       <span>·</span>
                       <span>{member.users.region}</span>
                     </div>
@@ -138,7 +138,7 @@ export function ApprovalList({ communityId, members, onAction }: ApprovalListPro
                   <dl className="space-y-1">
                     <div className="flex gap-2">
                       <dt className="text-xs text-gray-400 dark:text-gray-500 w-20 shrink-0">ライセンス</dt>
-                      <dd className="text-xs text-gray-700 dark:text-gray-300">{member.users.license_level}</dd>
+                      <dd className="text-xs text-gray-700 dark:text-gray-300">{member.users.license_level ?? 'なし'}</dd>
                     </div>
                     {member.users.age_groups.length > 0 && (
                       <div className="flex gap-2">

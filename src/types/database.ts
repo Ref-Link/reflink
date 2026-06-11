@@ -9,7 +9,7 @@ export interface Database {
           display_name: string
           real_name: string | null
           line_user_id: string | null
-          license_level: string
+          license_level: string | null
           role_type: string[]
           age_groups: string[]
           region: string
@@ -25,9 +25,9 @@ export interface Database {
           display_name: string
           real_name?: string | null
           line_user_id?: string | null
-          license_level: string
-          role_type: string[]
-          age_groups: string[]
+          license_level?: string | null
+          role_type?: string[]
+          age_groups?: string[]
           region: string
           travel_range_km?: number | null
           experience_years?: number | null
@@ -41,7 +41,7 @@ export interface Database {
           display_name?: string
           real_name?: string | null
           line_user_id?: string | null
-          license_level?: string
+          license_level?: string | null
           role_type?: string[]
           age_groups?: string[]
           region?: string
