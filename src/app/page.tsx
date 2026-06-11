@@ -21,7 +21,7 @@ export default async function RootPage() {
     memberships?.some(
       (m) => ['organizer', 'manager'].includes(m.role) && m.status === 'approved'
     ) ?? false
-  const isReferee = memberships?.some((m) => m.role === 'referee') ?? false
+  const isReferee = memberships?.some((m) => m.status === 'approved') ?? false
 
   return (
     <HomeScreen
