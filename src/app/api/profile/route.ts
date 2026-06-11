@@ -60,9 +60,15 @@ export async function PATCH(request: Request) {
 
   if (!existing) {
     // First-time profile creation — require mandatory fields
-    if (!display_name || !license_level || !role_type?.length || !age_groups?.length || !region) {
+    if (!display_name || !region) {
       return NextResponse.json(
-        { error: 'display_name, license_level, role_type, age_groups, region are required for initial profile creation' },
+        { error: 'display_name and region are required for initial profile creation' },
+        { status: 400 }
+      )
+    }
+    if (license_level && (!role_type?.length || !age_groups?.length)) {
+      return NextResponse.json(
+        { error: 'role_type and age_groups are required when license_level is provided' },
         { status: 400 }
       )
     }
@@ -70,9 +76,9 @@ export async function PATCH(request: Request) {
     const insertPayload: UserInsert = {
       id: user.id,
       display_name: String(display_name),
-      license_level: String(license_level),
-      role_type: role_type as string[],
-      age_groups: age_groups as string[],
+      license_level: license_level ? String(license_level) : null,
+      role_type: (role_type as string[]) ?? [],
+      age_groups: (age_groups as string[]) ?? [],
       region: String(region),
       real_name: real_name != null ? String(real_name) : null,
       line_user_id: line_user_id != null ? String(line_user_id) : null,
@@ -97,7 +103,7 @@ export async function PATCH(request: Request) {
   const updatePayload: UserUpdate = { updated_at: new Date().toISOString() }
   if (display_name !== undefined) updatePayload.display_name = String(display_name)
   if (real_name !== undefined) updatePayload.real_name = real_name != null ? String(real_name) : null
-  if (license_level !== undefined) updatePayload.license_level = String(license_level)
+  if (license_level !== undefined) updatePayload.license_level = license_level ? String(license_level) : null
   if (role_type !== undefined) updatePayload.role_type = role_type as string[]
   if (age_groups !== undefined) updatePayload.age_groups = age_groups as string[]
   if (region !== undefined) updatePayload.region = String(region)

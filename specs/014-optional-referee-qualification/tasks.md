@@ -23,8 +23,8 @@ description: "Task list for 審判資格なしメンバー登録"
 
 **⚠️ CRITICAL**: このフェーズが完了するまでユーザーストーリーの実装を開始しない
 
-- [ ] T001 Supabase SQL Editorで `ALTER TABLE users ALTER COLUMN license_level DROP NOT NULL;` を実行し `users.license_level` の NOT NULL 制約を削除する
-- [ ] T002 [P] `src/types/database.ts` の `users.Row.license_level` を `string | null` に変更し、`users.Insert` の `license_level` を `license_level?: string | null`、`role_type` を `role_type?: string[]`、`age_groups` を `age_groups?: string[]` に変更する
+- [x] T001 `supabase/migrations/20260611000001_optional_referee_license.sql` を作成し、`license_level` の NOT NULL 削除・`role_type` と `age_groups` に `DEFAULT '{}'` を追加する。Supabase Dashboard または `supabase db push` で適用する
+- [x] T002 [P] `src/types/database.ts` の `users.Row.license_level` を `string | null` に変更し、`users.Insert` の `license_level` を `license_level?: string | null`、`role_type` を `role_type?: string[]`、`age_groups` を `age_groups?: string[]` に変更する
 
 **Checkpoint**: DBとTypeScriptの型が一致した状態になり、コンパイルエラーが解消されること
 
@@ -38,8 +38,8 @@ description: "Task list for 審判資格なしメンバー登録"
 
 ### Implementation for User Story 1
 
-- [ ] T003 [US1] `src/app/api/profile/route.ts` の初期作成バリデーション（line 63）を `!display_name || !region` のみに変更し、`license_level` が指定された場合のみ `role_type?.length` と `age_groups?.length` も検証するよう修正する
-- [ ] T004 [US1] `src/components/profile/ProfileForm.tsx` の `handleSubmit` からライセンスの必須バリデーション（line 63–65 の `!formData.license_level` ブロック）を削除し、役割・年代の必須バリデーション（line 67–73）を「`formData.license_level` が設定されている場合のみ」に変更する。また select 要素の `required` 属性（line 152）を削除する
+- [x] T003 [US1] `src/app/api/profile/route.ts` の初期作成バリデーション（line 63）を `!display_name || !region` のみに変更し、`license_level` が指定された場合のみ `role_type?.length` と `age_groups?.length` も検証するよう修正する
+- [x] T004 [US1] `src/components/profile/ProfileForm.tsx` の `handleSubmit` からライセンスの必須バリデーション（line 63–65 の `!formData.license_level` ブロック）を削除し、役割・年代の必須バリデーション（line 67–73）を「`formData.license_level` が設定されている場合のみ」に変更する。また select 要素の `required` 属性（line 152）を削除する
 
 **Checkpoint**: ライセンス空欄でプロフィール保存・コミュニティ申請が完了し、ライセンスありユーザーは従来通り動作すること
 
@@ -53,7 +53,7 @@ description: "Task list for 審判資格なしメンバー登録"
 
 ### Implementation for User Story 2
 
-- [ ] T005 [US2] `src/app/admin/members/AdminMembersClient.tsx` のメンバー概要表示（line 127）を `{member.users.license_level ?? 'なし'} · {member.users.region}` に変更し、詳細展開時のライセンス表示（line 145）も `{member.users.license_level ?? 'なし'}` に変更する
+- [x] T005 [US2] `src/app/admin/members/AdminMembersClient.tsx` のメンバー概要表示（line 127）を `{member.users.license_level ?? 'なし'} · {member.users.region}` に変更し、詳細展開時のライセンス表示（line 145）も `{member.users.license_level ?? 'なし'}` に変更する
 
 **Checkpoint**: 管理画面でライセンスなしメンバーに「なし」と表示され、アサイン候補APIの既存フィルタ（`role_type overlaps`）により候補に表示されないこと
 
@@ -67,7 +67,7 @@ description: "Task list for 審判資格なしメンバー登録"
 
 ### Implementation for User Story 3
 
-- [ ] T006 [US3] `src/components/profile/ProfileForm.tsx` の担当役割 `<fieldset>` ブロック（line 162–183）と対応年代 `<fieldset>` ブロック（line 185–206）を `formData.license_level` が設定されている場合のみ表示する条件付きレンダリングに変更する
+- [x] T006 [US3] `src/components/profile/ProfileForm.tsx` の担当役割 `<fieldset>` ブロック（line 162–183）と対応年代 `<fieldset>` ブロック（line 185–206）を `formData.license_level` が設定されている場合のみ表示する条件付きレンダリングに変更する
 
 **Checkpoint**: ライセンス空欄時に両セクションが非表示、ライセンス選択後に表示されること
 

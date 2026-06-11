@@ -31,7 +31,7 @@ export const AGE_GROUP_LABELS: Record<AgeGroup, string> = {
 export interface Candidate {
   id: string
   display_name: string
-  license_level: string
+  license_level: string | null
   role_type: string[]
   age_groups: string[]
   region: string

@@ -88,7 +88,7 @@ export default function ProfilePage() {
             ? {
                 display_name: profile.display_name,
                 real_name: profile.real_name ?? '',
-                license_level: profile.license_level,
+                license_level: profile.license_level ?? '',
                 role_type: profile.role_type,
                 age_groups: profile.age_groups,
                 region: profile.region,
