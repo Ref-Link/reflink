@@ -59,7 +59,7 @@ export default function AssignmentsPage() {
     const supabase = createClient()
     const { data } = await supabase
       .from('assignments')
-      .select('*, users(display_name)')
+      .select('*, users!assignments_user_id_fkey(display_name)')
       .eq('match_id', params.id)
       .order('created_at', { ascending: true })
     setAssignments((data as unknown as AssignmentWithUser[]) ?? [])

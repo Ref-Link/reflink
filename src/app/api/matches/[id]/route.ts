@@ -43,6 +43,10 @@ export async function GET(
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
+  if (membership.role !== 'manager' && data.created_by !== user.id) {
+    return NextResponse.json({ error: 'Match not found' }, { status: 404 })
+  }
+
   const { data: confirmedAssignments } = await supabase
     .from('assignments')
     .select('role')

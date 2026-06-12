@@ -24,6 +24,7 @@ export async function GET(request: Request) {
       role,
       status,
       confirmed_at,
+      confirmed_by,
       user_id,
       matches (
         id,
@@ -72,24 +73,32 @@ export async function GET(request: Request) {
     return matchB.match_date.localeCompare(matchA.match_date)
   })
 
-  // Fetch organizer phone numbers for all confirmed assignments
+  // Collect all user IDs needing contact lookup (organizers + proxy confirmers)
   const organizerIds = filtered
     .map((item) => (item.matches as unknown as { created_by: string } | null)?.created_by)
     .filter((id): id is string => !!id)
 
-  const uniqueOrganizerIds = Array.from(new Set(organizerIds))
-  const { data: organizerUsers } = uniqueOrganizerIds.length > 0
-    ? await adminClient.from('users').select('id, phone_number, real_name').in('id', uniqueOrganizerIds)
+  const proxyConfirmerIds = filtered
+    .map((item) => {
+      const confirmedBy = item.confirmed_by as string | null
+      const createdBy = (item.matches as unknown as { created_by: string } | null)?.created_by
+      return confirmedBy && confirmedBy !== createdBy ? confirmedBy : null
+    })
+    .filter((id): id is string => !!id)
+
+  const uniqueUserIds = Array.from(new Set([...organizerIds, ...proxyConfirmerIds]))
+  const { data: contactUsers } = uniqueUserIds.length > 0
+    ? await adminClient.from('users').select('id, phone_number, real_name').in('id', uniqueUserIds)
     : { data: [] }
 
-  const phoneByOrganizerId = Object.fromEntries(
-    (organizerUsers ?? []).map((u) => [u.id, u.phone_number])
+  const phoneById = Object.fromEntries(
+    (contactUsers ?? []).map((u) => [u.id, u.phone_number])
   )
-  const nameByOrganizerId = Object.fromEntries(
-    (organizerUsers ?? []).map((u) => [u.id, u.real_name || null])
+  const nameById = Object.fromEntries(
+    (contactUsers ?? []).map((u) => [u.id, u.real_name || null])
   )
 
-  // Flatten organizer.phone_number into matches.organizer_phone
+  // Flatten organizer and proxy confirmer contact info into matches
   const result = filtered.map((item) => {
     const matchData = item.matches as unknown as {
       id: string; title: string; match_date: string; start_time: string;
@@ -97,6 +106,8 @@ export async function GET(request: Request) {
       referees_needed: number; assistants_needed: number;
       compensation: number | null; notes: string | null
     } | null
+    const confirmedBy = item.confirmed_by as string | null
+    const isProxy = confirmedBy != null && matchData != null && confirmedBy !== matchData.created_by
     return {
       id: item.id,
       role: item.role,
@@ -109,8 +120,10 @@ export async function GET(request: Request) {
         start_time: matchData.start_time,
         venue: matchData.venue,
         age_group: matchData.age_group,
-        organizer_phone: phoneByOrganizerId[matchData.created_by] ?? null,
-        organizer_name: nameByOrganizerId[matchData.created_by] ?? null,
+        organizer_phone: phoneById[matchData.created_by] ?? null,
+        organizer_name: nameById[matchData.created_by] ?? null,
+        proxy_confirmer_phone: isProxy ? (phoneById[confirmedBy] ?? null) : null,
+        proxy_confirmer_name: isProxy ? (nameById[confirmedBy] ?? null) : null,
         referees_needed: matchData.referees_needed,
         assistants_needed: matchData.assistants_needed,
         compensation: matchData.compensation,

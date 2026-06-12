@@ -85,12 +85,16 @@ export async function PATCH(
 
   const { data: match } = await supabase
     .from('matches')
-    .select('id, community_id, title, match_date, start_time, venue, age_group, referees_needed, assistants_needed')
+    .select('id, community_id, created_by, title, match_date, start_time, venue, age_group, referees_needed, assistants_needed')
     .eq('id', params.id)
     .eq('community_id', membership.community_id)
     .single()
 
   if (!match) {
+    return NextResponse.json({ error: 'Match not found' }, { status: 404 })
+  }
+
+  if (membership.role !== 'manager' && match.created_by !== user.id) {
     return NextResponse.json({ error: 'Match not found' }, { status: 404 })
   }
 
@@ -156,7 +160,7 @@ export async function PATCH(
 
   const { data: updated, error: updateError } = await supabase
     .from('assignments')
-    .update({ status: 'confirmed', confirmed_at: new Date().toISOString() })
+    .update({ status: 'confirmed', confirmed_at: new Date().toISOString(), confirmed_by: user.id })
     .eq('id', params.assignmentId)
     .select()
     .single()
