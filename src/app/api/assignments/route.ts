@@ -79,11 +79,14 @@ export async function GET(request: Request) {
 
   const uniqueOrganizerIds = Array.from(new Set(organizerIds))
   const { data: organizerUsers } = uniqueOrganizerIds.length > 0
-    ? await adminClient.from('users').select('id, phone_number').in('id', uniqueOrganizerIds)
+    ? await adminClient.from('users').select('id, phone_number, real_name').in('id', uniqueOrganizerIds)
     : { data: [] }
 
   const phoneByOrganizerId = Object.fromEntries(
     (organizerUsers ?? []).map((u) => [u.id, u.phone_number])
+  )
+  const nameByOrganizerId = Object.fromEntries(
+    (organizerUsers ?? []).map((u) => [u.id, u.real_name || null])
   )
 
   // Flatten organizer.phone_number into matches.organizer_phone
@@ -107,6 +110,7 @@ export async function GET(request: Request) {
         venue: matchData.venue,
         age_group: matchData.age_group,
         organizer_phone: phoneByOrganizerId[matchData.created_by] ?? null,
+        organizer_name: nameByOrganizerId[matchData.created_by] ?? null,
         referees_needed: matchData.referees_needed,
         assistants_needed: matchData.assistants_needed,
         compensation: matchData.compensation,

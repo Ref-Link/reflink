@@ -28,6 +28,7 @@ export interface AssignmentHistoryItem {
     venue: string
     age_group: string
     organizer_phone: string | null
+    organizer_name: string | null
     referees_needed: number
     assistants_needed: number
     compensation: number | null
@@ -133,7 +134,7 @@ export function AssignmentHistory({ items }: AssignmentHistoryProps) {
                 {item.status === 'confirmed' && (
                   <div className="border-t border-gray-100 dark:border-gray-700 pt-2">
                     <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">運営者連絡先</p>
-                    <ContactInfo phone={match.organizer_phone ?? null} />
+                    <ContactInfo phone={match.organizer_phone ?? null} name={match.organizer_name ?? null} />
                   </div>
                 )}
               </div>
