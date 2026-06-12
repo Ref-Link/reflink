@@ -211,6 +211,7 @@ export interface Database {
           notified_at: string | null
           responded_at: string | null
           confirmed_at: string | null
+          confirmed_by: string | null
           reminder_sent_at: string | null
           created_at: string
         }
@@ -223,6 +224,7 @@ export interface Database {
           notified_at?: string | null
           responded_at?: string | null
           confirmed_at?: string | null
+          confirmed_by?: string | null
           reminder_sent_at?: string | null
           created_at?: string
         }
@@ -235,6 +237,7 @@ export interface Database {
           notified_at?: string | null
           responded_at?: string | null
           confirmed_at?: string | null
+          confirmed_by?: string | null
           reminder_sent_at?: string | null
           created_at?: string
         }

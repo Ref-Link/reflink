@@ -29,6 +29,8 @@ export interface AssignmentHistoryItem {
     age_group: string
     organizer_phone: string | null
     organizer_name: string | null
+    proxy_confirmer_phone: string | null
+    proxy_confirmer_name: string | null
     referees_needed: number
     assistants_needed: number
     compensation: number | null
@@ -132,9 +134,17 @@ export function AssignmentHistory({ items }: AssignmentHistoryProps) {
                   )}
                 </dl>
                 {item.status === 'confirmed' && (
-                  <div className="border-t border-gray-100 dark:border-gray-700 pt-2">
-                    <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">運営者連絡先</p>
-                    <ContactInfo phone={match.organizer_phone ?? null} name={match.organizer_name ?? null} />
+                  <div className="border-t border-gray-100 dark:border-gray-700 pt-2 space-y-2">
+                    <div>
+                      <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">運営者連絡先</p>
+                      <ContactInfo phone={match.organizer_phone ?? null} name={match.organizer_name ?? null} />
+                    </div>
+                    {match.proxy_confirmer_phone != null && (
+                      <div>
+                        <p className="mb-1 text-xs text-gray-500 dark:text-gray-400">代理確定者連絡先</p>
+                        <ContactInfo phone={match.proxy_confirmer_phone} name={match.proxy_confirmer_name ?? null} />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

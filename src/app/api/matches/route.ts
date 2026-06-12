@@ -29,11 +29,17 @@ export async function GET() {
     return NextResponse.json({ error: 'Forbidden: organizer or manager role required' }, { status: 403 })
   }
 
-  const { data, error } = await supabase
+  let matchesQuery = supabase
     .from('matches')
     .select('*')
     .eq('community_id', membership.community_id)
     .order('match_date', { ascending: false })
+
+  if (membership.role === 'organizer') {
+    matchesQuery = matchesQuery.eq('created_by', user.id)
+  }
+
+  const { data, error } = await matchesQuery
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })

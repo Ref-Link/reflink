@@ -66,12 +66,16 @@ export async function GET(
   // Get match details (must belong to organizer's community)
   const { data: match, error: matchError } = await supabase
     .from('matches')
-    .select('id, community_id, match_date, start_time, age_group')
+    .select('id, community_id, created_by, match_date, start_time, age_group')
     .eq('id', params.id)
     .eq('community_id', membership.community_id)
     .single()
 
   if (matchError || !match) {
+    return NextResponse.json({ error: 'Match not found' }, { status: 404 })
+  }
+
+  if (membership.role !== 'manager' && match.created_by !== user.id) {
     return NextResponse.json({ error: 'Match not found' }, { status: 404 })
   }
 

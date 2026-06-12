@@ -13,8 +13,8 @@
 
 **⚠️ CRITICAL**: Phase 2 完了前に Phase 3 以降を開始しない
 
-- [ ] T001 `assignments` テーブルに `confirmed_by uuid REFERENCES public.users(id)` を追加するマイグレーションを `supabase/migrations/20260612000001_assignments_confirmed_by.sql` に作成する
-- [ ] T002 `src/types/database.ts` の `assignments` テーブルの Row / Insert / Update 型に `confirmed_by: string | null` を追加する
+- [x] T001 `assignments` テーブルに `confirmed_by uuid REFERENCES public.users(id)` を追加するマイグレーションを `supabase/migrations/20260612000001_assignments_confirmed_by.sql` に作成する
+- [x] T002 `src/types/database.ts` の `assignments` テーブルの Row / Insert / Update 型に `confirmed_by: string | null` を追加する
 
 **Checkpoint**: `supabase db push`（またはローカル `supabase start`）でマイグレーション適用後、assignments テーブルに confirmed_by カラムが存在することを確認する
 
@@ -28,11 +28,11 @@
 
 ### Implementation
 
-- [ ] T003 [P] [US1] `src/app/api/matches/route.ts` の `GET` ハンドラで、`membership.role === 'organizer'` の場合に `.eq('created_by', user.id)` フィルタを追加し、manager は全件返すよう分岐を実装する
-- [ ] T004 [P] [US1] `src/app/api/matches/[id]/route.ts` の `GET` ハンドラで、match 取得後に `isOwnerOrManager`（`membership.role === 'manager' || match.created_by === user.id`）チェックを追加し、非該当の場合は 404 を返す
-- [ ] T005 [P] [US1] `src/app/api/matches/[id]/candidates/route.ts` の `GET` ハンドラで、match 取得後に同じ `isOwnerOrManager` チェックを追加し、非該当の場合は 404 を返す
-- [ ] T006 [P] [US1] `src/app/api/matches/[id]/assignments/route.ts` の `POST` ハンドラで、match 取得後に同じ `isOwnerOrManager` チェックを追加し、非該当の場合は 404 を返す
-- [ ] T007 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の `PATCH` ハンドラで、(1) match 取得後に `isOwnerOrManager` チェックを追加して非該当は 404、(2) 確定成功時の `assignments.update` に `confirmed_by: user.id` を追加する（T004 の ownership チェックパターンを踏襲）
+- [x] T003 [P] [US1] `src/app/api/matches/route.ts` の `GET` ハンドラで、`membership.role === 'organizer'` の場合に `.eq('created_by', user.id)` フィルタを追加し、manager は全件返すよう分岐を実装する
+- [x] T004 [P] [US1] `src/app/api/matches/[id]/route.ts` の `GET` ハンドラで、match 取得後に `isOwnerOrManager`（`membership.role === 'manager' || match.created_by === user.id`）チェックを追加し、非該当の場合は 404 を返す
+- [x] T005 [P] [US1] `src/app/api/matches/[id]/candidates/route.ts` の `GET` ハンドラで、match 取得後に同じ `isOwnerOrManager` チェックを追加し、非該当の場合は 404 を返す
+- [x] T006 [P] [US1] `src/app/api/matches/[id]/assignments/route.ts` の `POST` ハンドラで、match 取得後に同じ `isOwnerOrManager` チェックを追加し、非該当の場合は 404 を返す
+- [x] T007 [US1] `src/app/api/matches/[id]/assignments/[assignmentId]/confirm/route.ts` の `PATCH` ハンドラで、(1) match 取得後に `isOwnerOrManager` チェックを追加して非該当は 404、(2) 確定成功時の `assignments.update` に `confirmed_by: user.id` を追加する（T004 の ownership チェックパターンを踏襲）
 
 **Checkpoint**: quickstart.md シナリオ 1・2・5 を実行し、organizer が他者の試合を操作できないこと、manager が全試合を操作できることを確認する
 
@@ -46,8 +46,8 @@
 
 ### Implementation
 
-- [ ] T008 [US3] `src/app/api/assignments/route.ts` の `GET` ハンドラで、(1) assignments の select クエリに `confirmed_by` を追加、(2) `confirmed_by != null && confirmed_by !== match.created_by` のケースを検出して該当ユーザーの `phone_number` と `real_name` を取得し、(3) レスポンスの matches フィールドに `proxy_confirmer_phone: string | null` と `proxy_confirmer_name: string | null` を追加する
-- [ ] T009 [US3] `src/components/history/AssignmentHistory.tsx` で、`AssignmentHistoryItem['matches']` 型に `proxy_confirmer_phone` と `proxy_confirmer_name` を追加し、`proxy_confirmer_phone` が非 null の場合に「代理確定者連絡先」ラベルと `<ContactInfo>` コンポーネントを既存の「運営者連絡先」ブロックの直下に追加表示する
+- [x] T008 [US3] `src/app/api/assignments/route.ts` の `GET` ハンドラで、(1) assignments の select クエリに `confirmed_by` を追加、(2) `confirmed_by != null && confirmed_by !== match.created_by` のケースを検出して該当ユーザーの `phone_number` と `real_name` を取得し、(3) レスポンスの matches フィールドに `proxy_confirmer_phone: string | null` と `proxy_confirmer_name: string | null` を追加する
+- [x] T009 [US3] `src/components/history/AssignmentHistory.tsx` で、`AssignmentHistoryItem['matches']` 型に `proxy_confirmer_phone` と `proxy_confirmer_name` を追加し、`proxy_confirmer_phone` が非 null の場合に「代理確定者連絡先」ラベルと `<ContactInfo>` コンポーネントを既存の「運営者連絡先」ブロックの直下に追加表示する
 
 **Checkpoint**: quickstart.md シナリオ 3・4 を実行し、代理確定時のみ連絡先が2件表示されることを確認する
 
@@ -55,7 +55,7 @@
 
 ## Phase 5: Polish
 
-- [ ] T010 quickstart.md の全シナリオ（1〜5）を通して実行し、リグレッションがないことを確認する
+- [ ] T010 quickstart.md の全シナリオ（1〜5）を通して実行し、リグレッションがないことを確認する（手動テスト）
 
 ---
 
