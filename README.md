@@ -70,8 +70,21 @@ supabase db push  # マイグレーション適用
 | `LINE_CHANNEL_ACCESS_TOKEN` | LINE Messaging API アクセストークン | LINE Developers → Messaging API チャネル |
 | `LINE_LOGIN_CHANNEL_ID` | LINE Login チャネル ID | LINE Developers → LINE Login チャネル |
 | `LINE_LOGIN_CHANNEL_SECRET` | LINE Login チャネルシークレット | LINE Developers → LINE Login チャネル |
+| `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` | Google OAuth クライアント ID | Google Cloud Console → APIs & Services → Credentials |
+| `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` | Google OAuth クライアントシークレット | Google Cloud Console → APIs & Services → Credentials |
+| `NEXT_PUBLIC_SITE_URL` | アプリのベース URL（OGP 等に使用） | 本番ドメイン（例: `https://www.example.jp`） |
+| `NEXT_PUBLIC_APP_URL` | LINE ログインコールバック用アプリ URL | 本番ドメイン（例: `https://www.example.jp`） |
 
 > **注意**: `SUPABASE_SERVICE_ROLE_KEY` は Vercel の "Environment Variables" で `Preview` と `Production` のみに設定し、クライアントには絶対に公開しないこと。
+
+### Supabase Auth の設定
+
+Supabase Dashboard → **Authentication → URL Configuration** で以下を設定する：
+
+- **Site URL**: 本番ドメイン（例: `https://www.example.jp`）
+- **Redirect URLs**: `https://www.example.jp/**`（`www` あり/なし両方使う場合は両方追加）
+
+> **注意**: Vercel でカスタムドメインを設定する場合、`www` あり/なしのどちらがプライマリかを確認し、Site URL をそれに合わせること。不一致があるとログイン後にセッションが失われる。
 
 ### Vercel リージョン設定
 
