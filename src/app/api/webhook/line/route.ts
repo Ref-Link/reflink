@@ -108,7 +108,7 @@ export async function POST(request: Request) {
       if (!userWithPhone?.phone_number) {
         const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
         const followUpText =
-          `【電話番号登録のお願い】\nアサイン確定時に運営者との緊急連絡手段として電話番号が必要です。以下のリンクからプロフィールに電話番号をご登録ください。\n${appUrl}/profile`
+          `【電話番号登録のお願い】\nアサイン確定時に運営者との連絡手段として電話番号が必要です。以下のリンクからプロフィールに電話番号をご登録ください。\n${appUrl}/profile`
         try {
           await pushTextMessage(lineUserId, followUpText)
         } catch (err) {

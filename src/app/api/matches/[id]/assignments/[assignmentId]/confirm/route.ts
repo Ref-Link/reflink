@@ -5,6 +5,56 @@ import { pushTextMessage } from '@/lib/line/client'
 import type { AgeGroup } from '@/types/domain'
 import { AGE_GROUP_LABELS } from '@/types/domain'
 
+async function maybeMarkFilled(
+  supabase: ReturnType<typeof createClient>,
+  matchId: string,
+  refereesNeeded: number,
+  assistantsNeeded: number
+) {
+  const { data: allConfirmed } = await supabase
+    .from('assignments')
+    .select('role')
+    .eq('match_id', matchId)
+    .eq('status', 'confirmed')
+
+  const confirmedReferees = (allConfirmed ?? []).filter((a) => a.role === 'referee').length
+  const confirmedAssistants = (allConfirmed ?? []).filter((a) => a.role === 'assistant_referee').length
+
+  if (confirmedReferees >= refereesNeeded && confirmedAssistants >= assistantsNeeded) {
+    await supabase
+      .from('matches')
+      .update({ status: 'filled', updated_at: new Date().toISOString() })
+      .eq('id', matchId)
+  }
+}
+
+async function notifyReferee(
+  supabase: ReturnType<typeof createClient>,
+  refereeUserId: string,
+  match: { title: string; match_date: string; start_time: string; venue: string; age_group: string }
+) {
+  const { data: referee } = await supabase
+    .from('users')
+    .select('line_user_id')
+    .eq('id', refereeUserId)
+    .single()
+
+  if (!referee?.line_user_id) return
+
+  try {
+    const d = new Date(match.match_date)
+    const weekdays = ['日', '月', '火', '水', '木', '金', '土']
+    const dateStr = `${d.getMonth() + 1}月${d.getDate()}日(${weekdays[d.getDay()]})`
+    const timeStr = match.start_time.slice(0, 5)
+    const text =
+      `【アサイン確定】\n${match.title}\n📅 ${dateStr} ${timeStr}\n📍 ${match.venue}\n` +
+      `対象年代: ${AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}`
+    await pushTextMessage(referee.line_user_id, text)
+  } catch (lineError) {
+    console.error('LINE push failed:', lineError)
+  }
+}
+
 async function getOrganizerMembership(supabase: ReturnType<typeof createClient>, userId: string) {
   const { data } = await supabase
     .from('community_members')
@@ -115,48 +165,9 @@ export async function PATCH(
     return NextResponse.json({ error: updateError?.message ?? 'Failed to confirm' }, { status: 500 })
   }
 
-  const { data: allConfirmed } = await supabase
-    .from('assignments')
-    .select('role')
-    .eq('match_id', params.id)
-    .eq('status', 'confirmed')
+  await maybeMarkFilled(supabase, params.id, match.referees_needed, match.assistants_needed)
 
-  const confirmedReferees = (allConfirmed ?? []).filter((a) => a.role === 'referee').length
-  const confirmedAssistants = (allConfirmed ?? []).filter((a) => a.role === 'assistant_referee').length
-
-  if (
-    confirmedReferees >= match.referees_needed &&
-    confirmedAssistants >= match.assistants_needed
-  ) {
-    await supabase
-      .from('matches')
-      .update({ status: 'filled', updated_at: new Date().toISOString() })
-      .eq('id', params.id)
-  }
-
-  const { data: referee } = await supabase
-    .from('users')
-    .select('line_user_id')
-    .eq('id', assignment.user_id)
-    .single()
-
-  if (referee?.line_user_id) {
-    try {
-      const d = new Date(match.match_date)
-      const weekdays = ['日', '月', '火', '水', '木', '金', '土']
-      const dateStr = `${d.getMonth() + 1}月${d.getDate()}日(${weekdays[d.getDay()]})`
-      const timeStr = match.start_time.slice(0, 5)
-      const confirmText =
-        `【アサイン確定】\n` +
-        `${match.title}\n` +
-        `📅 ${dateStr} ${timeStr}\n` +
-        `📍 ${match.venue}\n` +
-        `対象年代: ${AGE_GROUP_LABELS[match.age_group as AgeGroup] ?? match.age_group}`
-      await pushTextMessage(referee.line_user_id, confirmText)
-    } catch (lineError) {
-      console.error('LINE push failed:', lineError)
-    }
-  }
+  await notifyReferee(supabase, assignment.user_id, match)
 
   return NextResponse.json(updated)
 }

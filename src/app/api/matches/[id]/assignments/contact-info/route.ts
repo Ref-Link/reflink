@@ -49,16 +49,16 @@ export async function GET(
   const userIds = confirmedAssignments.map((a) => a.user_id)
   const { data: users } = await adminClient
     .from('users')
-    .select('id, phone_number')
+    .select('id, phone_number, real_name')
     .in('id', userIds)
 
-  const phoneByUserId = Object.fromEntries(
-    (users ?? []).map((u) => [u.id, u.phone_number])
+  const infoByUserId = Object.fromEntries(
+    (users ?? []).map((u) => [u.id, { phone: u.phone_number, name: u.real_name || null }])
   )
 
-  const contactMap: Record<string, string | null> = {}
+  const contactMap: Record<string, { phone: string | null; name: string | null }> = {}
   for (const assignment of confirmedAssignments) {
-    contactMap[assignment.id] = phoneByUserId[assignment.user_id] ?? null
+    contactMap[assignment.id] = infoByUserId[assignment.user_id] ?? { phone: null, name: null }
   }
 
   return NextResponse.json(contactMap)

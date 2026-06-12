@@ -216,7 +216,7 @@ export function ProfileForm({ initialData, onSubmit, submitLabel = '保存する
           value={formData.region}
           onChange={(e) => setFormData((p) => ({ ...p, region: e.target.value }))}
           className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-3 text-sm text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          placeholder="例: 愛知西部"
+          placeholder="例: 神奈川県東部"
           required
         />
       </div>

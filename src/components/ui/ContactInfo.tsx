@@ -1,10 +1,11 @@
 import { formatPhoneNumber } from '@/lib/phone'
 
 interface ContactInfoProps {
-  phone: string | null
+  readonly phone: string | null
+  readonly name?: string | null
 }
 
-export function ContactInfo({ phone }: ContactInfoProps) {
+export function ContactInfo({ phone, name }: ContactInfoProps) {
   if (!phone) {
     return <span className="text-xs text-gray-400 dark:text-gray-500">連絡先未登録</span>
   }
@@ -12,6 +13,10 @@ export function ContactInfo({ phone }: ContactInfoProps) {
   const formatted = formatPhoneNumber(phone)
 
   return (
+    <div className="space-y-0.5">
+      {name && (
+        <p className="text-xs font-medium text-gray-700 dark:text-gray-300">{name}</p>
+      )}
     <div className="flex items-center gap-2 flex-wrap">
       <span className="text-xs text-gray-700 dark:text-gray-300">{formatted}</span>
       <a
@@ -26,6 +31,7 @@ export function ContactInfo({ phone }: ContactInfoProps) {
       >
         💬 SMS
       </a>
+    </div>
     </div>
   )
 }

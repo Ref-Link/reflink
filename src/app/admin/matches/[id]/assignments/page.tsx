@@ -47,8 +47,8 @@ export default function AssignmentsPage() {
   const [phoneSaving, setPhoneSaving] = useState(false)
   const [phoneError, setPhoneError] = useState<string | null>(null)
 
-  // Contact info map: assignmentId → referee phone_number
-  const [contactMap, setContactMap] = useState<Record<string, string | null>>({})
+  // Contact info map: assignmentId → { phone, name }
+  const [contactMap, setContactMap] = useState<Record<string, { phone: string | null; name: string | null }>>({})
 
   const fetchMatch = useCallback(async () => {
     const res = await fetch(`/api/matches/${params.id}`)
@@ -285,7 +285,10 @@ export default function AssignmentsPage() {
                   )}
                   {assignment.status === 'confirmed' && (
                     <div className="mt-1">
-                      <ContactInfo phone={contactMap[assignment.id] ?? null} />
+                      <ContactInfo
+                        phone={contactMap[assignment.id]?.phone ?? null}
+                        name={contactMap[assignment.id]?.name ?? null}
+                      />
                     </div>
                   )}
                 </div>
